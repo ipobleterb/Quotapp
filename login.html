@@ -323,18 +323,35 @@ a{color:inherit;text-decoration:none}
 </div>
 
 <script>
-// URL de tu app en Bubble — reemplaza con tu URL real
-const APP_URL = 'https://ipobleterb.bubbleapps.io';
+const BUBBLE_LOGIN_URL = 'https://ipobleterb.bubbleapps.io/version-test/api/1.1/wf/login';
+const APP_URL = 'https://ipobleterb.bubbleapps.io/version-test';
 
-function handleLogin() {
+// Mensaje de error genérico
+let errorMsg = document.getElementById('loginError');
+
+function showError(msg) {
+  if (!errorMsg) {
+    errorMsg = document.createElement('p');
+    errorMsg.id = 'loginError';
+    errorMsg.style.cssText = 'color:#E94F4F;font-size:.85rem;margin-top:12px;text-align:center;';
+    document.getElementById('loginBtn').after(errorMsg);
+  }
+  errorMsg.textContent = msg;
+}
+
+function clearError() {
+  if (errorMsg) errorMsg.textContent = '';
+}
+
+async function handleLogin() {
   const emailEl = document.getElementById('email');
   const passEl = document.getElementById('password');
   const btn = document.getElementById('loginBtn');
   let valid = true;
 
-  // Validación básica
   emailEl.classList.remove('error');
   passEl.classList.remove('error');
+  clearError();
 
   if (!emailEl.value || !/\S+@\S+\.\S+/.test(emailEl.value)) {
     emailEl.classList.add('error');
@@ -344,20 +361,42 @@ function handleLogin() {
     passEl.classList.add('error');
     valid = false;
   }
-
   if (!valid) return;
 
-  // Loading state
+  // Loading
   btn.classList.add('loading');
   btn.innerHTML = '<div class="spinner"></div> Ingresando...';
+  btn.disabled = true;
 
-  // Redirigir a Bubble después de un breve momento
-  setTimeout(() => {
-    window.location.href = APP_URL;
-  }, 800);
+  try {
+    const res = await fetch(BUBBLE_LOGIN_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        Email: emailEl.value,
+        Contraseña: passEl.value
+      })
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.status === 'success') {
+      // Login exitoso → redirigir a la app
+      window.location.href = APP_URL;
+    } else {
+      btn.classList.remove('loading');
+      btn.innerHTML = 'Iniciar sesión';
+      btn.disabled = false;
+      showError('Email o contraseña incorrectos. Intenta de nuevo.');
+    }
+  } catch (err) {
+    btn.classList.remove('loading');
+    btn.innerHTML = 'Iniciar sesión';
+    btn.disabled = false;
+    showError('Error de conexión. Intenta de nuevo.');
+  }
 }
 
-// Enter key
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') handleLogin();
 });
