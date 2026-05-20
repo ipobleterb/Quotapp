@@ -671,7 +671,7 @@ async function elegirPlan(plan, btn) {
     });
     const data = await res.json();
     if (res.ok && data.status === 'success') {
-      window.location.href = 'https://app.quotapp.cl/version-test';
+      window.location.href = `https://www.quotapp.cl/dashboard.html?user_id=${userId}`;
     } else {
       btn.classList.remove('loading'); btn.innerHTML = orig;
       alert('Error al seleccionar el plan. Intenta de nuevo.');
