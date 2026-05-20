@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de control — QuotApp</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#1D9E75;--g2:#0F6E56;--g3:#E1F5EE;--g4:#6ee7c0;
+  --navy:#0F1326;--navy2:#1A2040;
+  --txt:#0F1326;--txt2:#4A5070;--txt3:#8890AA;
+  --bg:#F4F6FA;--white:#fff;--bdr:#E4E7F0;
+  --sidebar:176px;
+  --sh:0 1px 4px rgba(15,19,38,.07);
+  --sh2:0 4px 20px rgba(15,19,38,.10);
+}
+html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);background:var(--bg);line-height:1.5}
+
+/* ── LAYOUT ── */
+.app{display:grid;grid-template-columns:var(--sidebar) 1fr;grid-template-rows:auto 1fr;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.sidebar{grid-row:1/3;background:var(--white);border-right:1px solid var(--bdr);display:flex;flex-direction:column;padding:0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sidebar-logo{display:flex;align-items:center;gap:9px;padding:20px 16px 16px;text-decoration:none;border-bottom:1px solid var(--bdr)}
+.sidebar-logomark{width:34px;height:34px;background:var(--g);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sidebar-brand{font-family:'Instrument Sans',sans-serif;font-size:1.15rem;font-weight:700;color:var(--navy)}
+.sidebar-brand span{color:var(--g)}
+.sidebar-section{padding:16px 12px 6px;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3)}
+.sidebar-nav{list-style:none;padding:0 8px}
+.sidebar-nav li a{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;font-size:.85rem;font-weight:500;color:var(--txt2);text-decoration:none;transition:all .15s;cursor:pointer}
+.sidebar-nav li a:hover{background:var(--bg);color:var(--navy)}
+.sidebar-nav li a.active{background:var(--g3);color:var(--g);font-weight:600}
+.sidebar-nav li a.disabled{opacity:.4;pointer-events:none;cursor:not-allowed}
+.nav-icon{width:16px;height:16px;flex-shrink:0}
+.sidebar-upgrade{margin:auto 12px 16px;background:linear-gradient(135deg,var(--g) 0%,var(--g2) 100%);border-radius:12px;padding:14px;color:#fff}
+.sidebar-upgrade h4{font-size:.82rem;font-weight:700;margin-bottom:4px}
+.sidebar-upgrade p{font-size:.74rem;opacity:.85;line-height:1.4;margin-bottom:10px}
+.sidebar-upgrade a{display:block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;text-align:center;padding:7px;border-radius:7px;font-size:.78rem;font-weight:600;text-decoration:none;transition:background .15s}
+.sidebar-upgrade a:hover{background:rgba(255,255,255,.3)}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--white);border-bottom:1px solid var(--bdr);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.community-selector{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:9px;padding:7px 12px;font-size:.84rem;font-weight:500;color:var(--txt);cursor:pointer;transition:border-color .2s}
+.community-selector:hover{border-color:var(--g)}
+.community-selector select{border:none;background:transparent;font-family:inherit;font-size:.84rem;font-weight:500;color:var(--txt);cursor:pointer;outline:none;min-width:140px}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.btn-top{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:.82rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s;border:none}
+.btn-top-ghost{background:transparent;border:1.5px solid var(--bdr);color:var(--txt2)}
+.btn-top-ghost:hover{border-color:var(--g);color:var(--g)}
+.btn-top-primary{background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(29,158,117,.25)}
+.btn-top-primary:hover{background:var(--g2)}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;cursor:pointer}
+
+/* ── MAIN ── */
+.main{padding:28px;overflow-y:auto}
+.page{display:none}
+.page.active{display:block}
+
+/* ── PAGE HEADER ── */
+.page-header{margin-bottom:24px}
+.page-header h1{font-family:'Bricolage Grotesque',sans-serif;font-size:1.5rem;font-weight:800;color:var(--navy);margin-bottom:3px}
+.page-header p{font-size:.85rem;color:var(--txt3)}
+
+/* ── STATS CARDS ── */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(29,158,117,.3);border-radius:14px;overflow:hidden;margin-bottom:24px;box-shadow:var(--sh2)}
+.stat-card{background:linear-gradient(135deg,#1D9E75 0%,#0F6E56 100%);padding:20px 24px;color:#fff}
+.stat-label{font-size:.75rem;font-weight:600;opacity:.8;margin-bottom:6px;letter-spacing:.02em}
+.stat-value{font-family:'Bricolage Grotesque',sans-serif;font-size:1.8rem;font-weight:800;line-height:1;margin-bottom:4px}
+.stat-note{font-size:.72rem;opacity:.65;line-height:1.3}
+
+/* ── SECTION TITLE ── */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.section-header h2{font-family:'Bricolage Grotesque',sans-serif;font-size:1rem;font-weight:700;color:var(--navy)}
+.section-header a{font-size:.8rem;color:var(--g);font-weight:600;text-decoration:none;cursor:pointer}
+.section-header a:hover{color:var(--g2)}
+
+/* ── TWO COL ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+
+/* ── CARDS ── */
+.card{background:var(--white);border-radius:14px;border:1px solid var(--bdr);padding:20px;box-shadow:var(--sh)}
+.card-empty{text-align:center;padding:32px 20px;color:var(--txt3);font-size:.84rem;line-height:1.6}
+.card-empty svg{margin:0 auto 10px;display:block;opacity:.3}
+
+/* ── TABLE ── */
+.table{width:100%;border-collapse:collapse}
+.table th{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--txt3);padding:0 8px 10px;text-align:left;border-bottom:1px solid var(--bdr)}
+.table td{font-size:.84rem;color:var(--txt2);padding:10px 8px;border-bottom:1px solid var(--bg)}
+.table tr:last-child td{border-bottom:none}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:99px;font-size:.72rem;font-weight:600}
+.badge-green{background:var(--g3);color:var(--g2)}
+.badge-red{background:#FEE2E2;color:#DC2626}
+.badge-yellow{background:#FEF9C3;color:#A16207}
+
+/* ── MEMBERS PAGE ── */
+.members-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.members-count{font-size:.82rem;color:var(--txt3)}
+.members-count strong{color:var(--navy)}
+.member-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--bdr)}
+.member-row:last-child{border-bottom:none}
+.member-avatar{width:36px;height:36px;border-radius:50%;background:var(--g3);color:var(--g2);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0}
+.member-info{flex:1}
+.member-name{font-size:.88rem;font-weight:600;color:var(--navy)}
+.member-email{font-size:.75rem;color:var(--txt3)}
+.member-actions{display:flex;gap:6px}
+.btn-sm{padding:5px 10px;border-radius:6px;font-size:.74rem;font-weight:600;font-family:inherit;cursor:pointer;border:none;transition:all .2s}
+.btn-sm-ghost{background:var(--bg);color:var(--txt2);border:1px solid var(--bdr)}
+.btn-sm-ghost:hover{border-color:var(--g);color:var(--g)}
+.btn-sm-danger{background:#FEE2E2;color:#DC2626}
+.btn-sm-danger:hover{background:#FCA5A5}
+
+/* ── FORM ── */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.form-field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.form-field label{font-size:.78rem;font-weight:600;color:var(--txt2)}
+.form-field input,.form-field select,.form-field textarea{padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-size:.88rem;font-family:inherit;color:var(--navy);background:var(--white);outline:none;transition:border-color .2s}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.1)}
+.form-field textarea{resize:vertical;min-height:80px}
+.btn-primary{background:var(--g);color:#fff;border:none;padding:10px 20px;border-radius:9px;font-size:.88rem;font-weight:700;font-family:inherit;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(29,158,117,.25)}
+.btn-primary:hover{background:var(--g2)}
+.btn-secondary{background:var(--bg);color:var(--txt2);border:1.5px solid var(--bdr);padding:10px 20px;border-radius:9px;font-size:.88rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s}
+.btn-secondary:hover{border-color:var(--g);color:var(--g)}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,19,38,.5);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:16px;padding:28px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(15,19,38,.2)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.modal-title{font-family:'Bricolage Grotesque',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy)}
+.modal-close{width:28px;height:28px;border-radius:50%;background:var(--bg);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--txt3);font-size:1rem;transition:background .2s}
+.modal-close:hover{background:var(--bdr)}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+
+/* ── LOCKED BANNER ── */
+.locked-banner{background:linear-gradient(135deg,#F8FAFF 0%,#EEF2FF 100%);border:1.5px solid #C7D2FE;border-radius:12px;padding:20px;display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.locked-icon{width:40px;height:40px;background:#EEF2FF;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#6366F1;font-size:1.2rem}
+.locked-text h4{font-size:.9rem;font-weight:700;color:#3730A3;margin-bottom:2px}
+.locked-text p{font-size:.8rem;color:#6366F1;line-height:1.4}
+.locked-text a{color:#6366F1;font-weight:600;text-decoration:underline;cursor:pointer}
+
+/* ── REPORTES ── */
+.report-card{display:flex;align-items:center;gap:14px;padding:14px;background:var(--white);border:1px solid var(--bdr);border-radius:12px;margin-bottom:10px;transition:box-shadow .2s}
+.report-card:hover{box-shadow:var(--sh2)}
+.report-icon{width:40px;height:40px;background:var(--g3);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.report-info{flex:1}
+.report-info h4{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:2px}
+.report-info p{font-size:.76rem;color:var(--txt3)}
+.report-action{padding:7px 14px;border-radius:8px;font-size:.78rem;font-weight:600;font-family:inherit;cursor:pointer;border:1.5px solid var(--bdr);background:transparent;color:var(--txt2);transition:all .2s}
+.report-action:hover{border-color:var(--g);color:var(--g)}
+.report-action.locked{opacity:.4;cursor:not-allowed;pointer-events:none}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:#fff;padding:12px 18px;border-radius:10px;font-size:.84rem;font-weight:500;box-shadow:0 8px 24px rgba(15,19,38,.2);z-index:300;transform:translateY(80px);opacity:0;transition:all .3s;max-width:300px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:var(--g)}
+.toast.error{background:#DC2626}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a href="index.html" class="sidebar-logo">
+      <div class="sidebar-logomark">
+        <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
+          <rect x="3" y="5" width="13" height="2" rx="1" fill="white"/>
+          <rect x="3" y="9" width="10" height="2" rx="1" fill="rgba(255,255,255,.65)"/>
+          <rect x="3" y="13" width="7" height="2" rx="1" fill="rgba(255,255,255,.4)"/>
+          <circle cx="17" cy="15.5" r="4" fill="white"/>
+          <text x="17" y="18" text-anchor="middle" font-size="5.5" font-weight="700" fill="#1D9E75">$</text>
+        </svg>
+      </div>
+      <span class="sidebar-brand">Quot<span>App</span></span>
+    </a>
+
+    <div class="sidebar-section">Gestionar</div>
+    <ul class="sidebar-nav">
+      <li><a onclick="showPage('dashboard')" class="active" id="nav-dashboard">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Panel de control
+      </a></li>
+      <li><a onclick="showPage('miembros')" id="nav-miembros">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Miembros
+      </a></li>
+      <li><a onclick="showPage('ingresos')" id="nav-ingresos">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Ingresos
+      </a></li>
+      <li><a onclick="showPage('gastos')" id="nav-gastos">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        Gastos
+      </a></li>
+    </ul>
+
+    <div class="sidebar-section">Análisis</div>
+    <ul class="sidebar-nav">
+      <li><a onclick="showPage('reportes')" id="nav-reportes">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Reportes
+      </a></li>
+      <li><a class="disabled" title="Disponible en plan Pro">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        Recordatorios
+        <span style="margin-left:auto;font-size:.62rem;background:#EEF2FF;color:#6366F1;padding:1px 6px;border-radius:99px;font-weight:700">Pro</span>
+      </a></li>
+    </ul>
+
+    <div class="sidebar-upgrade">
+      <h4>Plan Gratuito</h4>
+      <p>Actualiza al plan Pro para cobros online, recordatorios y más.</p>
+      <a href="planes.html">Ver plan Pro →</a>
+    </div>
+  </aside>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="community-selector">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        <select id="communitySelect" onchange="loadCommunity()">
+          <option value="">Selecciona comunidad...</option>
+        </select>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-top btn-top-ghost" onclick="openModal('modalEditCommunity')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Editar comunidad
+      </button>
+      <button class="btn-top btn-top-primary" onclick="openModal('modalNewCommunity')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nueva comunidad
+      </button>
+      <div class="avatar" id="userAvatar">IP</div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- ── DASHBOARD ── -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header">
+        <h1>Resumen de tesorería</h1>
+        <p>Vista clara de todo lo que pasa en tu comunidad.</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total recaudado</div>
+          <div class="stat-value" id="stat-recaudado">$0</div>
+          <div class="stat-note">En la comunidad activa</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total gastos</div>
+          <div class="stat-value" id="stat-gastos">$0</div>
+          <div class="stat-note">Este período</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Saldo actual</div>
+          <div class="stat-value" id="stat-saldo">$0</div>
+          <div class="stat-note">Recaudado menos gastos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Miembros</div>
+          <div class="stat-value" id="stat-miembros">0</div>
+          <div class="stat-note">De 10 máximo (plan gratis)</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="section-header">
+            <h2>Ingresos recientes</h2>
+            <a onclick="showPage('ingresos')">Ver todos</a>
+          </div>
+          <div id="dashboard-ingresos">
+            <div class="card-empty">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              Sin ingresos registrados aún.<br>
+              <a onclick="showPage('ingresos')" style="color:var(--g);font-weight:600;cursor:pointer">Registrar primero →</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-header">
+            <h2>Gastos recientes</h2>
+            <a onclick="showPage('gastos')">Ver todos</a>
+          </div>
+          <div id="dashboard-gastos">
+            <div class="card-empty">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              Sin gastos registrados aún.<br>
+              <a onclick="showPage('gastos')" style="color:var(--g);font-weight:600;cursor:pointer">Registrar primero →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-header">
+          <h2>Miembros de la comunidad</h2>
+          <a onclick="showPage('miembros')">Gestionar</a>
+        </div>
+        <div id="dashboard-miembros">
+          <div class="card-empty">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            Aún no hay miembros.<br>
+            <a onclick="showPage('miembros')" style="color:var(--g);font-weight:600;cursor:pointer">Agregar miembros →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MIEMBROS ── -->
+    <div class="page" id="page-miembros">
+      <div class="page-header">
+        <h1>Miembros</h1>
+        <p>Administra los miembros de tu comunidad.</p>
+      </div>
+      <div class="card">
+        <div class="members-header">
+          <div class="members-count">
+            <strong id="members-count">0</strong> / 10 miembros (plan gratuito)
+          </div>
+          <button class="btn-primary" onclick="openModal('modalNewMember')" id="btn-add-member">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Agregar miembro
+          </button>
+        </div>
+        <div id="members-list">
+          <div class="card-empty">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            Aún no hay miembros en esta comunidad.<br>Agrega el primero para empezar.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── INGRESOS ── -->
+    <div class="page" id="page-ingresos">
+      <div class="page-header">
+        <h1>Ingresos</h1>
+        <p>Registra y administra los ingresos de tu comunidad.</p>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+        <button class="btn-primary" onclick="openModal('modalNewIngreso')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Registrar ingreso
+        </button>
+      </div>
+      <div class="card">
+        <div id="ingresos-list">
+          <div class="card-empty">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Sin ingresos registrados.<br>Agrega el primero arriba.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── GASTOS ── -->
+    <div class="page" id="page-gastos">
+      <div class="page-header">
+        <h1>Gastos</h1>
+        <p>Registra y administra los gastos de tu comunidad.</p>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+        <button class="btn-primary" onclick="openModal('modalNewGasto')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Registrar gasto
+        </button>
+      </div>
+      <div class="card">
+        <div id="gastos-list">
+          <div class="card-empty">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            Sin gastos registrados.<br>Agrega el primero arriba.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── REPORTES ── -->
+    <div class="page" id="page-reportes">
+      <div class="page-header">
+        <h1>Reportes</h1>
+        <p>Descarga reportes de tu comunidad.</p>
+      </div>
+
+      <div class="report-card">
+        <div class="report-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div class="report-info">
+          <h4>Resumen básico PDF</h4>
+          <p>Ingresos, gastos y saldo del período actual.</p>
+        </div>
+        <button class="report-action" onclick="downloadReport()">Descargar PDF</button>
+      </div>
+
+      <div class="locked-banner">
+        <div class="locked-icon">🔒</div>
+        <div class="locked-text">
+          <h4>Más reportes disponibles en el plan Pro</h4>
+          <p>Exportación Excel, reporte por miembro, historial anual y más. <a href="planes.html">Ver plan Pro →</a></p>
+        </div>
+      </div>
+
+      <div class="report-card" style="opacity:.5">
+        <div class="report-icon" style="background:#F3F4F6">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div class="report-info">
+          <h4>Exportar a Excel</h4>
+          <p>Todos los movimientos en una planilla.</p>
+        </div>
+        <button class="report-action locked">Plan Pro</button>
+      </div>
+
+      <div class="report-card" style="opacity:.5">
+        <div class="report-icon" style="background:#F3F4F6">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        </div>
+        <div class="report-info">
+          <h4>Reporte por miembro</h4>
+          <p>Estado de pagos individual por cada miembro.</p>
+        </div>
+        <button class="report-action locked">Plan Pro</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ── MODALES ── -->
+
+<!-- Modal: Nueva comunidad -->
+<div class="modal-overlay" id="modalNewCommunity">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Nueva comunidad</div>
+      <button class="modal-close" onclick="closeModal('modalNewCommunity')">✕</button>
+    </div>
+    <div class="form-field">
+      <label>Nombre de la comunidad</label>
+      <input type="text" id="new-community-name" placeholder="Ej: Curso 5°B 2025">
+    </div>
+    <div class="form-field">
+      <label>Descripción (opcional)</label>
+      <textarea id="new-community-desc" placeholder="Una breve descripción..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modalNewCommunity')">Cancelar</button>
+      <button class="btn-primary" onclick="createCommunity()">Crear comunidad</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Editar comunidad -->
+<div class="modal-overlay" id="modalEditCommunity">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Editar comunidad</div>
+      <button class="modal-close" onclick="closeModal('modalEditCommunity')">✕</button>
+    </div>
+    <div class="form-field">
+      <label>Nombre de la comunidad</label>
+      <input type="text" id="edit-community-name" placeholder="Nombre">
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modalEditCommunity')">Cancelar</button>
+      <button class="btn-primary" onclick="editCommunity()">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nuevo miembro -->
+<div class="modal-overlay" id="modalNewMember">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Agregar miembro</div>
+      <button class="modal-close" onclick="closeModal('modalNewMember')">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-field" style="margin-bottom:0">
+        <label>Nombre</label>
+        <input type="text" id="new-member-nombre" placeholder="María">
+      </div>
+      <div class="form-field" style="margin-bottom:0">
+        <label>Apellido</label>
+        <input type="text" id="new-member-apellido" placeholder="González">
+      </div>
+    </div>
+    <div class="form-field" style="margin-top:12px">
+      <label>Correo electrónico</label>
+      <input type="email" id="new-member-email" placeholder="maria@ejemplo.com">
+    </div>
+    <div class="form-field">
+      <label>Teléfono (opcional)</label>
+      <input type="tel" id="new-member-telefono" placeholder="+56 9 1234 5678">
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modalNewMember')">Cancelar</button>
+      <button class="btn-primary" onclick="addMember()">Agregar miembro</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nuevo ingreso -->
+<div class="modal-overlay" id="modalNewIngreso">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Registrar ingreso</div>
+      <button class="modal-close" onclick="closeModal('modalNewIngreso')">✕</button>
+    </div>
+    <div class="form-field">
+      <label>Descripción</label>
+      <input type="text" id="new-ingreso-desc" placeholder="Ej: Cuota marzo - Juan Pérez">
+    </div>
+    <div class="form-row">
+      <div class="form-field" style="margin-bottom:0">
+        <label>Monto ($)</label>
+        <input type="number" id="new-ingreso-monto" placeholder="30000">
+      </div>
+      <div class="form-field" style="margin-bottom:0">
+        <label>Fecha</label>
+        <input type="date" id="new-ingreso-fecha">
+      </div>
+    </div>
+    <div class="modal-footer" style="margin-top:20px">
+      <button class="btn-secondary" onclick="closeModal('modalNewIngreso')">Cancelar</button>
+      <button class="btn-primary" onclick="addIngreso()">Guardar ingreso</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nuevo gasto -->
+<div class="modal-overlay" id="modalNewGasto">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Registrar gasto</div>
+      <button class="modal-close" onclick="closeModal('modalNewGasto')">✕</button>
+    </div>
+    <div class="form-field">
+      <label>Descripción</label>
+      <input type="text" id="new-gasto-desc" placeholder="Ej: Materiales acto de fin de año">
+    </div>
+    <div class="form-row">
+      <div class="form-field" style="margin-bottom:0">
+        <label>Monto ($)</label>
+        <input type="number" id="new-gasto-monto" placeholder="15000">
+      </div>
+      <div class="form-field" style="margin-bottom:0">
+        <label>Fecha</label>
+        <input type="date" id="new-gasto-fecha">
+      </div>
+    </div>
+    <div class="form-field" style="margin-top:12px">
+      <label>Categoría</label>
+      <select id="new-gasto-cat">
+        <option value="materiales">Materiales</option>
+        <option value="actividades">Actividades</option>
+        <option value="administrativo">Administrativo</option>
+        <option value="otros">Otros</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modalNewGasto')">Cancelar</button>
+      <button class="btn-primary" onclick="addGasto()">Guardar gasto</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONFIG ──
+const BASE_URL = 'https://app.quotapp.cl/version-test/api/1.1/wf';
+
+// Obtener user_id de la URL
+const urlParams = new URLSearchParams(window.location.search);
+const userId = urlParams.get('user_id') || '';
+
+// ── STATE ──
+const state = {
+  communities: [],
+  activeCommunity: null,
+  activeCommunityId: null,
+  members: [],
+  ingresos: [],
+  gastos: []
+};
+
+// ── API CALLS ──
+async function api(endpoint, method='GET', body=null) {
+  const opts = { method, headers: { 'Content-Type': 'application/json' } };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(`${BASE_URL}/${endpoint}`, opts);
+  return res.json();
+}
+
+async function loadCommunityFromAPI() {
+  if (!userId) return;
+  try {
+    const data = await api(`get_community?user_id=${userId}`);
+    if (data.community_id) {
+      state.activeCommunityId = data.community_id;
+      state.communities = [{ id: data.community_id, nombre: data.name, monthly_fee: data.monthly_fee }];
+      const sel = document.getElementById('communitySelect');
+      sel.innerHTML = `<option value="${data.community_id}">${data.name}</option>`;
+      sel.value = data.community_id;
+      state.activeCommunity = 0;
+      await Promise.all([loadMembersFromAPI(), loadIncomeFromAPI(), loadExpensesFromAPI()]);
+      renderAll();
+    }
+  } catch(e) { console.error('Error cargando comunidad:', e); }
+}
+
+async function loadMembersFromAPI() {
+  if (!state.activeCommunityId) return;
+  try {
+    const data = await api(`get_members?community_id=${state.activeCommunityId}`);
+    if (data.members) {
+      state.members = data.members.map(m => ({
+        id: m._id,
+        nombre: m.name || '',
+        apellido: '',
+        email: m.email || '',
+        telefono: ''
+      }));
+    }
+  } catch(e) { console.error('Error cargando miembros:', e); }
+}
+
+async function loadIncomeFromAPI() {
+  if (!state.activeCommunityId) return;
+  try {
+    const data = await api(`get_income?community_id=${state.activeCommunityId}`);
+    if (data.income) {
+      state.ingresos = data.income.map(i => ({
+        id: i._id,
+        desc: i.month || 'Ingreso',
+        monto: i.amount || 0,
+        fecha: i.payment_date ? i.payment_date.split('T')[0] : ''
+      }));
+    }
+  } catch(e) { console.error('Error cargando ingresos:', e); }
+}
+
+async function loadExpensesFromAPI() {
+  if (!state.activeCommunityId) return;
+  try {
+    const data = await api(`get_expenses?community_id=${state.activeCommunityId}`);
+    if (data.expenses) {
+      state.gastos = data.expenses.map(g => ({
+        id: g._id,
+        desc: g.description || 'Gasto',
+        monto: g.amount || 0,
+        fecha: g.date ? g.date.split('T')[0] : '',
+        cat: g.category || 'otros'
+      }));
+    }
+  } catch(e) { console.error('Error cargando gastos:', e); }
+}
+
+// ── NAVIGATION ──
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.getElementById('nav-' + page).classList.add('active');
+}
+
+// ── MODALS ──
+function openModal(id) { document.getElementById(id).classList.add('open') }
+function closeModal(id) { document.getElementById(id).classList.remove('open') }
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open') });
+});
+
+// ── TOAST ──
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── FORMAT ──
+function fmtMoney(n) {
+  return '$' + Number(n).toLocaleString('es-CL');
+}
+function fmtDate(d) {
+  if (!d) return '';
+  const [y,m,day] = d.split('-');
+  return `${day}/${m}/${y}`;
+}
+function initials(nombre, apellido) {
+  return ((nombre||'')[0]||'') + ((apellido||'')[0]||'');
+}
+
+// ── STATS ──
+function updateStats() {
+  const totalIngresos = state.ingresos.reduce((s,i) => s + Number(i.monto), 0);
+  const totalGastos = state.gastos.reduce((s,g) => s + Number(g.monto), 0);
+  document.getElementById('stat-recaudado').textContent = fmtMoney(totalIngresos);
+  document.getElementById('stat-gastos').textContent = fmtMoney(totalGastos);
+  document.getElementById('stat-saldo').textContent = fmtMoney(totalIngresos - totalGastos);
+  document.getElementById('stat-miembros').textContent = state.members.length;
+  document.getElementById('members-count').textContent = state.members.length;
+
+  // Deshabilitar agregar miembro si llegó a 10
+  const btn = document.getElementById('btn-add-member');
+  if (state.members.length >= 10) {
+    btn.disabled = true;
+    btn.style.opacity = '.5';
+    btn.title = 'Límite de 10 miembros en el plan gratuito';
+  } else {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+  }
+}
+
+// ── RENDER LISTAS ──
+function renderDashboardIngresos() {
+  const el = document.getElementById('dashboard-ingresos');
+  if (!state.ingresos.length) {
+    el.innerHTML = '<div class="card-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Sin ingresos registrados aún.<br><a onclick="showPage(\'ingresos\')" style="color:var(--g);font-weight:600;cursor:pointer">Registrar primero →</a></div>';
+    return;
+  }
+  const items = state.ingresos.slice(-3).reverse();
+  el.innerHTML = `<table class="table"><thead><tr><th>Descripción</th><th>Fecha</th><th>Monto</th></tr></thead><tbody>${items.map(i=>`<tr><td>${i.desc}</td><td>${fmtDate(i.fecha)}</td><td style="color:var(--g);font-weight:600">${fmtMoney(i.monto)}</td></tr>`).join('')}</tbody></table>`;
+}
+
+function renderDashboardGastos() {
+  const el = document.getElementById('dashboard-gastos');
+  if (!state.gastos.length) {
+    el.innerHTML = '<div class="card-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Sin gastos registrados aún.<br><a onclick="showPage(\'gastos\')" style="color:var(--g);font-weight:600;cursor:pointer">Registrar primero →</a></div>';
+    return;
+  }
+  const items = state.gastos.slice(-3).reverse();
+  el.innerHTML = `<table class="table"><thead><tr><th>Descripción</th><th>Fecha</th><th>Monto</th></tr></thead><tbody>${items.map(g=>`<tr><td>${g.desc}</td><td>${fmtDate(g.fecha)}</td><td style="color:#DC2626;font-weight:600">${fmtMoney(g.monto)}</td></tr>`).join('')}</tbody></table>`;
+}
+
+function renderDashboardMiembros() {
+  const el = document.getElementById('dashboard-miembros');
+  if (!state.members.length) {
+    el.innerHTML = '<div class="card-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Aún no hay miembros.<br><a onclick="showPage(\'miembros\')" style="color:var(--g);font-weight:600;cursor:pointer">Agregar miembros →</a></div>';
+    return;
+  }
+  el.innerHTML = `<table class="table"><thead><tr><th>Nombre</th><th>Email</th><th>Teléfono</th></tr></thead><tbody>${state.members.slice(0,5).map(m=>`<tr><td>${m.nombre} ${m.apellido}</td><td>${m.email}</td><td>${m.telefono||'—'}</td></tr>`).join('')}</tbody></table>`;
+}
+
+function renderMembersList() {
+  const el = document.getElementById('members-list');
+  if (!state.members.length) {
+    el.innerHTML = '<div class="card-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Aún no hay miembros.<br>Agrega el primero para empezar.</div>';
+    return;
+  }
+  el.innerHTML = state.members.map((m,i) => `
+    <div class="member-row">
+      <div class="member-avatar">${initials(m.nombre, m.apellido).toUpperCase()}</div>
+      <div class="member-info">
+        <div class="member-name">${m.nombre} ${m.apellido}</div>
+        <div class="member-email">${m.email}${m.telefono ? ' · ' + m.telefono : ''}</div>
+      </div>
+      <div class="member-actions">
+        <button class="btn-sm btn-sm-danger" onclick="removeMember(${i})">Eliminar</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderIngresosList() {
+  const el = document.getElementById('ingresos-list');
+  if (!state.ingresos.length) {
+    el.innerHTML = '<div class="card-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Sin ingresos registrados.<br>Agrega el primero arriba.</div>';
+    return;
+  }
+  el.innerHTML = `<table class="table"><thead><tr><th>Descripción</th><th>Fecha</th><th>Monto</th><th></th></tr></thead><tbody>${state.ingresos.slice().reverse().map((i,idx)=>`<tr><td>${i.desc}</td><td>${fmtDate(i.fecha)}</td><td style="color:var(--g);font-weight:600">${fmtMoney(i.monto)}</td><td><button class="btn-sm btn-sm-danger" onclick="removeIngreso(${state.ingresos.length-1-idx})">Eliminar</button></td></tr>`).join('')}</tbody></table>`;
+}
+
+function renderGastosList() {
+  const el = document.getElementById('gastos-list');
+  if (!state.gastos.length) {
+    el.innerHTML = '<div class="card-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Sin gastos registrados.<br>Agrega el primero arriba.</div>';
+    return;
+  }
+  el.innerHTML = `<table class="table"><thead><tr><th>Descripción</th><th>Categoría</th><th>Fecha</th><th>Monto</th><th></th></tr></thead><tbody>${state.gastos.slice().reverse().map((g,idx)=>`<tr><td>${g.desc}</td><td><span class="badge badge-yellow">${g.cat}</span></td><td>${fmtDate(g.fecha)}</td><td style="color:#DC2626;font-weight:600">${fmtMoney(g.monto)}</td><td><button class="btn-sm btn-sm-danger" onclick="removeGasto(${state.gastos.length-1-idx})">Eliminar</button></td></tr>`).join('')}</tbody></table>`;
+}
+
+function renderAll() {
+  updateStats();
+  renderDashboardIngresos();
+  renderDashboardGastos();
+  renderDashboardMiembros();
+  renderMembersList();
+  renderIngresosList();
+  renderGastosList();
+}
+
+// ── ACTIONS ──
+async function createCommunity() {
+  const nombre = document.getElementById('new-community-name').value.trim();
+  const monthly_fee = document.getElementById('new-community-fee')?.value || 0;
+  if (!nombre) { showToast('Ingresa un nombre para la comunidad', 'error'); return; }
+  if (state.communities.length >= 1) { showToast('Plan gratuito permite solo 1 comunidad', 'error'); return; }
+  try {
+    const data = await api('create_community', 'POST', {
+      user_id: userId, name: nombre,
+      monthly_fee: parseFloat(monthly_fee) || 0,
+      year: new Date().getFullYear().toString()
+    });
+    if (data.community_id) {
+      state.activeCommunityId = data.community_id;
+      state.communities = [{ id: data.community_id, nombre }];
+      state.activeCommunity = 0;
+      const sel = document.getElementById('communitySelect');
+      sel.innerHTML = `<option value="${data.community_id}">${nombre}</option>`;
+      sel.value = data.community_id;
+      closeModal('modalNewCommunity');
+      document.getElementById('new-community-name').value = '';
+      showToast('Comunidad creada exitosamente');
+      renderAll();
+    }
+  } catch(e) { showToast('Error al crear comunidad', 'error'); }
+}
+
+function editCommunity() {
+  const nombre = document.getElementById('edit-community-name').value.trim();
+  if (!nombre || state.activeCommunity === null) return;
+  state.communities[state.activeCommunity].nombre = nombre;
+  document.getElementById('communitySelect').options[state.activeCommunity].text = nombre;
+  closeModal('modalEditCommunity');
+  showToast('Comunidad actualizada');
+}
+
+function loadCommunity() {
+  const val = document.getElementById('communitySelect').value;
+  state.activeCommunityId = val || null;
+}
+
+async function addMember() {
+  if (state.members.length >= 10) { showToast('Límite de 10 miembros en plan gratuito', 'error'); return; }
+  const nombre = document.getElementById('new-member-nombre').value.trim();
+  const apellido = document.getElementById('new-member-apellido').value.trim();
+  const email = document.getElementById('new-member-email').value.trim();
+  if (!nombre || !email) { showToast('Nombre y email son requeridos', 'error'); return; }
+  if (!state.activeCommunityId) { showToast('Selecciona una comunidad primero', 'error'); return; }
+  try {
+    const data = await api('add_member', 'POST', {
+      community_id: state.activeCommunityId,
+      name: nombre + (apellido ? ' ' + apellido : ''),
+      email
+    });
+    if (data.member_id) {
+      state.members.push({ id: data.member_id, nombre, apellido, email, telefono: document.getElementById('new-member-telefono').value.trim() });
+      ['new-member-nombre','new-member-apellido','new-member-email','new-member-telefono'].forEach(id => document.getElementById(id).value = '');
+      closeModal('modalNewMember');
+      renderAll();
+      showToast('Miembro agregado exitosamente');
+    }
+  } catch(e) { showToast('Error al agregar miembro', 'error'); }
+}
+
+async function removeMember(i) {
+  const member = state.members[i];
+  if (!member?.id) { state.members.splice(i,1); renderAll(); return; }
+  try {
+    await api('delete_member', 'POST', { member_id: member.id });
+    state.members.splice(i, 1);
+    renderAll();
+    showToast('Miembro eliminado');
+  } catch(e) { showToast('Error al eliminar miembro', 'error'); }
+}
+
+async function addIngreso() {
+  const desc = document.getElementById('new-ingreso-desc').value.trim();
+  const monto = document.getElementById('new-ingreso-monto').value;
+  const fecha = document.getElementById('new-ingreso-fecha').value;
+  if (!desc || !monto) { showToast('Descripción y monto son requeridos', 'error'); return; }
+  if (!state.activeCommunityId) { showToast('Selecciona una comunidad primero', 'error'); return; }
+  try {
+    const data = await api('create_income', 'POST', {
+      community_id: state.activeCommunityId,
+      amount: parseFloat(monto),
+      month: desc,
+      payment_date: fecha || new Date().toISOString().split('T')[0],
+      status: 'pagado'
+    });
+    if (data.income_id) {
+      state.ingresos.push({ id: data.income_id, desc, monto: parseFloat(monto), fecha });
+      ['new-ingreso-desc','new-ingreso-monto'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('new-ingreso-fecha').valueAsDate = new Date();
+      closeModal('modalNewIngreso');
+      renderAll();
+      showToast('Ingreso registrado');
+    }
+  } catch(e) { showToast('Error al registrar ingreso', 'error'); }
+}
+
+async function removeIngreso(i) {
+  const ingreso = state.ingresos[i];
+  if (!ingreso?.id) { state.ingresos.splice(i,1); renderAll(); return; }
+  try {
+    await api('delete_income', 'POST', { income_id: ingreso.id });
+    state.ingresos.splice(i, 1);
+    renderAll();
+    showToast('Ingreso eliminado');
+  } catch(e) { showToast('Error al eliminar ingreso', 'error'); }
+}
+
+async function addGasto() {
+  const desc = document.getElementById('new-gasto-desc').value.trim();
+  const monto = document.getElementById('new-gasto-monto').value;
+  const fecha = document.getElementById('new-gasto-fecha').value;
+  const cat = document.getElementById('new-gasto-cat').value;
+  if (!desc || !monto) { showToast('Descripción y monto son requeridos', 'error'); return; }
+  if (!state.activeCommunityId) { showToast('Selecciona una comunidad primero', 'error'); return; }
+  try {
+    const data = await api('create_expense', 'POST', {
+      community_id: state.activeCommunityId,
+      description: desc,
+      amount: parseFloat(monto),
+      date: fecha || new Date().toISOString().split('T')[0],
+      category: cat
+    });
+    if (data.expense_id) {
+      state.gastos.push({ id: data.expense_id, desc, monto: parseFloat(monto), fecha, cat });
+      ['new-gasto-desc','new-gasto-monto'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('new-gasto-fecha').valueAsDate = new Date();
+      closeModal('modalNewGasto');
+      renderAll();
+      showToast('Gasto registrado');
+    }
+  } catch(e) { showToast('Error al registrar gasto', 'error'); }
+}
+
+async function removeGasto(i) {
+  const gasto = state.gastos[i];
+  if (!gasto?.id) { state.gastos.splice(i,1); renderAll(); return; }
+  try {
+    await api('delete_expense', 'POST', { expense_id: gasto.id });
+    state.gastos.splice(i, 1);
+    renderAll();
+    showToast('Gasto eliminado');
+  } catch(e) { showToast('Error al eliminar gasto', 'error'); }
+}
+
+function downloadReport() {
+  const totalIngresos = state.ingresos.reduce((s,i) => s + Number(i.monto), 0);
+  const totalGastos = state.gastos.reduce((s,g) => s + Number(g.monto), 0);
+  const comunidad = state.communities[state.activeCommunity]?.nombre || 'Mi comunidad';
+  const fecha = new Date().toLocaleDateString('es-CL');
+
+  const content = `RESUMEN DE TESORERÍA — ${comunidad.toUpperCase()}
+Generado: ${fecha}
+${'─'.repeat(50)}
+
+RESUMEN GENERAL
+Total recaudado:  ${fmtMoney(totalIngresos)}
+Total gastos:     ${fmtMoney(totalGastos)}
+Saldo actual:     ${fmtMoney(totalIngresos - totalGastos)}
+Total miembros:   ${state.members.length}
+
+${'─'.repeat(50)}
+INGRESOS (${state.ingresos.length})
+${state.ingresos.map(i => `  ${fmtDate(i.fecha) || 'Sin fecha'}  ${i.desc.padEnd(30)}  ${fmtMoney(i.monto)}`).join('\n') || '  Sin ingresos registrados'}
+
+${'─'.repeat(50)}
+GASTOS (${state.gastos.length})
+${state.gastos.map(g => `  ${fmtDate(g.fecha) || 'Sin fecha'}  ${g.desc.padEnd(30)}  ${fmtMoney(g.monto)}`).join('\n') || '  Sin gastos registrados'}
+
+${'─'.repeat(50)}
+MIEMBROS (${state.members.length}/10)
+${state.members.map(m => `  ${(m.nombre+' '+m.apellido).padEnd(25)}  ${m.email}`).join('\n') || '  Sin miembros'}
+
+${'─'.repeat(50)}
+Generado por QuotApp — www.quotapp.cl
+Plan Gratuito`;
+
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `reporte-${comunidad.toLowerCase().replace(/\s+/g,'-')}-${fecha.replace(/\//g,'-')}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Reporte descargado');
+}
+
+// ── INIT ──
+document.getElementById('new-ingreso-fecha').valueAsDate = new Date();
+document.getElementById('new-gasto-fecha').valueAsDate = new Date();
+renderAll();
+loadCommunityFromAPI();
+</script>
+</body>
+</html>
