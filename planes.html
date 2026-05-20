@@ -657,7 +657,7 @@ function lndSetBilling(t) {
 
 async function elegirPlan(plan, btn) {
   if (plan === 'enterprise') {
-    window.location.href = 'mailto:hola@quotapp.cl?subject=Consulta%20plan%20Organizaciones';
+    window.open('https://wa.me/56978739294?text=Hola%2C%20me%20interesa%20el%20plan%20para%20organizaciones%20de%20QuotApp', '_blank');
     return;
   }
   const orig = btn.innerHTML;
@@ -671,7 +671,7 @@ async function elegirPlan(plan, btn) {
     });
     const data = await res.json();
     if (res.ok && data.status === 'success') {
-      window.location.href = 'https://app.quotapp.cl/version-test/dashboard';
+      window.location.href = 'https://app.quotapp.cl/version-test';
     } else {
       btn.classList.remove('loading'); btn.innerHTML = orig;
       alert('Error al seleccionar el plan. Intenta de nuevo.');
