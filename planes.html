@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elige tu plan — QuotApp</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#1D9E75;--g2:#0F6E56;--g3:#E1F5EE;
+  --navy:#0F1326;--navy2:#1A2040;
+  --txt2:#4A5070;--txt3:#8890AA;
+  --white:#FFFFFF;--bg:#FAFBFC;--bdr:#E4E7F0;
+  --accent:#FFD166;
+}
+html,body{margin:0;padding:0}
+body{font-family:"Instrument Sans",sans-serif;color:var(--navy);background:var(--white);display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.nav{height:60px;flex-shrink:0;background:rgba(255,255,255,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--bdr);padding:0 40px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+.logomark{width:36px;height:36px;background:var(--g);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand{font-family:'Instrument Sans',sans-serif;font-size:1.25rem;font-weight:700;color:var(--navy)}
+.brand span{color:var(--g)}
+.nav-step{font-size:.8rem;color:var(--txt3)}
+.hero{height:170px;flex-shrink:0;padding:0 40px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#F4FCF8 0%,#fff 70%)}
+.steps{display:inline-flex;align-items:center;margin-bottom:10px}
+.s{display:flex;align-items:center;gap:5px;font-size:.78rem;font-weight:600;color:var(--txt3)}
+.s.done{color:var(--g)}
+.s.active{color:var(--navy)}
+.sn{width:20px;height:20px;border-radius:50%;background:var(--bdr);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0}
+.s.done .sn{background:var(--g);color:#fff}
+.s.active .sn{background:var(--navy);color:#fff}
+.sl{width:32px;height:1.5px;background:var(--bdr);margin:0 8px}
+.s.done+.sl{background:var(--g3)}
+.hero h1{font-family:'Bricolage Grotesque',sans-serif;font-size:2rem;font-weight:800;color:var(--navy);margin-bottom:4px;letter-spacing:-0.02em}
+.hero h1 em{color:var(--g);font-style:normal}
+.hero-sub{font-size:.82rem;color:var(--txt2);margin-bottom:12px}
+.toggle{display:inline-flex;align-items:center;gap:10px;background:var(--white);border:1.5px solid var(--bdr);border-radius:99px;padding:3px 3px 3px 14px;box-shadow:0 1px 8px rgba(15,19,38,.06)}
+.toggle span{font-size:.78rem;font-weight:600;color:var(--txt2)}
+.tw{display:flex;background:var(--bg);border-radius:99px;padding:2px;gap:2px}
+.tb{padding:4px 13px;border-radius:99px;border:none;font-size:.74rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s;color:var(--txt3);background:transparent}
+.tb.active{background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(29,158,117,.25)}
+.sbadge{background:var(--accent);color:#7A5600;font-size:.62rem;font-weight:700;padding:1px 7px;border-radius:99px;margin-left:2px}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:940px;width:100%;margin:0 auto;padding:18px 40px;flex:1}
+.card{background:var(--white);border:1.5px solid var(--bdr);border-radius:18px;position:relative;display:flex;flex-direction:column;justify-content:space-between;transition:transform .2s,box-shadow .2s;padding:22px 22px 20px}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(15,19,38,.1)}
+.card.hot{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.1),0 6px 24px rgba(15,19,38,.1);transform:translateY(-4px)}
+.card.hot:hover{transform:translateY(-7px)}
+.badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--g);color:#fff;font-size:.65rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 14px;border-radius:99px;white-space:nowrap}
+.pname{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3);margin-bottom:4px}
+.price{font-family:'Bricolage Grotesque',sans-serif;font-size:2.4rem;font-weight:800;color:var(--navy);line-height:1;margin-bottom:2px}
+.price sup{font-size:.9rem;vertical-align:top;margin-top:5px;font-weight:700}
+.price .per{font-size:.78rem;font-weight:500;color:var(--txt3)}
+.palt{font-size:.7rem;color:var(--txt3);margin-bottom:8px;min-height:16px}
+.pdesc{font-size:.78rem;color:var(--txt2);line-height:1.4;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--bdr)}
+.plimit{display:flex;align-items:center;gap:6px;background:var(--bg);border-radius:7px;padding:6px 10px;font-size:.74rem;color:var(--txt2);margin-bottom:10px}
+.plimit strong{color:var(--navy)}
+.feats{list-style:none;display:flex;flex-direction:column;gap:7px;flex:1}
+.feats li{display:flex;align-items:flex-start;gap:7px;font-size:.78rem;color:var(--txt2);line-height:1.3}
+.fi{width:15px;height:15px;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.fi.y{background:var(--g3)}
+.fi.n{background:#F3F4F6}
+.fi.n svg{opacity:.3}
+.card-bot{margin-top:14px}
+.btn{width:100%;padding:10px;border-radius:10px;border:none;font-size:.84rem;font-weight:700;font-family:inherit;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px}
+.btn.loading{opacity:.7;pointer-events:none}
+.btn-o{background:transparent;border:1.5px solid var(--bdr);color:var(--txt2)}
+.btn-o:hover{border-color:var(--g);color:var(--g)}
+.btn-g{background:var(--g);color:#fff;box-shadow:0 3px 12px rgba(29,158,117,.28)}
+.btn-g:hover{background:var(--g2)}
+.btn-n{background:var(--navy);color:#fff;box-shadow:0 3px 12px rgba(15,19,38,.18)}
+.btn-n:hover{background:var(--navy2)}
+.spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.garantia{height:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.76rem;color:var(--txt3);border-top:1px solid var(--bdr)}
+.garantia strong{color:var(--navy)}
+.foot{height:52px;flex-shrink:0;padding:0 40px;border-top:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between}
+.foot-copy{font-size:.74rem;color:var(--txt3)}
+.foot-links{display:flex;gap:16px}
+.foot-links a{font-size:.74rem;color:var(--txt3);text-decoration:none}
+.foot-links a:hover{color:var(--g)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="https://quotapp.cl" class="nav-logo">
+    <div class="logomark">
+      <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
+        <rect x="3" y="5" width="13" height="2" rx="1" fill="white"/>
+        <rect x="3" y="9" width="10" height="2" rx="1" fill="rgba(255,255,255,.65)"/>
+        <rect x="3" y="13" width="7" height="2" rx="1" fill="rgba(255,255,255,.4)"/>
+        <circle cx="17" cy="15.5" r="4" fill="white"/>
+        <text x="17" y="18" text-anchor="middle" font-size="5.5" font-weight="700" fill="#1D9E75">$</text>
+      </svg>
+    </div>
+    <span class="brand">Quot<span>App</span></span>
+  </a>
+  <span class="nav-step">Paso 2 de 3 — Elige tu plan</span>
+</nav>
+
+<section class="hero">
+  <div class="steps">
+    <div class="s done"><div class="sn">✓</div> Tu cuenta</div>
+    <div class="sl"></div>
+    <div class="s active"><div class="sn">2</div> Tu plan</div>
+    <div class="sl"></div>
+    <div class="s"><div class="sn">3</div> ¡Listo!</div>
+  </div>
+  <h1>Elige el plan para tu <em>comunidad</em></h1>
+  <p class="hero-sub">Sin tarjeta de crédito · Cancela cuando quieras · 30 días gratis</p>
+  <div class="toggle">
+    <span>Facturación</span>
+    <div class="tw">
+      <button class="tb active" id="bM" onclick="setBilling('m')">Mensual</button>
+      <button class="tb" id="bA" onclick="setBilling('a')">Anual <span class="sbadge">−2 meses</span></button>
+    </div>
+  </div>
+</section>
+
+<div class="plans">
+
+  <div class="card">
+    <div class="card-top">
+      <div class="pname">Gratuito</div>
+      <div class="price"><sup>$</sup>0<span class="per">/mes</span></div>
+      <div class="palt">Para siempre gratis</div>
+      <p class="pdesc">Para comunidades pequeñas que recién empiezan a organizarse.</p>
+      <div class="plimit">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        Hasta <strong>15 miembros</strong>
+      </div>
+      <ul class="feats">
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Registro de cuotas y pagos</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Control de gastos básico</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>1 comunidad</li>
+        <li><div class="fi n"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span style="color:var(--txt3)">Reportes PDF / Excel</span></li>
+        <li><div class="fi n"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span style="color:var(--txt3)">Recordatorios automáticos</span></li>
+        <li><div class="fi n"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span style="color:var(--txt3)">Portal del miembro</span></li>
+      </ul>
+    </div>
+    <div class="card-bot"><button class="btn btn-o" id="btn-gratis" onclick="elegirPlan('gratis', this)">Empezar gratis</button></div>
+  </div>
+
+  <div class="card hot">
+    <div class="badge">⭐ Más popular</div>
+    <div class="card-top">
+      <div class="pname">Pro</div>
+      <div class="price" id="pp"><sup>$</sup>4.990<span class="per">/mes</span></div>
+      <div class="palt" id="pa">O $49.990/año — 2 meses gratis</div>
+      <p class="pdesc">Para tesoreros que quieren automatizar y profesionalizar su gestión.</p>
+      <div class="plimit">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        Hasta <strong>45 miembros</strong>
+      </div>
+      <ul class="feats">
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Todo lo del plan Gratuito</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Reportes PDF y exportación Excel</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Recordatorios automáticos</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Portal propio para cada miembro</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Soporte prioritario por chat</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>30 días gratis para probar</li>
+      </ul>
+    </div>
+    <div class="card-bot">
+      <button class="btn btn-g" id="btn-pro" onclick="elegirPlan('pro', this)">
+        Empezar 30 días gratis
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <div class="pname">Centro de Padres</div>
+      <div class="price"><span style="font-size:1.5rem;line-height:1.8">A convenir</span></div>
+      <div class="palt">Cotización personalizada</div>
+      <p class="pdesc">Para colegios que gestionan múltiples cursos desde un solo panel.</p>
+      <div class="plimit">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        <strong>Miembros ilimitados</strong>
+      </div>
+      <ul class="feats">
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Todo lo del plan Pro</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Múltiples cursos y comunidades</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Panel centralizado del colegio</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Onboarding y capacitación</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Soporte dedicado</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Factura a nombre del colegio</li>
+      </ul>
+    </div>
+    <div class="card-bot"><button class="btn btn-n" onclick="elegirPlan('enterprise', this)">Hablar con ventas</button></div>
+  </div>
+
+</div>
+
+<div class="garantia">🛡️ <strong>30 días de garantía</strong> — Si no estás conforme, te devolvemos el 100% sin preguntas.</div>
+
+<footer class="foot">
+  <span class="foot-copy">© 2025 QuotApp SpA · Hecho en Chile 🇨🇱</span>
+  <div class="foot-links">
+    <a href="#">Términos</a>
+    <a href="#">Privacidad</a>
+    <a href="#">Contacto</a>
+  </div>
+</footer>
+
+<script>
+const BUBBLE_API = 'https://app.quotapp.cl/version-test/api/1.1/wf/elegir_plan';
+
+// Leer user_id desde la URL
+const params = new URLSearchParams(window.location.search);
+const userId = params.get('user_id') || '';
+
+let billing = 'm';
+
+function setBilling(t) {
+  billing = t;
+  document.getElementById('bM').classList.toggle('active', t==='m');
+  document.getElementById('bA').classList.toggle('active', t==='a');
+  document.getElementById('pp').innerHTML = t==='a'
+    ? '<sup>$</sup>4.166<span class="per">/mes</span>'
+    : '<sup>$</sup>4.990<span class="per">/mes</span>';
+  document.getElementById('pa').textContent = t==='a'
+    ? '$49.990/año — 2 meses gratis incluidos'
+    : 'O $49.990/año — 2 meses gratis';
+}
+
+async function elegirPlan(plan, btn) {
+  if (plan === 'enterprise') {
+    window.location.href = 'mailto:hola@quotapp.cl?subject=Consulta%20plan%20Centro%20de%20Padres';
+    return;
+  }
+
+  // Mostrar loading
+  const originalHTML = btn.innerHTML;
+  btn.classList.add('loading');
+  btn.innerHTML = '<div class="spinner"></div> Un momento...';
+
+  try {
+    const res = await fetch(BUBBLE_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan, user_id: userId })
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.status === 'success') {
+      window.location.href = 'https://app.quotapp.cl/version-test/dashboard';
+    } else {
+      btn.classList.remove('loading');
+      btn.innerHTML = originalHTML;
+      alert('Hubo un error al seleccionar el plan. Intenta de nuevo.');
+    }
+  } catch (err) {
+    btn.classList.remove('loading');
+    btn.innerHTML = originalHTML;
+    alert('Error de conexión. Intenta de nuevo.');
+  }
+}
+</script>
+</body>
+</html>
