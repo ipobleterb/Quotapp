@@ -119,74 +119,67 @@ body{font-family:"Instrument Sans",sans-serif;color:var(--navy);background:var(-
 </section>
 
 <div class="plans">
-
   <div class="card">
     <div class="card-top">
       <div class="pname">Gratuito</div>
       <div class="price"><sup>$</sup>0<span class="per">/mes</span></div>
       <div class="palt">Para siempre gratis</div>
-      <p class="pdesc">Para comunidades pequeñas que recién empiezan a organizarse.</p>
-      <div class="plimit">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-        Hasta <strong>15 miembros</strong>
-      </div>
+      <p class="pdesc">Para que explores sin riesgo. Sin tarjeta, sin compromisos.</p>
+      <div class="plimit"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> Hasta <strong>8 miembros de comunidad</strong></div>
       <ul class="feats">
-        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Registro de cuotas y pagos</li>
-        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Control de gastos básico</li>
-        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>1 comunidad</li>
-        <li><div class="fi n"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span style="color:var(--txt3)">Reportes PDF / Excel</span></li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Registro de pagos manual</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Reporte básico PDF</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Soporte por email</li>
+        <li><div class="fi n"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span style="color:var(--txt3)">Cobro online</span></li>
         <li><div class="fi n"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span style="color:var(--txt3)">Recordatorios automáticos</span></li>
-        <li><div class="fi n"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span style="color:var(--txt3)">Portal del miembro</span></li>
+        <li><div class="fi n"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span style="color:var(--txt3)">Portal apoderado</span></li>
       </ul>
     </div>
     <div class="card-bot"><button class="btn btn-o" id="btn-gratis" onclick="elegirPlan('gratis', this)">Empezar gratis</button></div>
   </div>
 
   <div class="card hot">
-    <div class="badge">⭐ Más popular</div>
+    <div class="badge">⭐ El plan que usa la mayoría de las comunidades</div>
     <div class="card-top">
       <div class="pname">Pro</div>
       <div class="price" id="pp"><sup>$</sup>4.990<span class="per">/mes</span></div>
       <div class="palt" id="pa">O $49.990/año — 2 meses gratis</div>
-      <p class="pdesc">Para tesoreros que quieren automatizar y profesionalizar su gestión.</p>
-      <div class="plimit">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-        Hasta <strong>45 miembros</strong>
-      </div>
+      <p class="pdesc">Todo lo que tu comunidad necesita para cobrar sin perseguir a nadie. Pagos, recordatorios y reportes automáticos.</p>
+      <div class="plimit"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> Hasta <strong>50 miembros de comunidad</strong></div>
       <ul class="feats">
-        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Todo lo del plan Gratuito</li>
-        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Reportes PDF y exportación Excel</li>
-        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Recordatorios automáticos</li>
-        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Portal propio para cada miembro</li>
-        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Soporte prioritario por chat</li>
-        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>30 días gratis para probar</li>
+        
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hasta 50 miembros de comunidad</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><strong>Cobro online integrado (Flow / WebPay)</strong></li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Recordatorios automáticos (WhatsApp y email)</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Portal privado por apoderado</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Reportes completos (PDF y Excel)</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Cambio de año en 1 clic</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Soporte prioritario</li>
       </ul>
     </div>
     <div class="card-bot">
       <button class="btn btn-g" id="btn-pro" onclick="elegirPlan('pro', this)">
-        Empezar 30 días gratis
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        Empieza gratis 30 días →
       </button>
+      <p style="font-size:.7rem;color:var(--txt3);text-align:center;margin-top:8px" id="lnd-note">Luego $4.990/mes. Cancela cuando quieras.</p>
     </div>
   </div>
 
   <div class="card">
     <div class="card-top">
-      <div class="pname">Centro de Padres</div>
-      <div class="price"><span style="font-size:1.5rem;line-height:1.8">A convenir</span></div>
+      <div class="pname">Para Organizaciones</div>
+      <div class="price"><span style="font-size:1.5rem;line-height:1.8">A medida</span></div>
       <div class="palt">Cotización personalizada</div>
-      <p class="pdesc">Para colegios que gestionan múltiples cursos desde un solo panel.</p>
-      <div class="plimit">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-        <strong>Miembros ilimitados</strong>
-      </div>
+      <p class="pdesc">Solución completa para múltiples cursos.</p>
+      <div class="plimit"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> <strong>Miembros ilimitados</strong></div>
       <ul class="feats">
-        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Todo lo del plan Pro</li>
-        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Múltiples cursos y comunidades</li>
-        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Panel centralizado del colegio</li>
-        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Onboarding y capacitación</li>
-        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Soporte dedicado</li>
-        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Factura a nombre del colegio</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Cursos ilimitados</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Panel de administración central</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Reportes por curso y globales</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Integración con sistema escolar</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Capacitación incluida</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Account manager dedicado</li>
+        <li><div class="fi y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Factura empresa</li>
       </ul>
     </div>
     <div class="card-bot"><button class="btn btn-n" onclick="elegirPlan('enterprise', this)">Hablar con ventas</button></div>
@@ -224,6 +217,10 @@ function setBilling(t) {
   document.getElementById('pa').textContent = t==='a'
     ? '$49.990/año — 2 meses gratis incluidos'
     : 'O $49.990/año — 2 meses gratis';
+  const nota = document.getElementById('lnd-note');
+  if (nota) nota.textContent = t==='a'
+    ? '$49.990/año. Cancela cuando quieras.'
+    : 'Luego $4.990/mes. Cancela cuando quieras.';
 }
 
 async function elegirPlan(plan, btn) {
