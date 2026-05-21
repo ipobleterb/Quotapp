@@ -366,6 +366,7 @@ async function handleCrear() {
       window.location.href = NEXT_STEP_URL
         + '?community=' + communityId
         + (communityCode ? '&code=' + communityCode : '')
+        + '&nombre=' + encodeURIComponent(nombre)
         + (userId ? '&user_id=' + userId : '');
     } else {
       btn.classList.remove('loading');
