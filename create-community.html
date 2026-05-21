@@ -362,7 +362,11 @@ async function handleCrear() {
 
     if (res.ok && data.status === 'success') {
       const communityId = data.response?.community_id || '';
-      window.location.href = NEXT_STEP_URL + '?community=' + communityId + (userId ? '&user_id=' + userId : '');
+      const communityCode = data.response?.code || '';
+      window.location.href = NEXT_STEP_URL
+        + '?community=' + communityId
+        + (communityCode ? '&code=' + communityCode : '')
+        + (userId ? '&user_id=' + userId : '');
     } else {
       btn.classList.remove('loading');
       btn.innerHTML = 'Crear comunidad y continuar <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';

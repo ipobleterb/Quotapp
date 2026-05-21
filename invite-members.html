@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invitar miembros — QuotApp</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#1D9E75;
+  --g2:#0F6E56;
+  --g3:#E1F5EE;
+  --navy:#0F1326;
+  --txt:#0F1326;
+  --txt2:#4A5070;
+  --txt3:#8890AA;
+  --bg:#FAFBFC;
+  --white:#FFFFFF;
+  --bdr:#E4E7F0;
+  --danger:#E94F4F;
+  --r:14px;
+  --sh:0 2px 20px rgba(15,19,38,.07);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Instrument Sans',sans-serif;color:var(--txt);background:var(--white);line-height:1.6;display:flex;flex-direction:column;min-height:100vh}
+h1,h2,h3,.brand{font-family:'Bricolage Grotesque',sans-serif;line-height:1.18;letter-spacing:-0.02em}
+a{color:inherit;text-decoration:none}
+
+/* ── NAV ── */
+.planes-nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--bdr);
+  padding:0 5vw;
+  display:flex;align-items:center;justify-content:space-between;
+  height:60px;
+}
+.planes-logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+.planes-logomark{width:36px;height:36px;background:var(--g);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.planes-brand{font-family:'Instrument Sans',sans-serif;font-size:1.2rem;font-weight:700;color:var(--navy)}
+.planes-brand span{color:var(--g)}
+.planes-step{font-size:.8rem;color:var(--txt3)}
+
+/* ── HERO ── */
+.planes-hero{padding:56px 5vw 40px;text-align:center;background:linear-gradient(160deg,#F4FCF8 0%,#fff 70%)}
+.planes-hero h1{font-family:'Bricolage Grotesque',sans-serif;font-size:1.7rem;font-weight:800;color:var(--navy);letter-spacing:-0.02em;margin-bottom:8px}
+.planes-hero h1 em{color:var(--g);font-style:normal}
+.planes-hero-sub{font-size:.88rem;color:var(--txt2)}
+
+/* ── STEP INDICATOR ── */
+.si{display:inline-flex;align-items:center;margin-bottom:20px}
+.si-item{display:flex;align-items:center;gap:5px;font-size:.78rem;font-weight:600;color:var(--txt3)}
+.si-item.done{color:var(--g)}
+.si-item.active{color:var(--navy)}
+.si-num{width:20px;height:20px;border-radius:50%;background:var(--bdr);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0}
+.si-item.done .si-num{background:var(--g);color:#fff}
+.si-item.active .si-num{background:var(--navy);color:#fff}
+.si-line{width:32px;height:1.5px;background:var(--bdr);margin:0 8px}
+
+/* ── MAIN ── */
+.main-section{flex:1;padding:0 5vw 60px;display:flex;justify-content:center}
+.main-card{width:100%;max-width:580px}
+
+/* ── COUNTER ── */
+.counter-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--g3);border:1px solid rgba(29,158,117,.2);
+  border-radius:12px;padding:14px 20px;margin-bottom:28px;
+}
+.counter-label{font-size:.88rem;color:var(--g2);font-weight:500}
+.counter-nums{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:1rem;font-weight:700;color:var(--g2);
+}
+.counter-nums span{color:var(--navy)}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:6px;margin-bottom:24px;background:var(--bg);border-radius:12px;padding:4px}
+.tab{
+  flex:1;padding:10px;border:none;border-radius:9px;
+  font-size:.84rem;font-weight:600;font-family:inherit;
+  cursor:pointer;color:var(--txt3);background:transparent;
+  transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.tab.active{background:var(--white);color:var(--navy);box-shadow:var(--sh)}
+.tab:hover:not(.active){color:var(--txt2)}
+
+/* ── TAB PANELS ── */
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ── EMAIL PANEL ── */
+.email-input-row{display:flex;gap:8px;margin-bottom:12px}
+.email-input-row input{
+  flex:1;padding:13px 16px;
+  border:1.5px solid var(--bdr);border-radius:10px;
+  font-size:.95rem;font-family:inherit;color:var(--navy);
+  outline:none;transition:border-color .2s,box-shadow .2s;
+}
+.email-input-row input::placeholder{color:var(--txt3)}
+.email-input-row input:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.12)}
+.email-input-row input.error{border-color:var(--danger);box-shadow:0 0 0 3px rgba(233,79,79,.10)}
+.btn-add{
+  padding:13px 18px;
+  background:var(--g);color:#fff;
+  border:none;border-radius:10px;
+  font-size:.88rem;font-weight:700;font-family:inherit;
+  cursor:pointer;white-space:nowrap;
+  transition:background .2s;flex-shrink:0;
+}
+.btn-add:hover{background:var(--g2)}
+
+/* Email list */
+.email-list{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;min-height:0}
+.email-chip{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--bg);border:1px solid var(--bdr);
+  border-radius:9px;padding:10px 14px;
+  font-size:.88rem;color:var(--txt);
+}
+.email-chip-left{display:flex;align-items:center;gap:10px}
+.chip-avatar{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--g);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;font-weight:700;flex-shrink:0;
+}
+.chip-remove{
+  background:none;border:none;cursor:pointer;
+  color:var(--txt3);font-size:1rem;line-height:1;
+  padding:2px 4px;border-radius:4px;
+  transition:color .15s;
+}
+.chip-remove:hover{color:var(--danger)}
+
+.email-hint{font-size:.78rem;color:var(--txt3);margin-bottom:20px}
+.email-hint span{color:var(--g);font-weight:600}
+
+/* ── LINK/CODE PANEL ── */
+.invite-block{
+  background:var(--bg);border:1.5px solid var(--bdr);
+  border-radius:12px;padding:20px;margin-bottom:16px;
+}
+.invite-block-label{
+  font-size:.78rem;font-weight:700;color:var(--txt3);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;
+}
+.invite-block-label span{
+  display:inline-block;
+  background:var(--g3);color:var(--g2);
+  font-size:.68rem;padding:2px 8px;border-radius:99px;
+  margin-left:6px;text-transform:none;letter-spacing:0;
+}
+.copy-row{display:flex;gap:8px;align-items:center}
+.copy-input{
+  flex:1;padding:12px 14px;
+  background:var(--white);border:1.5px solid var(--bdr);
+  border-radius:9px;font-size:.88rem;font-family:inherit;
+  color:var(--txt2);outline:none;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.btn-copy{
+  padding:12px 16px;
+  background:var(--white);border:1.5px solid var(--bdr);
+  border-radius:9px;font-size:.82rem;font-weight:600;font-family:inherit;
+  cursor:pointer;color:var(--txt2);white-space:nowrap;
+  transition:all .2s;flex-shrink:0;display:flex;align-items:center;gap:6px;
+}
+.btn-copy:hover{border-color:var(--g);color:var(--g)}
+.btn-copy.copied{border-color:var(--g);color:var(--g);background:var(--g3)}
+
+/* Code display */
+.code-display{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:2rem;font-weight:800;letter-spacing:.18em;
+  color:var(--navy);text-align:center;padding:12px 0 4px;
+}
+.code-sub{font-size:.78rem;color:var(--txt3);text-align:center;margin-top:4px}
+
+/* WhatsApp btn */
+.btn-whatsapp{
+  width:100%;padding:14px;
+  background:#25D366;color:#fff;
+  border:none;border-radius:10px;
+  font-size:.95rem;font-weight:700;font-family:inherit;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:background .2s,transform .15s;
+  margin-bottom:16px;
+}
+.btn-whatsapp:hover{background:#1ebe5d;transform:translateY(-1px)}
+.wa-icon{width:20px;height:20px}
+
+.share-hint{font-size:.78rem;color:var(--txt3);text-align:center}
+
+/* ── SEND BTN (email tab) ── */
+.btn-primary{
+  width:100%;padding:15px;
+  background:var(--g);color:#fff;
+  border:none;border-radius:10px;
+  font-size:1rem;font-weight:700;font-family:inherit;
+  cursor:pointer;
+  box-shadow:0 4px 16px rgba(29,158,117,.3);
+  transition:background .2s,transform .15s,box-shadow .2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-primary:hover{background:var(--g2);transform:translateY(-1px);box-shadow:0 6px 24px rgba(29,158,117,.38)}
+.btn-primary:active{transform:translateY(0)}
+.btn-primary:disabled{opacity:.5;pointer-events:none}
+.btn-primary.loading{background:var(--g2);pointer-events:none}
+
+/* ── SKIP / CONTINUE ── */
+.bottom-actions{
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  margin-top:28px;padding-top:24px;
+  border-top:1px solid var(--bdr);
+}
+.btn-dashboard{
+  width:100%;padding:15px;
+  background:var(--navy);color:#fff;
+  border:none;border-radius:10px;
+  font-size:1rem;font-weight:700;font-family:inherit;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:background .2s,transform .15s;
+  box-shadow:0 4px 16px rgba(15,19,38,.15);
+}
+.btn-dashboard:hover{background:#1A2040;transform:translateY(-1px)}
+.skip-link{font-size:.85rem;color:var(--txt3);cursor:pointer}
+.skip-link:hover{color:var(--g);text-decoration:underline}
+
+/* spinner */
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── FOOTER ── */
+.planes-foot{background:var(--white);border-top:1px solid var(--bdr);padding:20px 5vw;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.planes-foot-copy{font-size:.74rem;color:var(--txt3)}
+.planes-foot-links{display:flex;gap:16px}
+.planes-foot-links a{font-size:.74rem;color:var(--txt3)}
+.planes-foot-links a:hover{color:var(--g)}
+
+@media(max-width:600px){
+  .planes-step{display:none}
+  .tabs .tab span.tab-label{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="planes-nav">
+  <a href="https://quotapp.cl" class="planes-logo">
+    <div class="planes-logomark">
+      <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
+        <rect x="3" y="5" width="13" height="2" rx="1" fill="white"/>
+        <rect x="3" y="9" width="10" height="2" rx="1" fill="rgba(255,255,255,.65)"/>
+        <rect x="3" y="13" width="7" height="2" rx="1" fill="rgba(255,255,255,.4)"/>
+        <circle cx="17" cy="15.5" r="4" fill="white"/>
+        <text x="17" y="18" text-anchor="middle" font-size="5.5" font-weight="700" fill="#1D9E75">$</text>
+      </svg>
+    </div>
+    <span class="planes-brand">Quot<span>App</span></span>
+  </a>
+  <span class="planes-step">Paso 4 de 4 — Invita a tus miembros</span>
+</nav>
+
+<!-- HERO -->
+<div class="planes-hero">
+  <div class="si">
+    <div class="si-item done"><div class="si-num">✓</div> Tu cuenta</div>
+    <div class="si-line"></div>
+    <div class="si-item done"><div class="si-num">✓</div> Tu plan</div>
+    <div class="si-line"></div>
+    <div class="si-item done"><div class="si-num">✓</div> Tu comunidad</div>
+    <div class="si-line"></div>
+    <div class="si-item active"><div class="si-num">4</div> ¡Listo!</div>
+  </div>
+  <h1>Invita a tus <em>miembros</em></h1>
+  <p class="planes-hero-sub">Hasta 10 miembros (tesorero incluido). Puedes hacerlo ahora o después desde el dashboard.</p>
+</div>
+
+<!-- MAIN -->
+<div class="main-section">
+  <div class="main-card">
+
+    <!-- Counter -->
+    <div class="counter-bar">
+      <span class="counter-label">Miembros invitados</span>
+      <span class="counter-nums"><span id="count">0</span> / 9</span>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('email', this)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        <span class="tab-label">Por email</span>
+      </button>
+      <button class="tab" onclick="switchTab('link', this)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        <span class="tab-label">Link / Código</span>
+      </button>
+      <button class="tab" onclick="switchTab('whatsapp', this)">
+        <svg class="wa-icon" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+        <span class="tab-label">WhatsApp</span>
+      </button>
+    </div>
+
+    <!-- TAB: Email -->
+    <div class="tab-panel active" id="panel-email">
+      <div class="email-input-row">
+        <input type="email" id="emailInput" placeholder="correo@ejemplo.com" onkeydown="if(event.key==='Enter')addEmail()">
+        <button class="btn-add" onclick="addEmail()">+ Agregar</button>
+      </div>
+      <div class="email-list" id="emailList"></div>
+      <p class="email-hint" id="emailHint">Puedes agregar hasta <span id="remaining">9</span> miembros más.</p>
+
+      <button class="btn-primary" id="btnSendEmails" onclick="sendEmails()" disabled>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Enviar invitaciones
+      </button>
+    </div>
+
+    <!-- TAB: Link / Código -->
+    <div class="tab-panel" id="panel-link">
+      <div class="invite-block">
+        <div class="invite-block-label">Link de invitación <span>Copia y comparte</span></div>
+        <div class="copy-row">
+          <input class="copy-input" id="inviteLink" readonly value="Cargando...">
+          <button class="btn-copy" id="btnCopyLink" onclick="copyText('inviteLink','btnCopyLink')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copiar
+          </button>
+        </div>
+      </div>
+
+      <div class="invite-block">
+        <div class="invite-block-label">Código de comunidad <span>Más fácil de recordar</span></div>
+        <div class="code-display" id="communityCode">••••••</div>
+        <p class="code-sub">Tus miembros ingresan este código al registrarse</p>
+        <div class="copy-row" style="margin-top:14px">
+          <input class="copy-input" id="codeInput" readonly value="Cargando...">
+          <button class="btn-copy" id="btnCopyCode" onclick="copyText('codeInput','btnCopyCode')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copiar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: WhatsApp -->
+    <div class="tab-panel" id="panel-whatsapp">
+      <div class="invite-block" style="margin-bottom:16px">
+        <div class="invite-block-label">Mensaje listo para enviar</div>
+        <textarea id="waMessage" style="width:100%;min-height:130px;padding:12px 14px;border:1.5px solid var(--bdr);border-radius:9px;font-size:.88rem;font-family:inherit;color:var(--txt2);resize:vertical;outline:none;line-height:1.6;transition:border-color .2s" onfocus="this.style.borderColor='var(--g)'" onblur="this.style.borderColor='var(--bdr)'">Cargando mensaje...</textarea>
+      </div>
+      <button class="btn-whatsapp" onclick="sendWhatsApp()">
+        <svg class="wa-icon" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+        Enviar por WhatsApp
+      </button>
+      <p class="share-hint">Se abrirá WhatsApp con el mensaje listo. Solo elige a quién enviarlo.</p>
+    </div>
+
+    <!-- Bottom actions -->
+    <div class="bottom-actions">
+      <button class="btn-dashboard" onclick="irAlDashboard()">
+        Ir al dashboard
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <span class="skip-link" onclick="irAlDashboard()">Omitir por ahora, invito después desde el dashboard</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="planes-foot">
+  <span class="planes-foot-copy">© 2025 QuotApp SpA · Hecho en Chile 🇨🇱</span>
+  <div class="planes-foot-links">
+    <a href="#">Términos</a>
+    <a href="#">Privacidad</a>
+    <a href="#">Contacto</a>
+  </div>
+</footer>
+
+<script>
+// ── Config ──
+const BUBBLE_INVITE_URL  = 'https://app.quotapp.cl/version-test/api/1.1/wf/invitar_miembro';
+const DASHBOARD_URL      = 'https://app.quotapp.cl/version-test/dashboard';
+const MAX_MEMBERS        = 9;
+
+const params      = new URLSearchParams(window.location.search);
+const communityId = params.get('community') || '';
+const userId      = params.get('user_id')   || '';
+
+// Código único secuencial que viene desde Bubble (ej. QA1306)
+const communityCode = params.get('code') || 'QA1306';
+
+// Link de invitación
+const inviteLink = communityId
+  ? `https://app.quotapp.cl/version-test/unirse?community=${communityId}`
+  : 'https://app.quotapp.cl/version-test/unirse';
+
+// Poblar campos de link/código
+document.getElementById('inviteLink').value  = inviteLink;
+document.getElementById('codeInput').value   = communityCode;
+document.getElementById('communityCode').textContent = communityCode;
+
+// Poblar mensaje WhatsApp
+const waMsg = `¡Hola! Te invito a unirte a nuestra comunidad en QuotApp 👋\n\nEscanea el link o usa el código *${communityCode}* al registrarte:\n${inviteLink}\n\n_QuotApp — gestión de cuotas fácil y transparente_ ✅`;
+document.getElementById('waMessage').value = waMsg;
+
+// ── TABS ──
+function switchTab(tab, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+}
+
+// ── EMAIL LIST ──
+let emails = [];
+
+function addEmail() {
+  const input = document.getElementById('emailInput');
+  const val   = input.value.trim().toLowerCase();
+  input.classList.remove('error');
+
+  if (!val || !/\S+@\S+\.\S+/.test(val)) { input.classList.add('error'); return; }
+  if (emails.includes(val))               { input.classList.add('error'); return; }
+  if (emails.length >= MAX_MEMBERS)       return;
+
+  emails.push(val);
+  input.value = '';
+  renderEmails();
+  input.focus();
+}
+
+function removeEmail(i) {
+  emails.splice(i, 1);
+  renderEmails();
+}
+
+function renderEmails() {
+  const list = document.getElementById('emailList');
+  list.innerHTML = emails.map((e,i) => `
+    <div class="email-chip">
+      <div class="email-chip-left">
+        <div class="chip-avatar">${e[0].toUpperCase()}</div>
+        <span>${e}</span>
+      </div>
+      <button class="chip-remove" onclick="removeEmail(${i})">✕</button>
+    </div>
+  `).join('');
+
+  const remaining = MAX_MEMBERS - emails.length;
+  document.getElementById('count').textContent      = emails.length;
+  document.getElementById('remaining').textContent  = remaining;
+  document.getElementById('btnSendEmails').disabled = emails.length === 0;
+  document.getElementById('emailHint').innerHTML    = remaining > 0
+    ? `Puedes agregar hasta <span>${remaining}</span> miembro${remaining !== 1 ? 's' : ''} más.`
+    : `<span>Límite alcanzado.</span> Actualiza a Pro para comunidades más grandes.`;
+}
+
+// ── SEND EMAILS ──
+async function sendEmails() {
+  const btn = document.getElementById('btnSendEmails');
+  btn.classList.add('loading');
+  btn.innerHTML = '<div class="spinner"></div> Enviando...';
+  btn.disabled  = true;
+
+  try {
+    await Promise.all(emails.map(email =>
+      fetch(BUBBLE_INVITE_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ email, community_id: communityId, user_id: userId })
+      })
+    ));
+    irAlDashboard();
+  } catch(e) {
+    btn.classList.remove('loading');
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Enviar invitaciones';
+    btn.disabled  = false;
+    alert('Error al enviar. Intenta de nuevo.');
+  }
+}
+
+// ── COPY ──
+function copyText(inputId, btnId) {
+  const val = document.getElementById(inputId).value;
+  navigator.clipboard.writeText(val).then(() => {
+    const btn = document.getElementById(btnId);
+    btn.classList.add('copied');
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ¡Copiado!';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copiar';
+    }, 2200);
+  });
+}
+
+// ── WHATSAPP ──
+function sendWhatsApp() {
+  const msg = document.getElementById('waMessage').value;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// ── DASHBOARD ──
+function irAlDashboard() {
+  window.location.href = DASHBOARD_URL + (communityId ? '?community=' + communityId : '') + (userId ? '&user_id=' + userId : '');
+}
+</script>
+</body>
+</html>
