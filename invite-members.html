@@ -388,7 +388,7 @@ a{color:inherit;text-decoration:none}
 <script>
 // ── Config ──
 const BUBBLE_INVITE_URL  = 'https://app.quotapp.cl/version-test/api/1.1/wf/invitar_miembro';
-const DASHBOARD_URL      = 'https://app.quotapp.cl/version-test/dashboard';
+const WELCOME_URL        = 'https://www.quotapp.cl/welcome.html';
 const MAX_MEMBERS        = 9;
 
 const params      = new URLSearchParams(window.location.search);
@@ -510,7 +510,13 @@ function sendWhatsApp() {
 
 // ── DASHBOARD ──
 function irAlDashboard() {
-  window.location.href = DASHBOARD_URL + (communityId ? '?community=' + communityId : '') + (userId ? '&user_id=' + userId : '');
+  const membersCount = emails.length;
+  window.location.href = WELCOME_URL
+    + '?community=' + communityId
+    + (params.get('code')   ? '&code='    + params.get('code')   : '')
+    + (params.get('nombre') ? '&nombre='  + encodeURIComponent(params.get('nombre')) : '')
+    + '&members=' + membersCount
+    + (userId ? '&user_id=' + userId : '');
 }
 </script>
 </body>

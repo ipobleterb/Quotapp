@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¡Todo listo! — QuotApp</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#1D9E75;
+  --g2:#0F6E56;
+  --g3:#E1F5EE;
+  --navy:#0F1326;
+  --navy2:#1A2040;
+  --txt:#0F1326;
+  --txt2:#4A5070;
+  --txt3:#8890AA;
+  --bg:#FAFBFC;
+  --white:#FFFFFF;
+  --bdr:#E4E7F0;
+}
+html{font-size:16px}
+body{font-family:'Instrument Sans',sans-serif;color:var(--txt);background:var(--white);line-height:1.6;display:flex;flex-direction:column;min-height:100vh}
+h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;line-height:1.18;letter-spacing:-0.02em}
+a{color:inherit;text-decoration:none}
+
+/* ── NAV ── */
+.planes-nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--bdr);
+  padding:0 5vw;
+  display:flex;align-items:center;justify-content:space-between;
+  height:60px;
+}
+.planes-logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+.planes-logomark{width:36px;height:36px;background:var(--g);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.planes-brand{font-family:'Instrument Sans',sans-serif;font-size:1.2rem;font-weight:700;color:var(--navy)}
+.planes-brand span{color:var(--g)}
+.planes-step{font-size:.8rem;color:var(--g);font-weight:600}
+
+/* ── STEP INDICATOR ── */
+.si{display:inline-flex;align-items:center;margin-bottom:28px}
+.si-item{display:flex;align-items:center;gap:5px;font-size:.78rem;font-weight:600;color:var(--txt3)}
+.si-item.done{color:var(--g)}
+.si-num{width:20px;height:20px;border-radius:50%;background:var(--bdr);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0}
+.si-item.done .si-num{background:var(--g);color:#fff}
+.si-line{width:32px;height:1.5px;background:var(--g);margin:0 8px}
+
+/* ── HERO ── */
+.hero{
+  flex:1;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:60px 5vw;
+  text-align:center;
+  background:linear-gradient(160deg,#F4FCF8 0%,#fff 60%);
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-120px;right:-80px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(29,158,117,.10) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero::after{
+  content:'';position:absolute;bottom:-80px;left:-60px;
+  width:400px;height:400px;
+  background:radial-gradient(circle,rgba(29,158,117,.07) 0%,transparent 70%);
+  pointer-events:none;
+}
+
+/* ── CHECK ANIMADO ── */
+.check-wrap{
+  width:88px;height:88px;
+  background:var(--g);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 28px;
+  box-shadow:0 0 0 16px rgba(29,158,117,.12);
+  animation:popIn .5s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes popIn{
+  from{transform:scale(0);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+.check-svg{animation:drawCheck .4s ease .3s both}
+@keyframes drawCheck{
+  from{stroke-dashoffset:40}
+  to{stroke-dashoffset:0}
+}
+
+/* ── CONTENT ── */
+.hero-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--g3);border:1px solid rgba(29,158,117,.2);
+  color:var(--g2);font-size:.78rem;font-weight:600;
+  padding:4px 14px;border-radius:99px;
+  margin-bottom:20px;
+  animation:fadeUp .5s ease .2s both;
+}
+.hero h1{
+  font-size:clamp(1.9rem,4vw,2.8rem);font-weight:800;
+  color:var(--navy);margin-bottom:12px;
+  animation:fadeUp .5s ease .3s both;
+}
+.hero h1 em{color:var(--g);font-style:normal}
+.hero-sub{
+  font-size:1rem;color:var(--txt2);
+  max-width:480px;margin:0 auto 36px;
+  animation:fadeUp .5s ease .4s both;
+}
+
+/* ── SUMMARY CARD ── */
+.summary-card{
+  background:var(--white);border:1px solid var(--bdr);
+  border-radius:16px;padding:24px 32px;
+  max-width:420px;width:100%;margin:0 auto 36px;
+  box-shadow:0 2px 20px rgba(15,19,38,.06);
+  animation:fadeUp .5s ease .5s both;
+  text-align:left;
+}
+.summary-row{
+  display:flex;align-items:center;gap:14px;
+  padding:10px 0;border-bottom:1px solid var(--bdr);
+}
+.summary-row:last-child{border-bottom:none}
+.summary-icon{
+  width:34px;height:34px;border-radius:9px;
+  background:var(--g3);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.summary-info{display:flex;flex-direction:column;gap:1px}
+.summary-label{font-size:.75rem;color:var(--txt3);font-weight:500}
+.summary-value{font-size:.92rem;font-weight:600;color:var(--navy)}
+
+/* ── CTA ── */
+.cta-wrap{animation:fadeUp .5s ease .6s both;width:100%;max-width:420px;margin:0 auto}
+.btn-dashboard{
+  width:100%;padding:16px;
+  background:var(--g);color:#fff;
+  border:none;border-radius:12px;
+  font-size:1.05rem;font-weight:700;font-family:inherit;
+  cursor:pointer;
+  box-shadow:0 4px 20px rgba(29,158,117,.35);
+  transition:background .2s,transform .15s,box-shadow .2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-bottom:12px;
+}
+.btn-dashboard:hover{background:var(--g2);transform:translateY(-1px);box-shadow:0 6px 28px rgba(29,158,117,.42)}
+.btn-dashboard:active{transform:translateY(0)}
+.cta-note{font-size:.8rem;color:var(--txt3);text-align:center}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ── CONFETTI ── */
+.confetti-piece{
+  position:fixed;width:8px;height:8px;border-radius:2px;
+  animation:confettiFall linear forwards;
+  pointer-events:none;
+}
+@keyframes confettiFall{
+  0%{transform:translateY(-20px) rotate(0deg);opacity:1}
+  100%{transform:translateY(100vh) rotate(720deg);opacity:0}
+}
+
+/* ── FOOTER ── */
+.planes-foot{background:var(--white);border-top:1px solid var(--bdr);padding:20px 5vw;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.planes-foot-copy{font-size:.74rem;color:var(--txt3)}
+.planes-foot-links{display:flex;gap:16px}
+.planes-foot-links a{font-size:.74rem;color:var(--txt3)}
+.planes-foot-links a:hover{color:var(--g)}
+
+@media(max-width:600px){
+  .planes-step{display:none}
+  .summary-card{padding:20px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="planes-nav">
+  <a href="https://quotapp.cl" class="planes-logo">
+    <div class="planes-logomark">
+      <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
+        <rect x="3" y="5" width="13" height="2" rx="1" fill="white"/>
+        <rect x="3" y="9" width="10" height="2" rx="1" fill="rgba(255,255,255,.65)"/>
+        <rect x="3" y="13" width="7" height="2" rx="1" fill="rgba(255,255,255,.4)"/>
+        <circle cx="17" cy="15.5" r="4" fill="white"/>
+        <text x="17" y="18" text-anchor="middle" font-size="5.5" font-weight="700" fill="#1D9E75">$</text>
+      </svg>
+    </div>
+    <span class="planes-brand">Quot<span>App</span></span>
+  </a>
+  <span class="planes-step">✓ Configuración completada</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+
+  <div class="si">
+    <div class="si-item done"><div class="si-num">✓</div> Tu cuenta</div>
+    <div class="si-line"></div>
+    <div class="si-item done"><div class="si-num">✓</div> Tu plan</div>
+    <div class="si-line"></div>
+    <div class="si-item done"><div class="si-num">✓</div> Tu comunidad</div>
+    <div class="si-line"></div>
+    <div class="si-item done"><div class="si-num">✓</div> ¡Listo!</div>
+  </div>
+
+  <div class="check-wrap">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+      <polyline points="8,21 17,30 32,12" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"
+        stroke-dasharray="40" class="check-svg"/>
+    </svg>
+  </div>
+
+  <div class="hero-tag">🎉 ¡Comunidad creada con éxito!</div>
+
+  <h1>Tu comunidad está <em>lista</em></h1>
+  <p class="hero-sub">Ya puedes empezar a gestionar cuotas, registrar gastos y mantener todo en orden. Bienvenido a QuotApp.</p>
+
+  <div class="summary-card" id="summaryCard">
+    <div class="summary-row">
+      <div class="summary-icon">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div class="summary-info">
+        <span class="summary-label">Comunidad</span>
+        <span class="summary-value" id="sumNombre">—</span>
+      </div>
+    </div>
+    <div class="summary-row">
+      <div class="summary-icon">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="summary-info">
+        <span class="summary-label">Código de comunidad</span>
+        <span class="summary-value" id="sumCode">—</span>
+      </div>
+    </div>
+    <div class="summary-row">
+      <div class="summary-icon">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      </div>
+      <div class="summary-info">
+        <span class="summary-label">Plan</span>
+        <span class="summary-value">Gratuito · hasta 10 miembros</span>
+      </div>
+    </div>
+    <div class="summary-row">
+      <div class="summary-icon">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="summary-info">
+        <span class="summary-label">Miembros invitados</span>
+        <span class="summary-value" id="sumMembers">—</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-wrap">
+    <button class="btn-dashboard" onclick="irAlDashboard()">
+      Ir a mi dashboard
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <p class="cta-note">Tu tesorería ya está activa. ¡Éxito con tu comunidad! 🚀</p>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="planes-foot">
+  <span class="planes-foot-copy">© 2025 QuotApp SpA · Hecho en Chile 🇨🇱</span>
+  <div class="planes-foot-links">
+    <a href="#">Términos</a>
+    <a href="#">Privacidad</a>
+    <a href="#">Contacto</a>
+  </div>
+</footer>
+
+<script>
+const DASHBOARD_URL = 'https://app.quotapp.cl/version-test/dashboard';
+
+const params      = new URLSearchParams(window.location.search);
+const communityId = params.get('community') || '';
+const userId      = params.get('user_id')   || '';
+const code        = params.get('code')      || '—';
+const nombre      = params.get('nombre')    || '—';
+const members     = params.get('members')   || '0';
+
+// Poblar summary
+document.getElementById('sumNombre').textContent  = decodeURIComponent(nombre);
+document.getElementById('sumCode').textContent    = code;
+document.getElementById('sumMembers').textContent = members === '0'
+  ? 'Ninguno aún — puedes invitar desde el dashboard'
+  : members + ' miembro' + (Number(members) !== 1 ? 's' : '') + ' invitado' + (Number(members) !== 1 ? 's' : '');
+
+// Confetti
+function launchConfetti() {
+  const colors = ['#1D9E75','#0F6E56','#6ee7c0','#FFD166','#0F1326','#E1F5EE'];
+  for (let i = 0; i < 60; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.cssText = `
+      left:${Math.random() * 100}vw;
+      top:-10px;
+      background:${colors[Math.floor(Math.random() * colors.length)]};
+      width:${6 + Math.random() * 6}px;
+      height:${6 + Math.random() * 6}px;
+      border-radius:${Math.random() > .5 ? '50%' : '2px'};
+      animation-duration:${1.8 + Math.random() * 2}s;
+      animation-delay:${Math.random() * .8}s;
+    `;
+    document.body.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
+}
+
+window.addEventListener('load', () => setTimeout(launchConfetti, 300));
+
+function irAlDashboard() {
+  window.location.href = DASHBOARD_URL
+    + (communityId ? '?community=' + communityId : '')
+    + (userId ? (communityId ? '&' : '?') + 'user_id=' + userId : '');
+}
+</script>
+</body>
+</html>
