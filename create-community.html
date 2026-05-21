@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crear tu comunidad — QuotApp</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Crear comunidad — QuotApp</title>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -13,158 +12,107 @@
   --g2:#0F6E56;
   --g3:#E1F5EE;
   --navy:#0F1326;
+  --navy2:#1A2040;
   --txt:#0F1326;
   --txt2:#4A5070;
   --txt3:#8890AA;
+  --bg:#FAFBFC;
+  --white:#FFFFFF;
   --bdr:#E4E7F0;
-  --bg:#F7F9FC;
-  --r:12px;
+  --danger:#E94F4F;
+  --r:14px;
   --sh:0 2px 20px rgba(15,19,38,.07);
-  --sh2:0 8px 48px rgba(15,19,38,.10);
+  --sh2:0 8px 48px rgba(15,19,38,.13);
 }
-html,body{font-family:'Instrument Sans',sans-serif;color:var(--txt);background:var(--bg);line-height:1.6}
-h1,h2,h3,.brand{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Instrument Sans',sans-serif;color:var(--txt);background:var(--white);line-height:1.6;display:flex;flex-direction:column;min-height:100vh}
+h1,h2,h3,.brand{font-family:'Bricolage Grotesque',sans-serif;line-height:1.18;letter-spacing:-0.02em}
 a{color:inherit;text-decoration:none}
 
-/* ── LAYOUT ── */
-.page{
-  min-height:100vh;
-  display:grid;
-  grid-template-columns:2fr 3fr;
+/* ── NAV ── */
+.planes-nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--bdr);
+  padding:0 5vw;
+  display:flex;align-items:center;justify-content:space-between;
+  height:60px;
 }
-
-/* ── LEFT PANEL ── */
-.left{
-  background:linear-gradient(145deg,#0F1326 0%,#162240 50%,#0F3D2E 100%);
-  display:flex;flex-direction:column;
-  padding:48px 56px;
-  position:sticky;top:0;height:100vh;
-  overflow:hidden;
-}
-.left::before{
-  content:'';position:absolute;top:-100px;right:-100px;
-  width:400px;height:400px;
-  background:radial-gradient(circle,rgba(29,158,117,.18) 0%,transparent 70%);
-  pointer-events:none;
-}
-.left::after{
-  content:'';position:absolute;bottom:-80px;left:-60px;
-  width:300px;height:300px;
-  background:radial-gradient(circle,rgba(29,158,117,.10) 0%,transparent 70%);
-  pointer-events:none;
-}
-.left-logo{display:flex;align-items:center;gap:10px;margin-bottom:auto}
-.logomark{
-  width:40px;height:40px;
-  background:var(--g);border-radius:11px;
+.planes-logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+.planes-logomark{
+  width:36px;height:36px;
+  background:var(--g);border-radius:10px;
   display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
 }
-.brand-text{font-size:1.4rem;font-weight:700;color:#fff}
-.brand-text span{color:var(--g)}
+.planes-brand{font-family:'Instrument Sans',sans-serif;font-size:1.2rem;font-weight:700;color:var(--navy)}
+.planes-brand span{color:var(--g)}
+.planes-step{font-size:.8rem;color:var(--txt3)}
 
-.left-content{
-  flex:1;
-  display:flex;flex-direction:column;
-  justify-content:center;
-  padding:48px 0;
-  position:relative;z-index:1;
+/* ── HERO ── */
+.planes-hero{
+  padding:56px 5vw 40px;
+  text-align:center;
+  background:linear-gradient(160deg,#F4FCF8 0%,#fff 70%);
 }
-.left-tag{
-  display:inline-flex;align-items:center;gap:8px;
-  background:rgba(29,158,117,.15);
-  border:1px solid rgba(29,158,117,.3);
-  color:#6ee7c0;
-  font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  padding:5px 12px;border-radius:20px;
-  width:fit-content;margin-bottom:28px;
-}
-.left-tag::before{content:'';width:6px;height:6px;background:#1D9E75;border-radius:50%}
-
-.left-headline{
-  font-size:2.2rem;font-weight:800;
-  color:#fff;line-height:1.15;
-  margin-bottom:20px;
-}
-.left-headline em{color:var(--g);font-style:normal}
-.left-sub{
-  font-size:1rem;color:rgba(255,255,255,.65);
-  line-height:1.7;max-width:360px;margin-bottom:40px;
-}
-
-/* Steps indicator */
-.steps{display:flex;flex-direction:column;gap:16px;}
-.step{
-  display:flex;align-items:center;gap:14px;
-  opacity:.45;transition:opacity .3s;
-}
-.step.active{opacity:1;}
-.step.done{opacity:.7;}
-.step-num{
-  width:32px;height:32px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:.8rem;font-weight:700;flex-shrink:0;
-  border:2px solid rgba(255,255,255,.2);
-  color:rgba(255,255,255,.5);
+.planes-hero h1{
   font-family:'Bricolage Grotesque',sans-serif;
-  transition:all .3s;
+  font-size:1.7rem;font-weight:800;
+  color:var(--navy);letter-spacing:-0.02em;
+  margin-bottom:8px;
 }
-.step.active .step-num{
-  background:var(--g);border-color:var(--g);color:#fff;
-}
-.step.done .step-num{
-  background:rgba(29,158,117,.3);border-color:var(--g);color:#6ee7c0;
-}
-.step-info{display:flex;flex-direction:column;gap:2px;}
-.step-name{font-size:.88rem;font-weight:600;color:#fff;font-family:'Bricolage Grotesque',sans-serif;}
-.step-desc{font-size:.78rem;color:rgba(255,255,255,.45);}
+.planes-hero h1 em{color:var(--g);font-style:normal}
+.planes-hero-sub{font-size:.88rem;color:var(--txt2);margin-bottom:0}
 
-.left-footer{
-  font-size:.8rem;color:rgba(255,255,255,.35);
-  margin-top:auto;
+/* ── STEP INDICATOR ── */
+.si{display:inline-flex;align-items:center;margin-bottom:20px}
+.si-item{display:flex;align-items:center;gap:5px;font-size:.78rem;font-weight:600;color:var(--txt3)}
+.si-item.done{color:var(--g)}
+.si-item.active{color:var(--navy)}
+.si-num{
+  width:20px;height:20px;border-radius:50%;
+  background:var(--bdr);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.62rem;font-weight:700;flex-shrink:0;
 }
-.left-footer a{color:rgba(255,255,255,.5);text-decoration:underline}
+.si-item.done .si-num{background:var(--g);color:#fff}
+.si-item.active .si-num{background:var(--navy);color:#fff}
+.si-line{width:32px;height:1.5px;background:var(--bdr);margin:0 8px}
 
-/* ── RIGHT PANEL ── */
-.right{
-  background:#fff;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:48px 80px;
+/* ── FORM CARD ── */
+.form-section{
+  flex:1;
+  padding:0 5vw 60px;
+  display:flex;justify-content:center;
 }
-.form-wrap{width:100%;max-width:480px}
-
-.form-title{
-  font-size:2rem;font-weight:800;
-  color:var(--navy);margin-bottom:6px;
-}
-.form-sub{
-  font-size:.97rem;color:var(--txt3);
-  margin-bottom:36px;
+.form-card{
+  width:100%;max-width:560px;
+  background:var(--white);
+  border:1px solid var(--bdr);
+  border-radius:20px;
+  padding:40px;
+  box-shadow:var(--sh);
 }
 
-/* Plan badge */
+/* ── PLAN BADGE ── */
 .plan-badge{
   display:inline-flex;align-items:center;gap:6px;
   background:var(--g3);
   border:1px solid rgba(29,158,117,.25);
   color:var(--g2);
   font-size:.78rem;font-weight:600;
-  padding:4px 10px;border-radius:20px;
-  margin-bottom:32px;
+  padding:4px 12px;border-radius:20px;
+  margin-bottom:28px;
 }
-.plan-badge svg{flex-shrink:0}
 
+/* ── FIELDS ── */
 .field{margin-bottom:20px}
 .field label{
   display:block;
   font-size:.84rem;font-weight:600;color:var(--txt2);
   margin-bottom:7px;
 }
-.field-hint{
-  font-size:.78rem;color:var(--txt3);
-  margin-top:5px;
-}
+.field-hint{font-size:.78rem;color:var(--txt3);margin-top:5px}
 .field input,.field select{
   width:100%;
   padding:14px 18px;
@@ -182,12 +130,14 @@ a{color:inherit;text-decoration:none}
   box-shadow:0 0 0 3px rgba(29,158,117,.12);
 }
 .field input.error,.field select.error{
-  border-color:#E94F4F;
+  border-color:var(--danger);
   box-shadow:0 0 0 3px rgba(233,79,79,.10);
 }
+.field-error{font-size:.8rem;color:var(--danger);margin-top:5px;display:none}
+.field-error.show{display:block}
 
-/* Select custom arrow */
-.select-wrap{position:relative;}
+/* Select arrow */
+.select-wrap{position:relative}
 .select-wrap::after{
   content:'';
   position:absolute;right:18px;top:50%;transform:translateY(-50%);
@@ -196,22 +146,18 @@ a{color:inherit;text-decoration:none}
   background-size:contain;background-repeat:no-repeat;
   pointer-events:none;
 }
-.select-wrap select{padding-right:44px;cursor:pointer;}
+.select-wrap select{padding-right:44px;cursor:pointer}
 
-/* Cuota field */
-.cuota-wrap{position:relative;}
+/* Cuota prefix */
+.cuota-wrap{position:relative}
 .cuota-prefix{
   position:absolute;left:18px;top:50%;transform:translateY(-50%);
   font-size:1rem;font-weight:600;color:var(--txt2);
   pointer-events:none;
 }
-.cuota-wrap input{padding-left:32px;}
+.cuota-wrap input{padding-left:32px}
 
-/* Field error */
-.field-error{font-size:.8rem;color:#E94F4F;margin-top:5px;display:none;}
-.show-error{display:block;}
-
-/* Btn */
+/* ── BTN ── */
 .btn-primary{
   width:100%;padding:16px;
   background:var(--g);color:#fff;
@@ -229,7 +175,7 @@ a{color:inherit;text-decoration:none}
   box-shadow:0 6px 24px rgba(29,158,117,.38);
 }
 .btn-primary:active{transform:translateY(0)}
-.btn-primary.loading{background:var(--g2);pointer-events:none;}
+.btn-primary.loading{background:var(--g2);pointer-events:none}
 
 .spinner{
   width:16px;height:16px;
@@ -240,141 +186,137 @@ a{color:inherit;text-decoration:none}
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* ── FOOTER ── */
+.planes-foot{
+  background:var(--white);border-top:1px solid var(--bdr);
+  padding:20px 5vw;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
+}
+.planes-foot-copy{font-size:.74rem;color:var(--txt3)}
+.planes-foot-links{display:flex;gap:16px}
+.planes-foot-links a{font-size:.74rem;color:var(--txt3)}
+.planes-foot-links a:hover{color:var(--g)}
+
 /* ── RESPONSIVE ── */
-@media(max-width:860px){
-  .page{grid-template-columns:1fr}
-  .left{display:none}
-  .right{padding:40px 28px;justify-content:flex-start;padding-top:60px}
-  .form-wrap{max-width:100%}
+@media(max-width:600px){
+  .form-card{padding:28px 20px}
+  .planes-step{display:none}
 }
 </style>
 </head>
 <body>
 
-<div class="page">
-
-  <!-- LEFT -->
-  <div class="left">
-    <a href="/" class="left-logo">
-      <div class="logomark">
-        <svg width="24" height="24" viewBox="0 0 22 22" fill="none">
-          <rect x="3" y="5" width="13" height="2" rx="1" fill="white"/>
-          <rect x="3" y="9" width="10" height="2" rx="1" fill="rgba(255,255,255,.65)"/>
-          <rect x="3" y="13" width="7" height="2" rx="1" fill="rgba(255,255,255,.4)"/>
-          <circle cx="17" cy="15.5" r="4" fill="white"/>
-          <text x="17" y="18" text-anchor="middle" font-size="5.5" font-weight="700" fill="#1D9E75">$</text>
-        </svg>
-      </div>
-      <span class="brand-text">Quot<span>App</span></span>
-    </a>
-
-    <div class="left-content">
-      <div class="left-tag">Primeros pasos</div>
-      <h1 class="left-headline">Configura tu comunidad en <em>minutos</em></h1>
-      <p class="left-sub">Solo necesitas un nombre, el tipo de comunidad y la cuota mensual. Después invitas a tus miembros.</p>
-
-      <div class="steps">
-        <div class="step done">
-          <div class="step-num">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <div class="step-info">
-            <span class="step-name">Crear cuenta</span>
-            <span class="step-desc">Tesorero registrado</span>
-          </div>
-        </div>
-        <div class="step active">
-          <div class="step-num">2</div>
-          <div class="step-info">
-            <span class="step-name">Crear comunidad</span>
-            <span class="step-desc">Nombre, tipo y cuota</span>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <div class="step-info">
-            <span class="step-name">Invitar miembros</span>
-            <span class="step-desc">Hasta 9 miembros (plan gratuito)</span>
-          </div>
-        </div>
-      </div>
+<!-- NAV -->
+<nav class="planes-nav">
+  <a href="https://quotapp.cl" class="planes-logo">
+    <div class="planes-logomark">
+      <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
+        <rect x="3" y="5" width="13" height="2" rx="1" fill="white"/>
+        <rect x="3" y="9" width="10" height="2" rx="1" fill="rgba(255,255,255,.65)"/>
+        <rect x="3" y="13" width="7" height="2" rx="1" fill="rgba(255,255,255,.4)"/>
+        <circle cx="17" cy="15.5" r="4" fill="white"/>
+        <text x="17" y="18" text-anchor="middle" font-size="5.5" font-weight="700" fill="#1D9E75">$</text>
+      </svg>
     </div>
+    <span class="planes-brand">Quot<span>App</span></span>
+  </a>
+  <span class="planes-step">Paso 3 de 4 — Crea tu comunidad</span>
+</nav>
 
-    <div class="left-footer">
-      © 2025 QuotApp SpA · <a href="#">Términos</a> · <a href="#">Privacidad</a>
-    </div>
+<!-- HERO -->
+<div class="planes-hero">
+  <div class="si">
+    <div class="si-item done"><div class="si-num">✓</div> Tu cuenta</div>
+    <div class="si-line"></div>
+    <div class="si-item done"><div class="si-num">✓</div> Tu plan</div>
+    <div class="si-line"></div>
+    <div class="si-item active"><div class="si-num">3</div> Tu comunidad</div>
+    <div class="si-line"></div>
+    <div class="si-item"><div class="si-num">4</div> ¡Listo!</div>
   </div>
-
-  <!-- RIGHT -->
-  <div class="right">
-    <div class="form-wrap">
-
-      <h1 class="form-title">Crea tu comunidad</h1>
-      <p class="form-sub">Esta información aparecerá en los cobros y reportes de tu comunidad.</p>
-
-      <div class="plan-badge">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Plan Gratuito · hasta 10 miembros (tesorero incluido)
-      </div>
-
-      <div class="field">
-        <label for="comunidad-nombre">Nombre de la comunidad</label>
-        <input type="text" id="comunidad-nombre" placeholder="ej. Curso 4°B 2025 — Colegio San Patricio" autocomplete="off">
-        <div class="field-error" id="err-nombre">Ingresa un nombre para tu comunidad.</div>
-      </div>
-
-      <div class="field">
-        <label for="comunidad-tipo">Tipo de comunidad</label>
-        <div class="select-wrap">
-          <select id="comunidad-tipo">
-            <option value="" disabled selected>Selecciona un tipo...</option>
-            <option value="curso_escolar">Curso escolar</option>
-            <option value="junta_vecinal">Junta vecinal</option>
-            <option value="club_deportivo">Club deportivo</option>
-            <option value="condominio">Condominio / Edificio</option>
-            <option value="iglesia">Iglesia / Comunidad religiosa</option>
-            <option value="otro">Otro</option>
-          </select>
-        </div>
-        <div class="field-error" id="err-tipo">Selecciona el tipo de comunidad.</div>
-      </div>
-
-      <div class="field">
-        <label for="comunidad-cuota">Cuota mensual</label>
-        <div class="cuota-wrap">
-          <span class="cuota-prefix">$</span>
-          <input type="number" id="comunidad-cuota" placeholder="5.000" min="0" step="500">
-        </div>
-        <div class="field-hint">Monto en pesos chilenos (CLP). Puedes modificarlo después.</div>
-        <div class="field-error" id="err-cuota">Ingresa un monto válido.</div>
-      </div>
-
-      <button class="btn-primary" id="btnCrear" onclick="handleCrear()">
-        Crear comunidad y continuar
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </button>
-
-    </div>
-  </div>
-
+  <h1>Crea tu <em>comunidad</em></h1>
+  <p class="planes-hero-sub">Solo toma un minuto. Después invitas a tus miembros.</p>
 </div>
 
-<script>
-// ── Configura estas URLs ──
-const BUBBLE_CREATE_COMMUNITY_URL = 'https://app.quotapp.cl/version-test/api/1.1/wf/crear_comunidad';
-const NEXT_STEP_URL = 'https://app.quotapp.cl/version-test/invitar-miembros'; // ajusta según tu página en Bubble
+<!-- FORM -->
+<div class="form-section">
+  <div class="form-card">
 
-function showFieldError(id, show) {
-  const el = document.getElementById(id);
-  if (el) el.classList.toggle('show-error', show);
+    <div class="plan-badge">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Plan Gratuito · hasta 10 miembros (tesorero incluido)
+    </div>
+
+    <div class="field">
+      <label for="comunidad-nombre">Nombre de la comunidad</label>
+      <input type="text" id="comunidad-nombre" placeholder="ej. Curso 4°B 2025 — Colegio San Patricio" autocomplete="off">
+      <div class="field-error" id="err-nombre">Ingresa un nombre para tu comunidad.</div>
+    </div>
+
+    <div class="field">
+      <label for="comunidad-tipo">Tipo de comunidad</label>
+      <div class="select-wrap">
+        <select id="comunidad-tipo">
+          <option value="" disabled selected>Selecciona un tipo...</option>
+          <option value="habitacional">Habitacional</option>
+          <option value="educacion">Educación</option>
+          <option value="deportes">Deportes</option>
+          <option value="religiosa_social">Religiosa / Social</option>
+          <option value="negocios">Negocios</option>
+          <option value="financiera_digital">Financiera / Digital</option>
+          <option value="cultura_hobby">Cultura / Hobby</option>
+          <option value="otro">Otro</option>
+        </select>
+      </div>
+      <div class="field-error" id="err-tipo">Selecciona el tipo de comunidad.</div>
+    </div>
+
+    <div class="field">
+      <label for="comunidad-cuota">Cuota mensual</label>
+      <div class="cuota-wrap">
+        <span class="cuota-prefix">$</span>
+        <input type="number" id="comunidad-cuota" placeholder="5.000" min="0" step="500">
+      </div>
+      <div class="field-hint">Monto en pesos chilenos (CLP). Puedes modificarlo después.</div>
+      <div class="field-error" id="err-cuota">Ingresa un monto válido.</div>
+    </div>
+
+    <button class="btn-primary" id="btnCrear" onclick="handleCrear()">
+      Crear comunidad y continuar
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="planes-foot">
+  <span class="planes-foot-copy">© 2025 QuotApp SpA · Hecho en Chile 🇨🇱</span>
+  <div class="planes-foot-links">
+    <a href="#">Términos</a>
+    <a href="#">Privacidad</a>
+    <a href="#">Contacto</a>
+  </div>
+</footer>
+
+<script>
+const BUBBLE_CREATE_COMMUNITY_URL = 'https://app.quotapp.cl/version-test/api/1.1/wf/crear_comunidad';
+const NEXT_STEP_URL = 'https://app.quotapp.cl/version-test/invitar-miembros';
+
+const params = new URLSearchParams(window.location.search);
+const userId = params.get('user_id') || '';
+
+function showErr(id, show) {
+  document.getElementById(id).classList.toggle('show', show);
 }
 
 function clearErrors() {
-  ['err-nombre','err-tipo','err-cuota'].forEach(id => showFieldError(id, false));
+  ['err-nombre','err-tipo','err-cuota'].forEach(id => showErr(id, false));
   ['comunidad-nombre','comunidad-tipo','comunidad-cuota'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.remove('error');
+    document.getElementById(id).classList.remove('error');
   });
+  const ge = document.getElementById('general-error');
+  if (ge) ge.textContent = '';
 }
 
 async function handleCrear() {
@@ -384,27 +326,22 @@ async function handleCrear() {
   const tipo   = document.getElementById('comunidad-tipo').value;
   const cuota  = document.getElementById('comunidad-cuota').value;
   const btn    = document.getElementById('btnCrear');
-
   let valid = true;
 
   if (!nombre) {
     document.getElementById('comunidad-nombre').classList.add('error');
-    showFieldError('err-nombre', true);
-    valid = false;
+    showErr('err-nombre', true); valid = false;
   }
   if (!tipo) {
     document.getElementById('comunidad-tipo').classList.add('error');
-    showFieldError('err-tipo', true);
-    valid = false;
+    showErr('err-tipo', true); valid = false;
   }
   if (!cuota || isNaN(cuota) || Number(cuota) < 0) {
     document.getElementById('comunidad-cuota').classList.add('error');
-    showFieldError('err-cuota', true);
-    valid = false;
+    showErr('err-cuota', true); valid = false;
   }
   if (!valid) return;
 
-  // Loading
   btn.classList.add('loading');
   btn.innerHTML = '<div class="spinner"></div> Creando comunidad...';
   btn.disabled = true;
@@ -412,27 +349,27 @@ async function handleCrear() {
   try {
     const res = await fetch(BUBBLE_CREATE_COMMUNITY_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        nombre: nombre,
-        tipo: tipo,
-        cuota_mensual: Number(cuota)
+        nombre,
+        tipo,
+        cuota_mensual: Number(cuota),
+        user_id: userId
       })
     });
 
     const data = await res.json();
 
     if (res.ok && data.status === 'success') {
-      // Pasar el ID de la comunidad recién creada al siguiente paso
       const communityId = data.response?.community_id || '';
-      window.location.href = NEXT_STEP_URL + (communityId ? '?community=' + communityId : '');
+      window.location.href = NEXT_STEP_URL + '?community=' + communityId + (userId ? '&user_id=' + userId : '');
     } else {
       btn.classList.remove('loading');
       btn.innerHTML = 'Crear comunidad y continuar <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
       btn.disabled = false;
       mostrarErrorGeneral('Ocurrió un error al crear la comunidad. Intenta de nuevo.');
     }
-  } catch (err) {
+  } catch(e) {
     btn.classList.remove('loading');
     btn.innerHTML = 'Crear comunidad y continuar <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
     btn.disabled = false;
@@ -451,9 +388,7 @@ function mostrarErrorGeneral(msg) {
   el.textContent = msg;
 }
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter') handleCrear();
-});
+document.addEventListener('keydown', e => { if (e.key === 'Enter') handleCrear(); });
 </script>
 </body>
 </html>
