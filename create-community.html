@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crear tu comunidad — QuotApp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#1D9E75;
+  --g2:#0F6E56;
+  --g3:#E1F5EE;
+  --navy:#0F1326;
+  --txt:#0F1326;
+  --txt2:#4A5070;
+  --txt3:#8890AA;
+  --bdr:#E4E7F0;
+  --bg:#F7F9FC;
+  --r:12px;
+  --sh:0 2px 20px rgba(15,19,38,.07);
+  --sh2:0 8px 48px rgba(15,19,38,.10);
+}
+html,body{font-family:'Instrument Sans',sans-serif;color:var(--txt);background:var(--bg);line-height:1.6}
+h1,h2,h3,.brand{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em}
+a{color:inherit;text-decoration:none}
+
+/* ── LAYOUT ── */
+.page{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:2fr 3fr;
+}
+
+/* ── LEFT PANEL ── */
+.left{
+  background:linear-gradient(145deg,#0F1326 0%,#162240 50%,#0F3D2E 100%);
+  display:flex;flex-direction:column;
+  padding:48px 56px;
+  position:sticky;top:0;height:100vh;
+  overflow:hidden;
+}
+.left::before{
+  content:'';position:absolute;top:-100px;right:-100px;
+  width:400px;height:400px;
+  background:radial-gradient(circle,rgba(29,158,117,.18) 0%,transparent 70%);
+  pointer-events:none;
+}
+.left::after{
+  content:'';position:absolute;bottom:-80px;left:-60px;
+  width:300px;height:300px;
+  background:radial-gradient(circle,rgba(29,158,117,.10) 0%,transparent 70%);
+  pointer-events:none;
+}
+.left-logo{display:flex;align-items:center;gap:10px;margin-bottom:auto}
+.logomark{
+  width:40px;height:40px;
+  background:var(--g);border-radius:11px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.brand-text{font-size:1.4rem;font-weight:700;color:#fff}
+.brand-text span{color:var(--g)}
+
+.left-content{
+  flex:1;
+  display:flex;flex-direction:column;
+  justify-content:center;
+  padding:48px 0;
+  position:relative;z-index:1;
+}
+.left-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(29,158,117,.15);
+  border:1px solid rgba(29,158,117,.3);
+  color:#6ee7c0;
+  font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  padding:5px 12px;border-radius:20px;
+  width:fit-content;margin-bottom:28px;
+}
+.left-tag::before{content:'';width:6px;height:6px;background:#1D9E75;border-radius:50%}
+
+.left-headline{
+  font-size:2.2rem;font-weight:800;
+  color:#fff;line-height:1.15;
+  margin-bottom:20px;
+}
+.left-headline em{color:var(--g);font-style:normal}
+.left-sub{
+  font-size:1rem;color:rgba(255,255,255,.65);
+  line-height:1.7;max-width:360px;margin-bottom:40px;
+}
+
+/* Steps indicator */
+.steps{display:flex;flex-direction:column;gap:16px;}
+.step{
+  display:flex;align-items:center;gap:14px;
+  opacity:.45;transition:opacity .3s;
+}
+.step.active{opacity:1;}
+.step.done{opacity:.7;}
+.step-num{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;font-weight:700;flex-shrink:0;
+  border:2px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.5);
+  font-family:'Bricolage Grotesque',sans-serif;
+  transition:all .3s;
+}
+.step.active .step-num{
+  background:var(--g);border-color:var(--g);color:#fff;
+}
+.step.done .step-num{
+  background:rgba(29,158,117,.3);border-color:var(--g);color:#6ee7c0;
+}
+.step-info{display:flex;flex-direction:column;gap:2px;}
+.step-name{font-size:.88rem;font-weight:600;color:#fff;font-family:'Bricolage Grotesque',sans-serif;}
+.step-desc{font-size:.78rem;color:rgba(255,255,255,.45);}
+
+.left-footer{
+  font-size:.8rem;color:rgba(255,255,255,.35);
+  margin-top:auto;
+}
+.left-footer a{color:rgba(255,255,255,.5);text-decoration:underline}
+
+/* ── RIGHT PANEL ── */
+.right{
+  background:#fff;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:48px 80px;
+}
+.form-wrap{width:100%;max-width:480px}
+
+.form-title{
+  font-size:2rem;font-weight:800;
+  color:var(--navy);margin-bottom:6px;
+}
+.form-sub{
+  font-size:.97rem;color:var(--txt3);
+  margin-bottom:36px;
+}
+
+/* Plan badge */
+.plan-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--g3);
+  border:1px solid rgba(29,158,117,.25);
+  color:var(--g2);
+  font-size:.78rem;font-weight:600;
+  padding:4px 10px;border-radius:20px;
+  margin-bottom:32px;
+}
+.plan-badge svg{flex-shrink:0}
+
+.field{margin-bottom:20px}
+.field label{
+  display:block;
+  font-size:.84rem;font-weight:600;color:var(--txt2);
+  margin-bottom:7px;
+}
+.field-hint{
+  font-size:.78rem;color:var(--txt3);
+  margin-top:5px;
+}
+.field input,.field select{
+  width:100%;
+  padding:14px 18px;
+  border:1.5px solid var(--bdr);
+  border-radius:10px;
+  font-size:1rem;font-family:inherit;
+  color:var(--navy);background:#fff;
+  transition:border-color .2s,box-shadow .2s;
+  outline:none;
+  appearance:none;-webkit-appearance:none;
+}
+.field input::placeholder{color:var(--txt3)}
+.field input:focus,.field select:focus{
+  border-color:var(--g);
+  box-shadow:0 0 0 3px rgba(29,158,117,.12);
+}
+.field input.error,.field select.error{
+  border-color:#E94F4F;
+  box-shadow:0 0 0 3px rgba(233,79,79,.10);
+}
+
+/* Select custom arrow */
+.select-wrap{position:relative;}
+.select-wrap::after{
+  content:'';
+  position:absolute;right:18px;top:50%;transform:translateY(-50%);
+  width:10px;height:10px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238890AA' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-size:contain;background-repeat:no-repeat;
+  pointer-events:none;
+}
+.select-wrap select{padding-right:44px;cursor:pointer;}
+
+/* Cuota field */
+.cuota-wrap{position:relative;}
+.cuota-prefix{
+  position:absolute;left:18px;top:50%;transform:translateY(-50%);
+  font-size:1rem;font-weight:600;color:var(--txt2);
+  pointer-events:none;
+}
+.cuota-wrap input{padding-left:32px;}
+
+/* Field error */
+.field-error{font-size:.8rem;color:#E94F4F;margin-top:5px;display:none;}
+.show-error{display:block;}
+
+/* Btn */
+.btn-primary{
+  width:100%;padding:16px;
+  background:var(--g);color:#fff;
+  border:none;border-radius:10px;
+  font-size:1.05rem;font-weight:700;font-family:inherit;
+  cursor:pointer;
+  box-shadow:0 4px 16px rgba(29,158,117,.3);
+  transition:background .2s,transform .15s,box-shadow .2s;
+  margin-top:8px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-primary:hover{
+  background:var(--g2);
+  transform:translateY(-1px);
+  box-shadow:0 6px 24px rgba(29,158,117,.38);
+}
+.btn-primary:active{transform:translateY(0)}
+.btn-primary.loading{background:var(--g2);pointer-events:none;}
+
+.spinner{
+  width:16px;height:16px;
+  border:2px solid rgba(255,255,255,.4);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:860px){
+  .page{grid-template-columns:1fr}
+  .left{display:none}
+  .right{padding:40px 28px;justify-content:flex-start;padding-top:60px}
+  .form-wrap{max-width:100%}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- LEFT -->
+  <div class="left">
+    <a href="/" class="left-logo">
+      <div class="logomark">
+        <svg width="24" height="24" viewBox="0 0 22 22" fill="none">
+          <rect x="3" y="5" width="13" height="2" rx="1" fill="white"/>
+          <rect x="3" y="9" width="10" height="2" rx="1" fill="rgba(255,255,255,.65)"/>
+          <rect x="3" y="13" width="7" height="2" rx="1" fill="rgba(255,255,255,.4)"/>
+          <circle cx="17" cy="15.5" r="4" fill="white"/>
+          <text x="17" y="18" text-anchor="middle" font-size="5.5" font-weight="700" fill="#1D9E75">$</text>
+        </svg>
+      </div>
+      <span class="brand-text">Quot<span>App</span></span>
+    </a>
+
+    <div class="left-content">
+      <div class="left-tag">Primeros pasos</div>
+      <h1 class="left-headline">Configura tu comunidad en <em>minutos</em></h1>
+      <p class="left-sub">Solo necesitas un nombre, el tipo de comunidad y la cuota mensual. Después invitas a tus miembros.</p>
+
+      <div class="steps">
+        <div class="step done">
+          <div class="step-num">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="step-info">
+            <span class="step-name">Crear cuenta</span>
+            <span class="step-desc">Tesorero registrado</span>
+          </div>
+        </div>
+        <div class="step active">
+          <div class="step-num">2</div>
+          <div class="step-info">
+            <span class="step-name">Crear comunidad</span>
+            <span class="step-desc">Nombre, tipo y cuota</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-info">
+            <span class="step-name">Invitar miembros</span>
+            <span class="step-desc">Hasta 9 miembros (plan gratuito)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="left-footer">
+      © 2025 QuotApp SpA · <a href="#">Términos</a> · <a href="#">Privacidad</a>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+    <div class="form-wrap">
+
+      <h1 class="form-title">Crea tu comunidad</h1>
+      <p class="form-sub">Esta información aparecerá en los cobros y reportes de tu comunidad.</p>
+
+      <div class="plan-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Plan Gratuito · hasta 10 miembros (tesorero incluido)
+      </div>
+
+      <div class="field">
+        <label for="comunidad-nombre">Nombre de la comunidad</label>
+        <input type="text" id="comunidad-nombre" placeholder="ej. Curso 4°B 2025 — Colegio San Patricio" autocomplete="off">
+        <div class="field-error" id="err-nombre">Ingresa un nombre para tu comunidad.</div>
+      </div>
+
+      <div class="field">
+        <label for="comunidad-tipo">Tipo de comunidad</label>
+        <div class="select-wrap">
+          <select id="comunidad-tipo">
+            <option value="" disabled selected>Selecciona un tipo...</option>
+            <option value="curso_escolar">Curso escolar</option>
+            <option value="junta_vecinal">Junta vecinal</option>
+            <option value="club_deportivo">Club deportivo</option>
+            <option value="condominio">Condominio / Edificio</option>
+            <option value="iglesia">Iglesia / Comunidad religiosa</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+        <div class="field-error" id="err-tipo">Selecciona el tipo de comunidad.</div>
+      </div>
+
+      <div class="field">
+        <label for="comunidad-cuota">Cuota mensual</label>
+        <div class="cuota-wrap">
+          <span class="cuota-prefix">$</span>
+          <input type="number" id="comunidad-cuota" placeholder="5.000" min="0" step="500">
+        </div>
+        <div class="field-hint">Monto en pesos chilenos (CLP). Puedes modificarlo después.</div>
+        <div class="field-error" id="err-cuota">Ingresa un monto válido.</div>
+      </div>
+
+      <button class="btn-primary" id="btnCrear" onclick="handleCrear()">
+        Crear comunidad y continuar
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── Configura estas URLs ──
+const BUBBLE_CREATE_COMMUNITY_URL = 'https://app.quotapp.cl/version-test/api/1.1/wf/crear_comunidad';
+const NEXT_STEP_URL = 'https://app.quotapp.cl/version-test/invitar-miembros'; // ajusta según tu página en Bubble
+
+function showFieldError(id, show) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('show-error', show);
+}
+
+function clearErrors() {
+  ['err-nombre','err-tipo','err-cuota'].forEach(id => showFieldError(id, false));
+  ['comunidad-nombre','comunidad-tipo','comunidad-cuota'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('error');
+  });
+}
+
+async function handleCrear() {
+  clearErrors();
+
+  const nombre = document.getElementById('comunidad-nombre').value.trim();
+  const tipo   = document.getElementById('comunidad-tipo').value;
+  const cuota  = document.getElementById('comunidad-cuota').value;
+  const btn    = document.getElementById('btnCrear');
+
+  let valid = true;
+
+  if (!nombre) {
+    document.getElementById('comunidad-nombre').classList.add('error');
+    showFieldError('err-nombre', true);
+    valid = false;
+  }
+  if (!tipo) {
+    document.getElementById('comunidad-tipo').classList.add('error');
+    showFieldError('err-tipo', true);
+    valid = false;
+  }
+  if (!cuota || isNaN(cuota) || Number(cuota) < 0) {
+    document.getElementById('comunidad-cuota').classList.add('error');
+    showFieldError('err-cuota', true);
+    valid = false;
+  }
+  if (!valid) return;
+
+  // Loading
+  btn.classList.add('loading');
+  btn.innerHTML = '<div class="spinner"></div> Creando comunidad...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(BUBBLE_CREATE_COMMUNITY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre: nombre,
+        tipo: tipo,
+        cuota_mensual: Number(cuota)
+      })
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.status === 'success') {
+      // Pasar el ID de la comunidad recién creada al siguiente paso
+      const communityId = data.response?.community_id || '';
+      window.location.href = NEXT_STEP_URL + (communityId ? '?community=' + communityId : '');
+    } else {
+      btn.classList.remove('loading');
+      btn.innerHTML = 'Crear comunidad y continuar <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+      btn.disabled = false;
+      mostrarErrorGeneral('Ocurrió un error al crear la comunidad. Intenta de nuevo.');
+    }
+  } catch (err) {
+    btn.classList.remove('loading');
+    btn.innerHTML = 'Crear comunidad y continuar <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+    btn.disabled = false;
+    mostrarErrorGeneral('Error de conexión. Verifica tu internet e intenta de nuevo.');
+  }
+}
+
+function mostrarErrorGeneral(msg) {
+  let el = document.getElementById('general-error');
+  if (!el) {
+    el = document.createElement('p');
+    el.id = 'general-error';
+    el.style.cssText = 'color:#E94F4F;font-size:.85rem;margin-top:12px;text-align:center;';
+    document.getElementById('btnCrear').after(el);
+  }
+  el.textContent = msg;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleCrear();
+});
+</script>
+</body>
+</html>
