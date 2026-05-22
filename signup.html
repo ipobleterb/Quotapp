@@ -254,7 +254,7 @@ async function handleSubmit(e) {
     if (res.ok && data.status === 'success') {
       const userId = data.response?.user_id || '';
       window.location.href = rol === 'Tesorero'
-        ? `https://www.quotapp.cl/create-community?user_id=${userId}`
+        ? `https://www.quotapp.cl/create-community?user_id=${userId}&email=${encodeURIComponent(email)}&nombre=${encodeURIComponent(nombre)}&telefono=${encodeURIComponent(telefono)}`
         : `https://app.quotapp.cl/version-test/unirse?user_id=${userId}`;
     } else {
       btn.classList.remove('loading');
