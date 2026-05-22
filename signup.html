@@ -66,7 +66,7 @@ html,body{margin:0;padding:0;font-family:"Instrument Sans",sans-serif;line-heigh
 .btn-signup.loading{background:var(--g2);pointer-events:none}
 .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.error-msg{color:#E94F4F;font-size:.82rem;margin-top:8px;text-align:center;display:none}
+.error-msg{color:#E94F4F;font-size:.82rem;margin-top:8px;text-align:center;display:none;line-height:1.6}
 .error-msg.show{display:block}
 .divider{display:flex;align-items:center;gap:12px;margin:12px 0;color:var(--txt3);font-size:.82rem}
 .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--bdr)}
@@ -198,9 +198,10 @@ function handleRol() {
   document.getElementById('info-miembro').classList.toggle('show', rol === 'Miembro');
 }
 
-function showError(msg) {
+function showError(msg, isHtml=false) {
   const el = document.getElementById('errorMsg');
-  el.textContent = msg;
+  if (isHtml) el.innerHTML = msg;
+  else el.textContent = msg;
   el.classList.add('show');
 }
 
@@ -258,7 +259,16 @@ async function handleSubmit(e) {
     } else {
       btn.classList.remove('loading');
       btn.innerHTML = 'Crear cuenta gratis →';
-      showError(data.message || 'Error al crear la cuenta. Intenta de nuevo.');
+      const msg = data.message || '';
+      const emailDuplicado = msg.toLowerCase().includes('already') || msg.toLowerCase().includes('email');
+      if (emailDuplicado) {
+        showError(
+          'Ya tienes una cuenta con ese email. <a href="https://www.quotapp.cl/login" style="color:#1D9E75;font-weight:700;text-decoration:underline">¿Continuar donde lo dejaste?</a>',
+          true
+        );
+      } else {
+        showError(msg || 'Error al crear la cuenta. Intenta de nuevo.');
+      }
     }
   } catch (err) {
     btn.classList.remove('loading');
