@@ -254,7 +254,7 @@ a{color:inherit;text-decoration:none}
       </div>
       <div class="summary-info">
         <span class="summary-label">Plan</span>
-        <span class="summary-value">Gratuito · hasta 10 miembros</span>
+        <span class="summary-value" id="sumPlan">—</span>
       </div>
     </div>
     <div class="summary-row">
@@ -289,7 +289,7 @@ a{color:inherit;text-decoration:none}
 </footer>
 
 <script>
-const DASHBOARD_URL = 'https://www.quotapp.cl/dashboard.html';
+const DASHBOARD_URL = 'https://app.quotapp.cl/dashboard';
 
 const params      = new URLSearchParams(window.location.search);
 const communityId = params.get('community') || '';
@@ -297,10 +297,14 @@ const userId      = params.get('user_id')   || '';
 const code        = params.get('code')      || '—';
 const nombre      = params.get('nombre')    || '—';
 const members     = params.get('members')   || '0';
+const plan        = params.get('plan')      || 'free';
 
 // Poblar summary
 document.getElementById('sumNombre').textContent  = decodeURIComponent(nombre);
 document.getElementById('sumCode').textContent    = code;
+document.getElementById('sumPlan').textContent    = plan === 'pro'
+  ? '⭐ Pro · hasta 50 miembros'
+  : 'Gratuito · hasta 10 miembros';
 document.getElementById('sumMembers').textContent = members === '0'
   ? 'Ninguno aún — puedes invitar desde el dashboard'
   : members + ' miembro' + (Number(members) !== 1 ? 's' : '') + ' invitado' + (Number(members) !== 1 ? 's' : '');
@@ -329,9 +333,11 @@ function launchConfetti() {
 window.addEventListener('load', () => setTimeout(launchConfetti, 300));
 
 function irAlDashboard() {
-  window.location.href = DASHBOARD_URL
-    + (communityId ? '?community=' + communityId : '')
-    + (userId ? (communityId ? '&' : '?') + 'user_id=' + userId : '');
+  let url = DASHBOARD_URL + '?';
+  if (userId)      url += 'user_id=' + userId + '&';
+  if (communityId) url += 'community=' + communityId + '&';
+  url += 'plan=' + plan;
+  window.location.href = url;
 }
 </script>
 </body>
