@@ -242,6 +242,7 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
   .then(function(d){
     if (d && d.status === 'success') {
       document.documentElement.style.visibility = 'visible';
+      loadCommunityFromAPI();
     } else {
       window.location.replace('https://www.quotapp.cl/login');
     }
@@ -1077,11 +1078,13 @@ async function loadCommunityFromAPI() {
   try {
     const data = await api(`get_communities?user_id=${userId}`);
 
-    const ids   = data.community_ids   || [];
-    const names = data.community_names || [];
-    const plans = data.community_plans || [];
-    const fees  = data.community_fees  || [];
-    const types = data.community_types || [];
+    // Bubble retorna los datos dentro de data.response
+    const r     = data.response || data;
+    const ids   = r.community_ids   || [];
+    const names = r.community_names || [];
+    const plans = r.community_plans || [];
+    const fees  = r.community_fees  || [];
+    const types = r.community_types || [];
 
     if (ids.length === 0) {
       renderAll();
@@ -1092,7 +1095,7 @@ async function loadCommunityFromAPI() {
     state.communities = ids.map((id, i) => ({
       id,
       nombre:      names[i] || 'Sin nombre',
-      plan:        (plans[i] || 'free').toLowerCase(),
+      plan:        plans.length > 0 ? (plans[i] || 'free').toLowerCase() : 'free',
       monthly_fee: fees[i]  || 0,
       tipo:        types[i] || 'otro'
     }));
@@ -1416,7 +1419,7 @@ Generado por QuotApp — www.quotapp.cl`;
 document.getElementById('new-ingreso-fecha').valueAsDate = new Date();
 document.getElementById('new-gasto-fecha').valueAsDate = new Date();
 updateSidebarForPlan();
-loadCommunityFromAPI();
+// loadCommunityFromAPI() se llama desde el guard una vez validado el usuario
 </script>
 </body>
 </html>
