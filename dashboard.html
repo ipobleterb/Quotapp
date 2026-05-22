@@ -1150,8 +1150,9 @@ async function loadMembersFromAPI() {
   if (!state.activeCommunityId || state.activeCommunityId.startsWith('demo')) return;
   try {
     const data = await api(`get_members?community_id=${state.activeCommunityId}`);
-    if (data.members) {
-      state.members = data.members.map(m => ({
+    if ((data.response?.members || data.members)) {
+      const _members = data.response?.members || data.members;
+      state.members = _members.map(m => ({
         id: m._id, nombre: m.name||'', apellido: '', email: m.email||'', telefono: ''
       }));
     }
@@ -1162,8 +1163,9 @@ async function loadIncomeFromAPI() {
   if (!state.activeCommunityId || state.activeCommunityId.startsWith('demo')) return;
   try {
     const data = await api(`get_income?community_id=${state.activeCommunityId}`);
-    if (data.income) {
-      state.ingresos = data.income.map(i => ({
+    if ((data.response?.income || data.income)) {
+      const _income = data.response?.income || data.income;
+      state.ingresos = _income.map(i => ({
         id: i._id, desc: i.month||'Ingreso', monto: i.amount||0,
         fecha: i.payment_date ? i.payment_date.split('T')[0] : ''
       }));
@@ -1175,8 +1177,9 @@ async function loadExpensesFromAPI() {
   if (!state.activeCommunityId || state.activeCommunityId.startsWith('demo')) return;
   try {
     const data = await api(`get_expenses?community_id=${state.activeCommunityId}`);
-    if (data.expenses) {
-      state.gastos = data.expenses.map(g => ({
+    if ((data.response?.expenses || data.expenses)) {
+      const _expenses = data.response?.expenses || data.expenses;
+      state.gastos = _expenses.map(g => ({
         id: g._id, desc: g.description||'Gasto', monto: g.amount||0,
         fecha: g.date ? g.date.split('T')[0] : '', cat: g.category||'otros'
       }));
@@ -1275,8 +1278,9 @@ async function addMember() {
       community_id: state.activeCommunityId,
       name: nombre + (apellido ? ' '+apellido : ''), email
     });
-    if (data.member_id) {
-      state.members.push({ id: data.member_id, nombre, apellido, email, telefono });
+    if (data.response?.member_id || data.member_id) {
+      const memberId = data.response?.member_id || data.member_id;
+      state.members.push({ id: memberId, nombre, apellido, email, telefono });
       ['new-member-nombre','new-member-apellido','new-member-email','new-member-telefono'].forEach(id=>document.getElementById(id).value='');
       closeModal('modalNewMember');
       renderAll();
@@ -1314,8 +1318,9 @@ async function addIngreso() {
       community_id: state.activeCommunityId, amount: parseFloat(monto), month: desc,
       payment_date: fecha||new Date().toISOString().split('T')[0], status: 'pagado'
     });
-    if (data.income_id) {
-      state.ingresos.push({ id: data.income_id, desc, monto: parseFloat(monto), fecha });
+    if (data.response?.income_id || data.income_id) {
+      const incomeId = data.response?.income_id || data.income_id;
+      state.ingresos.push({ id: incomeId, desc, monto: parseFloat(monto), fecha });
       ['new-ingreso-desc','new-ingreso-monto'].forEach(id=>document.getElementById(id).value='');
       document.getElementById('new-ingreso-fecha').valueAsDate = new Date();
       closeModal('modalNewIngreso'); renderAll(); showToast('Ingreso registrado');
@@ -1353,8 +1358,9 @@ async function addGasto() {
       community_id: state.activeCommunityId, description: desc,
       amount: parseFloat(monto), date: fecha||new Date().toISOString().split('T')[0], category: cat
     });
-    if (data.expense_id) {
-      state.gastos.push({ id: data.expense_id, desc, monto: parseFloat(monto), fecha, cat });
+    if (data.response?.expense_id || data.expense_id) {
+      const expenseId = data.response?.expense_id || data.expense_id;
+      state.gastos.push({ id: expenseId, desc, monto: parseFloat(monto), fecha, cat });
       ['new-gasto-desc','new-gasto-monto'].forEach(id=>document.getElementById(id).value='');
       document.getElementById('new-gasto-fecha').valueAsDate = new Date();
       closeModal('modalNewGasto'); renderAll(); showToast('Gasto registrado');
