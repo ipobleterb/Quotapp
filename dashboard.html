@@ -12,7 +12,8 @@
   --navy:#0F1326;--navy2:#1A2040;
   --txt:#0F1326;--txt2:#4A5070;--txt3:#8890AA;
   --bg:#F4F6FA;--white:#fff;--bdr:#E4E7F0;
-  --sidebar:176px;
+  --pro:#7C3AED;--pro2:#5B21B6;--pro3:#EDE9FE;
+  --sidebar:180px;
   --sh:0 1px 4px rgba(15,19,38,.07);
   --sh2:0 4px 20px rgba(15,19,38,.10);
 }
@@ -29,23 +30,37 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
 .sidebar-brand span{color:var(--g)}
 .sidebar-section{padding:16px 12px 6px;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3)}
 .sidebar-nav{list-style:none;padding:0 8px}
-.sidebar-nav li a{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;font-size:.85rem;font-weight:500;color:var(--txt2);text-decoration:none;transition:all .15s;cursor:pointer}
-.sidebar-nav li a:hover{background:var(--bg);color:var(--navy)}
+.sidebar-nav li{position:relative}
+.sidebar-nav li a{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;font-size:.85rem;font-weight:500;color:var(--txt2);text-decoration:none;transition:all .15s;cursor:pointer;user-select:none}
+.sidebar-nav li a:hover:not(.locked-nav){background:var(--bg);color:var(--navy)}
 .sidebar-nav li a.active{background:var(--g3);color:var(--g);font-weight:600}
-.sidebar-nav li a.disabled{opacity:.4;pointer-events:none;cursor:not-allowed}
+.sidebar-nav li a.locked-nav{opacity:.55;cursor:pointer}
+.sidebar-nav li a.locked-nav:hover{background:#F5F3FF;color:var(--pro)}
 .nav-icon{width:16px;height:16px;flex-shrink:0}
+.nav-badge{margin-left:auto;font-size:.6rem;background:var(--pro3);color:var(--pro);padding:1px 6px;border-radius:99px;font-weight:700;flex-shrink:0}
+.nav-lock{margin-left:auto;font-size:.7rem;flex-shrink:0;opacity:.5}
+
+/* Upgrade box — plan gratuito */
 .sidebar-upgrade{margin:auto 12px 16px;background:linear-gradient(135deg,var(--g) 0%,var(--g2) 100%);border-radius:12px;padding:14px;color:#fff}
 .sidebar-upgrade h4{font-size:.82rem;font-weight:700;margin-bottom:4px}
 .sidebar-upgrade p{font-size:.74rem;opacity:.85;line-height:1.4;margin-bottom:10px}
-.sidebar-upgrade a{display:block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;text-align:center;padding:7px;border-radius:7px;font-size:.78rem;font-weight:600;text-decoration:none;transition:background .15s}
+.sidebar-upgrade a{display:block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;text-align:center;padding:7px;border-radius:7px;font-size:.78rem;font-weight:600;text-decoration:none;transition:background .15s;cursor:pointer}
 .sidebar-upgrade a:hover{background:rgba(255,255,255,.3)}
+
+/* Upgrade box — plan pro */
+.sidebar-pro{margin:auto 12px 16px;background:linear-gradient(135deg,var(--pro) 0%,var(--pro2) 100%);border-radius:12px;padding:14px;color:#fff}
+.sidebar-pro h4{font-size:.82rem;font-weight:700;margin-bottom:4px}
+.sidebar-pro p{font-size:.74rem;opacity:.85;line-height:1.4}
 
 /* ── TOPBAR ── */
 .topbar{background:var(--white);border-bottom:1px solid var(--bdr);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between;gap:16px}
 .topbar-left{display:flex;align-items:center;gap:12px}
 .community-selector{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:9px;padding:7px 12px;font-size:.84rem;font-weight:500;color:var(--txt);cursor:pointer;transition:border-color .2s}
 .community-selector:hover{border-color:var(--g)}
-.community-selector select{border:none;background:transparent;font-family:inherit;font-size:.84rem;font-weight:500;color:var(--txt);cursor:pointer;outline:none;min-width:140px}
+.community-selector select{border:none;background:transparent;font-family:inherit;font-size:.84rem;font-weight:500;color:var(--txt);cursor:pointer;outline:none;min-width:160px;max-width:220px}
+.plan-badge-topbar{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;font-size:.72rem;font-weight:700}
+.plan-badge-free{background:var(--bg);border:1px solid var(--bdr);color:var(--txt3)}
+.plan-badge-pro{background:var(--pro3);border:1px solid #C4B5FD;color:var(--pro)}
 .topbar-right{display:flex;align-items:center;gap:8px}
 .btn-top{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:.82rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s;border:none}
 .btn-top-ghost{background:transparent;border:1.5px solid var(--bdr);color:var(--txt2)}
@@ -60,9 +75,9 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
 .page.active{display:block}
 
 /* ── PAGE HEADER ── */
-.page-header{margin-bottom:24px}
-.page-header h1{font-family:'Bricolage Grotesque',sans-serif;font-size:1.5rem;font-weight:800;color:var(--navy);margin-bottom:3px}
-.page-header p{font-size:.85rem;color:var(--txt3)}
+.page-header{margin-bottom:24px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.page-header-text h1{font-family:'Bricolage Grotesque',sans-serif;font-size:1.5rem;font-weight:800;color:var(--navy);margin-bottom:3px}
+.page-header-text p{font-size:.85rem;color:var(--txt3)}
 
 /* ── STATS CARDS ── */
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(29,158,117,.3);border-radius:14px;overflow:hidden;margin-bottom:24px;box-shadow:var(--sh2)}
@@ -124,39 +139,92 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
 .btn-secondary{background:var(--bg);color:var(--txt2);border:1.5px solid var(--bdr);padding:10px 20px;border-radius:9px;font-size:.88rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s}
 .btn-secondary:hover{border-color:var(--g);color:var(--g)}
 
+/* ── PLAN SELECTOR in modal ── */
+.plan-selector{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.plan-option{border:2px solid var(--bdr);border-radius:12px;padding:14px 12px;cursor:pointer;transition:all .2s;position:relative}
+.plan-option:hover{border-color:var(--g)}
+.plan-option.selected-free{border-color:var(--g);background:var(--g3)}
+.plan-option.selected-pro{border-color:var(--pro);background:var(--pro3)}
+.plan-option-title{font-size:.88rem;font-weight:700;color:var(--navy);margin-bottom:3px}
+.plan-option-price{font-size:.76rem;color:var(--txt3);margin-bottom:8px}
+.plan-option-features{font-size:.72rem;color:var(--txt2);line-height:1.6}
+.plan-option-check{position:absolute;top:10px;right:10px;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#fff}
+.selected-free .plan-option-check{display:flex;background:var(--g)}
+.selected-pro .plan-option-check{display:flex;background:var(--pro)}
+
 /* ── MODAL ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,19,38,.5);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
 .modal-overlay.open{display:flex}
-.modal{background:var(--white);border-radius:16px;padding:28px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(15,19,38,.2)}
+.modal{background:var(--white);border-radius:16px;padding:28px;width:100%;max-width:500px;box-shadow:0 20px 60px rgba(15,19,38,.2)}
 .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
 .modal-title{font-family:'Bricolage Grotesque',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy)}
 .modal-close{width:28px;height:28px;border-radius:50%;background:var(--bg);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--txt3);font-size:1rem;transition:background .2s}
 .modal-close:hover{background:var(--bdr)}
 .modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
 
+/* ── UPGRADE MODAL ── */
+.upgrade-modal{max-width:420px;text-align:center}
+.upgrade-modal .upgrade-icon{width:56px;height:56px;background:var(--pro3);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem}
+.upgrade-modal h2{font-family:'Bricolage Grotesque',sans-serif;font-size:1.25rem;font-weight:800;color:var(--navy);margin-bottom:8px}
+.upgrade-modal p{font-size:.88rem;color:var(--txt2);line-height:1.6;margin-bottom:20px}
+.upgrade-features{text-align:left;background:var(--pro3);border-radius:12px;padding:16px;margin-bottom:20px}
+.upgrade-features li{font-size:.82rem;color:var(--pro2);line-height:1.8;list-style:none;display:flex;align-items:center;gap:8px}
+.upgrade-features li::before{content:"✓";font-weight:700;color:var(--pro);flex-shrink:0}
+.btn-upgrade{background:linear-gradient(135deg,var(--pro) 0%,var(--pro2) 100%);color:#fff;border:none;padding:12px 24px;border-radius:9px;font-size:.9rem;font-weight:700;font-family:inherit;cursor:pointer;width:100%;transition:opacity .2s;box-shadow:0 4px 12px rgba(124,58,237,.3)}
+.btn-upgrade:hover{opacity:.9}
+
 /* ── LOCKED BANNER ── */
-.locked-banner{background:linear-gradient(135deg,#F8FAFF 0%,#EEF2FF 100%);border:1.5px solid #C7D2FE;border-radius:12px;padding:20px;display:flex;align-items:center;gap:16px;margin-bottom:20px}
-.locked-icon{width:40px;height:40px;background:#EEF2FF;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#6366F1;font-size:1.2rem}
-.locked-text h4{font-size:.9rem;font-weight:700;color:#3730A3;margin-bottom:2px}
-.locked-text p{font-size:.8rem;color:#6366F1;line-height:1.4}
-.locked-text a{color:#6366F1;font-weight:600;text-decoration:underline;cursor:pointer}
+.locked-banner{background:linear-gradient(135deg,#F8FAFF 0%,var(--pro3) 100%);border:1.5px solid #C4B5FD;border-radius:12px;padding:20px;display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.locked-icon{width:40px;height:40px;background:var(--pro3);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--pro);font-size:1.2rem}
+.locked-text h4{font-size:.9rem;font-weight:700;color:var(--pro2);margin-bottom:2px}
+.locked-text p{font-size:.8rem;color:var(--pro);line-height:1.4}
+.locked-text a{color:var(--pro);font-weight:600;text-decoration:underline;cursor:pointer}
+
+/* ── PAGE LOCK OVERLAY ── */
+.page-locked{text-align:center;padding:60px 32px;background:var(--white);border-radius:16px;border:1px solid var(--bdr)}
+.page-locked .lock-icon{font-size:2.5rem;margin-bottom:16px}
+.page-locked h2{font-family:'Bricolage Grotesque',sans-serif;font-size:1.3rem;font-weight:800;color:var(--navy);margin-bottom:8px}
+.page-locked p{font-size:.88rem;color:var(--txt2);line-height:1.6;max-width:340px;margin:0 auto 20px}
 
 /* ── REPORTES ── */
 .report-card{display:flex;align-items:center;gap:14px;padding:14px;background:var(--white);border:1px solid var(--bdr);border-radius:12px;margin-bottom:10px;transition:box-shadow .2s}
-.report-card:hover{box-shadow:var(--sh2)}
+.report-card:hover:not(.locked-card){box-shadow:var(--sh2)}
+.locked-card{opacity:.5;cursor:default}
 .report-icon{width:40px;height:40px;background:var(--g3);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .report-info{flex:1}
 .report-info h4{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:2px}
 .report-info p{font-size:.76rem;color:var(--txt3)}
 .report-action{padding:7px 14px;border-radius:8px;font-size:.78rem;font-weight:600;font-family:inherit;cursor:pointer;border:1.5px solid var(--bdr);background:transparent;color:var(--txt2);transition:all .2s}
-.report-action:hover{border-color:var(--g);color:var(--g)}
-.report-action.locked{opacity:.4;cursor:not-allowed;pointer-events:none}
+.report-action:hover:not(:disabled){border-color:var(--g);color:var(--g)}
+.report-action:disabled{opacity:.5;cursor:not-allowed}
+
+/* ── COBRO ONLINE ── */
+.cobro-features{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.cobro-feature{background:var(--white);border:1px solid var(--bdr);border-radius:12px;padding:16px;display:flex;gap:12px;align-items:flex-start}
+.cobro-feature-icon{width:32px;height:32px;border-radius:8px;background:var(--g3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cobro-feature h4{font-size:.82rem;font-weight:600;color:var(--navy);margin-bottom:2px}
+.cobro-feature p{font-size:.74rem;color:var(--txt3);line-height:1.4}
+
+/* ── PORTAL ── */
+.portal-member-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--bdr)}
+.portal-member-row:last-child{border-bottom:none}
 
 /* ── TOAST ── */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:#fff;padding:12px 18px;border-radius:10px;font-size:.84rem;font-weight:500;box-shadow:0 8px 24px rgba(15,19,38,.2);z-index:300;transform:translateY(80px);opacity:0;transition:all .3s;max-width:300px}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:#fff;padding:12px 18px;border-radius:10px;font-size:.84rem;font-weight:500;box-shadow:0 8px 24px rgba(15,19,38,.2);z-index:400;transform:translateY(80px);opacity:0;transition:all .3s;max-width:300px}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.success{background:var(--g)}
 .toast.error{background:#DC2626}
+
+/* ── RECORDATORIOS ── */
+.reminder-card{background:var(--white);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:12px;display:flex;align-items:center;gap:16px}
+.reminder-icon{width:40px;height:40px;border-radius:10px;background:var(--g3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.reminder-info{flex:1}
+.reminder-info h4{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:2px}
+.reminder-info p{font-size:.76rem;color:var(--txt3)}
+.toggle{position:relative;width:40px;height:22px;background:var(--bdr);border-radius:99px;cursor:pointer;transition:background .2s;flex-shrink:0}
+.toggle.on{background:var(--g)}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.toggle.on::after{left:21px}
 </style>
 </head>
 <body>
@@ -179,7 +247,7 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
     </a>
 
     <div class="sidebar-section">Gestionar</div>
-    <ul class="sidebar-nav">
+    <ul class="sidebar-nav" id="sidebar-nav">
       <li><a onclick="showPage('dashboard')" class="active" id="nav-dashboard">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
         Panel de control
@@ -198,24 +266,31 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
       </a></li>
     </ul>
 
-    <div class="sidebar-section">Análisis</div>
-    <ul class="sidebar-nav">
+    <div class="sidebar-section">Análisis y más</div>
+    <ul class="sidebar-nav" id="sidebar-nav-pro">
       <li><a onclick="showPage('reportes')" id="nav-reportes">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         Reportes
       </a></li>
-      <li><a class="disabled" title="Disponible en plan Pro">
+      <li id="nav-li-cobro"><a onclick="clickProNav('cobro')" id="nav-cobro" class="locked-nav">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Cobro online
+        <span class="nav-badge">Pro</span>
+      </a></li>
+      <li id="nav-li-recordatorios"><a onclick="clickProNav('recordatorios')" id="nav-recordatorios" class="locked-nav">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
         Recordatorios
-        <span style="margin-left:auto;font-size:.62rem;background:#EEF2FF;color:#6366F1;padding:1px 6px;border-radius:99px;font-weight:700">Pro</span>
+        <span class="nav-badge">Pro</span>
+      </a></li>
+      <li id="nav-li-portal"><a onclick="clickProNav('portal')" id="nav-portal" class="locked-nav">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Portal miembro
+        <span class="nav-badge">Pro</span>
       </a></li>
     </ul>
 
-    <div class="sidebar-upgrade">
-      <h4>Plan Gratuito</h4>
-      <p>Actualiza al plan Pro para cobros online, recordatorios y más.</p>
-      <a href="planes">Ver plan Pro →</a>
-    </div>
+    <!-- Upgrade box (dinámico según plan) -->
+    <div id="sidebar-upgrade-box"></div>
   </aside>
 
   <!-- TOPBAR -->
@@ -223,19 +298,20 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
     <div class="topbar-left">
       <div class="community-selector">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-        <select id="communitySelect" onchange="loadCommunity()">
+        <select id="communitySelect" onchange="switchCommunity()">
           <option value="">Selecciona comunidad...</option>
         </select>
       </div>
+      <span id="plan-topbar-badge" class="plan-badge-topbar plan-badge-free">Gratis</span>
     </div>
     <div class="topbar-right">
-      <button class="btn-top btn-top-ghost" onclick="openModal('modalEditCommunity')">
+      <button class="btn-top btn-top-ghost" onclick="openEditCommunity()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        Editar comunidad
+        Editar
       </button>
       <button class="btn-top btn-top-primary" onclick="openModal('modalNewCommunity')">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Nueva comunidad
+        + Comunidad
       </button>
       <div class="avatar" id="userAvatar">IP</div>
     </div>
@@ -247,8 +323,10 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
     <!-- ── DASHBOARD ── -->
     <div class="page active" id="page-dashboard">
       <div class="page-header">
-        <h1>Resumen de tesorería</h1>
-        <p>Vista clara de todo lo que pasa en tu comunidad.</p>
+        <div class="page-header-text">
+          <h1>Resumen de tesorería</h1>
+          <p id="dashboard-subtitle">Vista clara de todo lo que pasa en tu comunidad.</p>
+        </div>
       </div>
 
       <div class="stats-grid">
@@ -270,7 +348,7 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
         <div class="stat-card">
           <div class="stat-label">Miembros</div>
           <div class="stat-value" id="stat-miembros">0</div>
-          <div class="stat-note">De 10 máximo (plan gratis)</div>
+          <div class="stat-note" id="stat-miembros-note">De 10 máximo (plan gratis)</div>
         </div>
       </div>
 
@@ -280,118 +358,88 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
             <h2>Ingresos recientes</h2>
             <a onclick="showPage('ingresos')">Ver todos</a>
           </div>
-          <div id="dashboard-ingresos">
-            <div class="card-empty">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-              Sin ingresos registrados aún.<br>
-              <a onclick="showPage('ingresos')" style="color:var(--g);font-weight:600;cursor:pointer">Registrar primero →</a>
-            </div>
-          </div>
+          <div id="dashboard-ingresos"><div class="card-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Sin ingresos aún.</div></div>
         </div>
         <div class="card">
           <div class="section-header">
             <h2>Gastos recientes</h2>
             <a onclick="showPage('gastos')">Ver todos</a>
           </div>
-          <div id="dashboard-gastos">
-            <div class="card-empty">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-              Sin gastos registrados aún.<br>
-              <a onclick="showPage('gastos')" style="color:var(--g);font-weight:600;cursor:pointer">Registrar primero →</a>
-            </div>
-          </div>
+          <div id="dashboard-gastos"><div class="card-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Sin gastos aún.</div></div>
         </div>
       </div>
 
       <div class="card">
         <div class="section-header">
-          <h2>Miembros de la comunidad</h2>
-          <a onclick="showPage('miembros')">Gestionar</a>
+          <h2>Miembros recientes</h2>
+          <a onclick="showPage('miembros')">Ver todos</a>
         </div>
-        <div id="dashboard-miembros">
-          <div class="card-empty">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-            Aún no hay miembros.<br>
-            <a onclick="showPage('miembros')" style="color:var(--g);font-weight:600;cursor:pointer">Agregar miembros →</a>
-          </div>
-        </div>
+        <div id="dashboard-miembros"><div class="card-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Aún no hay miembros.</div></div>
       </div>
     </div>
 
     <!-- ── MIEMBROS ── -->
     <div class="page" id="page-miembros">
       <div class="page-header">
-        <h1>Miembros</h1>
-        <p>Administra los miembros de tu comunidad.</p>
+        <div class="page-header-text">
+          <h1>Miembros</h1>
+          <p id="members-subtitle">Administra los miembros de tu comunidad.</p>
+        </div>
+        <button class="btn-primary" id="btn-add-member" onclick="openModal('modalNewMember')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Agregar miembro
+        </button>
       </div>
       <div class="card">
         <div class="members-header">
-          <div class="members-count">
-            <strong id="members-count">0</strong> / 10 miembros (plan gratuito)
-          </div>
-          <button class="btn-primary" onclick="openModal('modalNewMember')" id="btn-add-member">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Agregar miembro
-          </button>
+          <span class="members-count">Total: <strong id="members-count">0</strong> miembros</span>
+          <span class="members-count" id="members-limit-note">Límite: 10 (plan gratis)</span>
         </div>
-        <div id="members-list">
-          <div class="card-empty">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-            Aún no hay miembros en esta comunidad.<br>Agrega el primero para empezar.
-          </div>
-        </div>
+        <div id="members-list"><div class="card-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Aún no hay miembros.<br>Agrega el primero para empezar.</div></div>
       </div>
     </div>
 
     <!-- ── INGRESOS ── -->
     <div class="page" id="page-ingresos">
       <div class="page-header">
-        <h1>Ingresos</h1>
-        <p>Registra y administra los ingresos de tu comunidad.</p>
-      </div>
-      <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+        <div class="page-header-text">
+          <h1>Ingresos</h1>
+          <p>Registra y administra los ingresos de tu comunidad.</p>
+        </div>
         <button class="btn-primary" onclick="openModal('modalNewIngreso')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Registrar ingreso
         </button>
       </div>
       <div class="card">
-        <div id="ingresos-list">
-          <div class="card-empty">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            Sin ingresos registrados.<br>Agrega el primero arriba.
-          </div>
-        </div>
+        <div id="ingresos-list"><div class="card-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Sin ingresos registrados.<br>Agrega el primero arriba.</div></div>
       </div>
     </div>
 
     <!-- ── GASTOS ── -->
     <div class="page" id="page-gastos">
       <div class="page-header">
-        <h1>Gastos</h1>
-        <p>Registra y administra los gastos de tu comunidad.</p>
-      </div>
-      <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+        <div class="page-header-text">
+          <h1>Gastos</h1>
+          <p>Registra y administra los gastos de tu comunidad.</p>
+        </div>
         <button class="btn-primary" onclick="openModal('modalNewGasto')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Registrar gasto
         </button>
       </div>
       <div class="card">
-        <div id="gastos-list">
-          <div class="card-empty">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-            Sin gastos registrados.<br>Agrega el primero arriba.
-          </div>
-        </div>
+        <div id="gastos-list"><div class="card-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Sin gastos registrados.<br>Agrega el primero arriba.</div></div>
       </div>
     </div>
 
     <!-- ── REPORTES ── -->
     <div class="page" id="page-reportes">
       <div class="page-header">
-        <h1>Reportes</h1>
-        <p>Descarga reportes de tu comunidad.</p>
+        <div class="page-header-text">
+          <h1>Reportes</h1>
+          <p>Descarga reportes de tu comunidad.</p>
+        </div>
       </div>
 
       <div class="report-card">
@@ -399,47 +447,104 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         </div>
         <div class="report-info">
-          <h4>Resumen básico PDF</h4>
+          <h4>Resumen básico TXT</h4>
           <p>Ingresos, gastos y saldo del período actual.</p>
         </div>
-        <button class="report-action" onclick="downloadReport()">Descargar PDF</button>
+        <button class="report-action" onclick="downloadReport()">Descargar</button>
       </div>
 
-      <div class="locked-banner">
-        <div class="locked-icon">🔒</div>
-        <div class="locked-text">
-          <h4>Más reportes disponibles en el plan Pro</h4>
-          <p>Exportación Excel, reporte por miembro, historial anual y más. <a href="planes">Ver plan Pro →</a></p>
+      <!-- Pro: reportes bloqueados -->
+      <div id="reports-pro-section">
+        <div class="locked-banner">
+          <div class="locked-icon">🔒</div>
+          <div class="locked-text">
+            <h4>Más reportes disponibles en el plan Pro</h4>
+            <p>Exportación Excel, reporte por miembro, historial anual. <a onclick="openUpgradeModal('Reportes avanzados')">Ver plan Pro →</a></p>
+          </div>
+        </div>
+        <div class="report-card locked-card">
+          <div class="report-icon" style="background:#F3F4F6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div class="report-info"><h4>Exportar a Excel</h4><p>Todos los movimientos en una planilla.</p></div>
+          <button class="report-action" disabled>Plan Pro</button>
+        </div>
+        <div class="report-card locked-card">
+          <div class="report-icon" style="background:#F3F4F6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          <div class="report-info"><h4>Reporte por miembro</h4><p>Estado de pagos individual por cada miembro.</p></div>
+          <button class="report-action" disabled>Plan Pro</button>
         </div>
       </div>
+    </div>
 
-      <div class="report-card" style="opacity:.5">
-        <div class="report-icon" style="background:#F3F4F6">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    <!-- ── COBRO ONLINE (Pro) ── -->
+    <div class="page" id="page-cobro">
+      <div class="page-locked">
+        <div class="lock-icon">💳</div>
+        <h2>Cobro online integrado</h2>
+        <p>Con el plan Pro puedes cobrar las cuotas directamente desde la plataforma con WebPay, tarjeta y transferencia. Los pagos se registran automáticamente.</p>
+        <div class="cobro-features" style="margin-top:20px;text-align:left">
+          <div class="cobro-feature">
+            <div class="cobro-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+            <div><h4>WebPay + tarjetas</h4><p>Tus miembros pagan como prefieran.</p></div>
+          </div>
+          <div class="cobro-feature">
+            <div class="cobro-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+            <div><h4>Registro automático</h4><p>Cada pago se registra sin esfuerzo.</p></div>
+          </div>
+          <div class="cobro-feature">
+            <div class="cobro-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <div><h4>Sin recaudación</h4><p>El dinero va directo a tu cuenta.</p></div>
+          </div>
+          <div class="cobro-feature">
+            <div class="cobro-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+            <div><h4>Link por miembro</h4><p>Cada apoderado recibe su link de pago.</p></div>
+          </div>
         </div>
-        <div class="report-info">
-          <h4>Exportar a Excel</h4>
-          <p>Todos los movimientos en una planilla.</p>
-        </div>
-        <button class="report-action locked">Plan Pro</button>
+        <button class="btn-upgrade" style="max-width:280px;margin:0 auto" onclick="openUpgradeModal('Cobro online')">Activar plan Pro →</button>
       </div>
+    </div>
 
-      <div class="report-card" style="opacity:.5">
-        <div class="report-icon" style="background:#F3F4F6">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+    <!-- ── RECORDATORIOS (Pro) ── -->
+    <div class="page" id="page-recordatorios">
+      <div class="page-locked">
+        <div class="lock-icon">🔔</div>
+        <h2>Recordatorios automáticos</h2>
+        <p>Con el plan Pro puedes enviar recordatorios automáticos por WhatsApp y email a los miembros con pagos pendientes. Sin esfuerzo manual.</p>
+        <div style="display:grid;gap:10px;margin:20px auto;max-width:360px;text-align:left">
+          <div class="reminder-card" style="opacity:.5;pointer-events:none">
+            <div class="reminder-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <div class="reminder-info"><h4>WhatsApp automático</h4><p>Mensaje al vencer el plazo de pago.</p></div>
+            <div class="toggle"></div>
+          </div>
+          <div class="reminder-card" style="opacity:.5;pointer-events:none">
+            <div class="reminder-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div class="reminder-info"><h4>Email de recordatorio</h4><p>Aviso antes y después del vencimiento.</p></div>
+            <div class="toggle"></div>
+          </div>
         </div>
-        <div class="report-info">
-          <h4>Reporte por miembro</h4>
-          <p>Estado de pagos individual por cada miembro.</p>
+        <button class="btn-upgrade" style="max-width:280px;margin:0 auto" onclick="openUpgradeModal('Recordatorios automáticos')">Activar plan Pro →</button>
+      </div>
+    </div>
+
+    <!-- ── PORTAL MIEMBRO (Pro) ── -->
+    <div class="page" id="page-portal">
+      <div class="page-locked">
+        <div class="lock-icon">👤</div>
+        <h2>Portal privado del miembro</h2>
+        <p>Con el plan Pro cada miembro recibe acceso a un portal personal donde puede ver su historial de pagos, cuotas pendientes y descargar comprobantes.</p>
+        <div style="background:var(--bg);border-radius:12px;padding:20px;margin:20px auto;max-width:340px;text-align:left;opacity:.5">
+          <div style="font-size:.75rem;font-weight:700;color:var(--txt3);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em">Vista del miembro</div>
+          <div class="portal-member-row" style="padding:8px 0;border-bottom:1px solid var(--bdr)"><span style="font-size:.84rem;font-weight:600;color:var(--navy)">Enero 2025</span><span class="badge badge-green" style="margin-left:auto">Pagado</span></div>
+          <div class="portal-member-row" style="padding:8px 0;border-bottom:1px solid var(--bdr)"><span style="font-size:.84rem;font-weight:600;color:var(--navy)">Febrero 2025</span><span class="badge badge-red" style="margin-left:auto">Pendiente</span></div>
+          <div class="portal-member-row" style="padding:8px 0"><span style="font-size:.84rem;font-weight:600;color:var(--navy)">Marzo 2025</span><span class="badge badge-green" style="margin-left:auto">Pagado</span></div>
         </div>
-        <button class="report-action locked">Plan Pro</button>
+        <button class="btn-upgrade" style="max-width:280px;margin:0 auto" onclick="openUpgradeModal('Portal del miembro')">Activar plan Pro →</button>
       </div>
     </div>
 
   </main>
 </div>
 
-<!-- ── MODALES ── -->
+<!-- ══════════════ MODALES ══════════════ -->
 
 <!-- Modal: Nueva comunidad -->
 <div class="modal-overlay" id="modalNewCommunity">
@@ -452,10 +557,55 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
       <label>Nombre de la comunidad</label>
       <input type="text" id="new-community-name" placeholder="Ej: Curso 5°B 2025">
     </div>
-    <div class="form-field">
-      <label>Descripción (opcional)</label>
-      <textarea id="new-community-desc" placeholder="Una breve descripción..."></textarea>
+    <div class="form-row">
+      <div class="form-field" style="margin-bottom:0">
+        <label>Tipo</label>
+        <select id="new-community-type">
+          <option value="curso">Curso escolar</option>
+          <option value="club">Club deportivo</option>
+          <option value="condominio">Condominio / vecinos</option>
+          <option value="organizacion">Organización</option>
+          <option value="otro">Otro</option>
+        </select>
+      </div>
+      <div class="form-field" style="margin-bottom:0">
+        <label>Cuota mensual ($)</label>
+        <input type="number" id="new-community-fee" placeholder="Ej: 8000" min="0">
+      </div>
     </div>
+
+    <!-- Plan selector -->
+    <div class="form-field" style="margin-top:16px">
+      <label>Selecciona el plan para esta comunidad</label>
+    </div>
+    <div class="plan-selector">
+      <div class="plan-option selected-free" id="plan-opt-free" onclick="selectPlan('free')">
+        <div class="plan-option-check">✓</div>
+        <div class="plan-option-title">Plan Gratis</div>
+        <div class="plan-option-price">$0 / mes</div>
+        <div class="plan-option-features">
+          ✓ Hasta 10 miembros<br>
+          ✓ Ingresos y gastos manual<br>
+          ✓ Reporte básico PDF<br>
+          ✗ Cobro online<br>
+          ✗ Recordatorios
+        </div>
+      </div>
+      <div class="plan-option" id="plan-opt-pro" onclick="selectPlan('pro')">
+        <div class="plan-option-check">✓</div>
+        <div class="plan-option-title" style="color:var(--pro)">Plan Pro ⭐</div>
+        <div class="plan-option-price">$4.990 / mes</div>
+        <div class="plan-option-features">
+          ✓ Hasta 50 miembros<br>
+          ✓ Cobro online Flow/WebPay<br>
+          ✓ Recordatorios automáticos<br>
+          ✓ Portal por miembro<br>
+          ✓ Reportes Excel + PDF
+        </div>
+      </div>
+    </div>
+    <input type="hidden" id="new-community-plan" value="free">
+
     <div class="modal-footer">
       <button class="btn-secondary" onclick="closeModal('modalNewCommunity')">Cancelar</button>
       <button class="btn-primary" onclick="createCommunity()">Crear comunidad</button>
@@ -473,6 +623,22 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
     <div class="form-field">
       <label>Nombre de la comunidad</label>
       <input type="text" id="edit-community-name" placeholder="Nombre">
+    </div>
+    <div class="form-row">
+      <div class="form-field" style="margin-bottom:0">
+        <label>Tipo</label>
+        <select id="edit-community-type">
+          <option value="curso">Curso escolar</option>
+          <option value="club">Club deportivo</option>
+          <option value="condominio">Condominio / vecinos</option>
+          <option value="organizacion">Organización</option>
+          <option value="otro">Otro</option>
+        </select>
+      </div>
+      <div class="form-field" style="margin-bottom:0">
+        <label>Cuota mensual ($)</label>
+        <input type="number" id="edit-community-fee" placeholder="Ej: 8000" min="0">
+      </div>
     </div>
     <div class="modal-footer">
       <button class="btn-secondary" onclick="closeModal('modalEditCommunity')">Cancelar</button>
@@ -498,8 +664,8 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
         <input type="text" id="new-member-apellido" placeholder="González">
       </div>
     </div>
-    <div class="form-field" style="margin-top:12px">
-      <label>Correo electrónico</label>
+    <div class="form-field">
+      <label>Email</label>
       <input type="email" id="new-member-email" placeholder="maria@ejemplo.com">
     </div>
     <div class="form-field">
@@ -522,19 +688,19 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
     </div>
     <div class="form-field">
       <label>Descripción</label>
-      <input type="text" id="new-ingreso-desc" placeholder="Ej: Cuota marzo - Juan Pérez">
+      <input type="text" id="new-ingreso-desc" placeholder="Ej: Cuota Enero">
     </div>
     <div class="form-row">
       <div class="form-field" style="margin-bottom:0">
         <label>Monto ($)</label>
-        <input type="number" id="new-ingreso-monto" placeholder="30000">
+        <input type="number" id="new-ingreso-monto" placeholder="8000" min="0">
       </div>
       <div class="form-field" style="margin-bottom:0">
         <label>Fecha</label>
         <input type="date" id="new-ingreso-fecha">
       </div>
     </div>
-    <div class="modal-footer" style="margin-top:20px">
+    <div class="modal-footer">
       <button class="btn-secondary" onclick="closeModal('modalNewIngreso')">Cancelar</button>
       <button class="btn-primary" onclick="addIngreso()">Guardar ingreso</button>
     </div>
@@ -550,19 +716,19 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
     </div>
     <div class="form-field">
       <label>Descripción</label>
-      <input type="text" id="new-gasto-desc" placeholder="Ej: Materiales acto de fin de año">
+      <input type="text" id="new-gasto-desc" placeholder="Ej: Materiales para evento">
     </div>
     <div class="form-row">
       <div class="form-field" style="margin-bottom:0">
         <label>Monto ($)</label>
-        <input type="number" id="new-gasto-monto" placeholder="15000">
+        <input type="number" id="new-gasto-monto" placeholder="5000" min="0">
       </div>
       <div class="form-field" style="margin-bottom:0">
         <label>Fecha</label>
         <input type="date" id="new-gasto-fecha">
       </div>
     </div>
-    <div class="form-field" style="margin-top:12px">
+    <div class="form-field" style="margin-top:4px">
       <label>Categoría</label>
       <select id="new-gasto-cat">
         <option value="materiales">Materiales</option>
@@ -578,113 +744,184 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
   </div>
 </div>
 
+<!-- Modal: Upgrade a Pro -->
+<div class="modal-overlay" id="modalUpgrade">
+  <div class="modal upgrade-modal">
+    <button class="modal-close" onclick="closeModal('modalUpgrade')" style="position:absolute;top:20px;right:20px">✕</button>
+    <div class="upgrade-icon">⭐</div>
+    <h2>Activa el plan Pro</h2>
+    <p id="upgrade-feature-text">Desbloquea todas las funcionalidades avanzadas de QuotApp para gestionar tu comunidad sin límites.</p>
+    <ul class="upgrade-features">
+      <li>Hasta 50 miembros por comunidad</li>
+      <li>Cobro online con Flow / WebPay</li>
+      <li>Recordatorios por WhatsApp y email</li>
+      <li>Portal privado para cada miembro</li>
+      <li>Reportes completos en PDF y Excel</li>
+      <li>Soporte prioritario por WhatsApp</li>
+    </ul>
+    <button class="btn-upgrade" onclick="goToPlanes()">Ver planes y precios →</button>
+    <p style="font-size:.74rem;color:var(--txt3);margin-top:12px">Sin compromisos. Cancela cuando quieras.</p>
+  </div>
+</div>
+
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
 // ── CONFIG ──
 const BASE_URL = 'https://app.quotapp.cl/version-test/api/1.1/wf';
-
-// Obtener user_id de la URL
 const urlParams = new URLSearchParams(window.location.search);
 const userId = urlParams.get('user_id') || '';
 
 // ── STATE ──
 const state = {
-  communities: [],
-  activeCommunity: null,
+  communities: [],      // [{ id, nombre, tipo, monthly_fee, plan:'free'|'pro' }]
+  activeCommunity: null, // índice activo
   activeCommunityId: null,
   members: [],
   ingresos: [],
-  gastos: []
+  gastos: [],
+  get activePlan() {
+    if (this.activeCommunity === null) return 'free';
+    return this.communities[this.activeCommunity]?.plan || 'free';
+  },
+  get memberLimit() { return this.activePlan === 'pro' ? 50 : 10; }
 };
 
-// ── API CALLS ──
+// ── API ──
 async function api(endpoint, method='GET', body=null) {
-  const opts = { method, headers: { 'Content-Type': 'application/json' } };
+  const opts = { method, headers: {'Content-Type':'application/json'} };
   if (body) opts.body = JSON.stringify(body);
   const res = await fetch(`${BASE_URL}/${endpoint}`, opts);
   return res.json();
 }
 
-async function loadCommunityFromAPI() {
-  if (!userId) return;
-  try {
-    const data = await api(`get_community?user_id=${userId}`);
-    if (data.community_id) {
-      state.activeCommunityId = data.community_id;
-      state.communities = [{ id: data.community_id, nombre: data.name, monthly_fee: data.monthly_fee }];
-      const sel = document.getElementById('communitySelect');
-      sel.innerHTML = `<option value="${data.community_id}">${data.name}</option>`;
-      sel.value = data.community_id;
-      state.activeCommunity = 0;
-      await Promise.all([loadMembersFromAPI(), loadIncomeFromAPI(), loadExpensesFromAPI()]);
-      renderAll();
-    }
-  } catch(e) { console.error('Error cargando comunidad:', e); }
-}
-
-async function loadMembersFromAPI() {
-  if (!state.activeCommunityId) return;
-  try {
-    const data = await api(`get_members?community_id=${state.activeCommunityId}`);
-    if (data.members) {
-      state.members = data.members.map(m => ({
-        id: m._id,
-        nombre: m.name || '',
-        apellido: '',
-        email: m.email || '',
-        telefono: ''
-      }));
-    }
-  } catch(e) { console.error('Error cargando miembros:', e); }
-}
-
-async function loadIncomeFromAPI() {
-  if (!state.activeCommunityId) return;
-  try {
-    const data = await api(`get_income?community_id=${state.activeCommunityId}`);
-    if (data.income) {
-      state.ingresos = data.income.map(i => ({
-        id: i._id,
-        desc: i.month || 'Ingreso',
-        monto: i.amount || 0,
-        fecha: i.payment_date ? i.payment_date.split('T')[0] : ''
-      }));
-    }
-  } catch(e) { console.error('Error cargando ingresos:', e); }
-}
-
-async function loadExpensesFromAPI() {
-  if (!state.activeCommunityId) return;
-  try {
-    const data = await api(`get_expenses?community_id=${state.activeCommunityId}`);
-    if (data.expenses) {
-      state.gastos = data.expenses.map(g => ({
-        id: g._id,
-        desc: g.description || 'Gasto',
-        monto: g.amount || 0,
-        fecha: g.date ? g.date.split('T')[0] : '',
-        cat: g.category || 'otros'
-      }));
-    }
-  } catch(e) { console.error('Error cargando gastos:', e); }
+// ── PLAN SELECTOR in modal ──
+function selectPlan(plan) {
+  document.getElementById('plan-opt-free').className = 'plan-option' + (plan==='free'?' selected-free':'');
+  document.getElementById('plan-opt-pro').className  = 'plan-option' + (plan==='pro'?' selected-pro':'');
+  document.getElementById('new-community-plan').value = plan;
 }
 
 // ── NAVIGATION ──
 function showPage(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
-  document.getElementById('nav-' + page).classList.add('active');
+  document.getElementById('page-' + page)?.classList.add('active');
+  document.getElementById('nav-' + page)?.classList.add('active');
+}
+
+function clickProNav(page) {
+  if (state.activePlan === 'pro') {
+    showPage(page);
+  } else {
+    openUpgradeModal(page);
+  }
+}
+
+// ── SIDEBAR SEGÚN PLAN ──
+function updateSidebarForPlan() {
+  const isPro = state.activePlan === 'pro';
+
+  // Pestañas Pro
+  ['cobro','recordatorios','portal'].forEach(p => {
+    const navEl = document.getElementById('nav-' + p);
+    if (!navEl) return;
+    if (isPro) {
+      navEl.className = '';
+      navEl.onclick = () => showPage(p);
+    } else {
+      navEl.className = 'locked-nav';
+      navEl.onclick = () => openUpgradeModal(p);
+    }
+  });
+
+  // Badge topbar
+  const badge = document.getElementById('plan-topbar-badge');
+  if (isPro) {
+    badge.textContent = '⭐ Pro';
+    badge.className = 'plan-badge-topbar plan-badge-pro';
+  } else {
+    badge.textContent = 'Gratis';
+    badge.className = 'plan-badge-topbar plan-badge-free';
+  }
+
+  // Sidebar upgrade box
+  const box = document.getElementById('sidebar-upgrade-box');
+  if (isPro) {
+    box.innerHTML = `<div class="sidebar-pro"><h4>⭐ Plan Pro activo</h4><p>Tienes acceso a todas las funcionalidades.</p></div>`;
+  } else {
+    box.innerHTML = `<div class="sidebar-upgrade"><h4>Plan Gratuito</h4><p>Actualiza al plan Pro para cobros online, recordatorios y más.</p><a onclick="openUpgradeModal('general')">Ver plan Pro →</a></div>`;
+  }
+
+  // Miembros limit note
+  const limitNote = document.getElementById('members-limit-note');
+  if (limitNote) limitNote.textContent = isPro ? 'Límite: 50 (plan Pro)' : 'Límite: 10 (plan gratis)';
+
+  // Stat note
+  const statNote = document.getElementById('stat-miembros-note');
+  if (statNote) statNote.textContent = isPro ? 'De 50 máximo (plan Pro)' : 'De 10 máximo (plan gratis)';
+
+  // Reportes pro section
+  const reportsProSec = document.getElementById('reports-pro-section');
+  if (reportsProSec) reportsProSec.style.display = isPro ? 'none' : 'block';
+}
+
+// ── UPGRADE MODAL ──
+const featureLabels = {
+  cobro: 'Cobrar las cuotas directamente desde QuotApp con WebPay y tarjeta.',
+  recordatorios: 'Enviar recordatorios automáticos por WhatsApp y email.',
+  portal: 'Dar a cada miembro acceso a su portal privado de pagos.',
+  general: 'Desbloquea todas las funcionalidades avanzadas de QuotApp.',
+  'Reportes avanzados': 'Exportar reportes en Excel y PDF con detalle por miembro.',
+  'Cobro online': 'Cobrar con WebPay, tarjeta y transferencia desde la app.',
+  'Recordatorios automáticos': 'Recordatorios automáticos por WhatsApp y email.',
+  'Portal del miembro': 'Portal privado para que cada miembro vea sus pagos.'
+};
+
+function openUpgradeModal(feature) {
+  document.getElementById('upgrade-feature-text').textContent =
+    featureLabels[feature] || featureLabels.general;
+  openModal('modalUpgrade');
+}
+
+function goToPlanes() {
+  window.location.href = 'planes';
+}
+
+// ── COMMUNITY SWITCH ──
+async function switchCommunity() {
+  const sel = document.getElementById('communitySelect');
+  const idx = parseInt(sel.value);
+  if (isNaN(idx)) return;
+  state.activeCommunity = idx;
+  state.activeCommunityId = state.communities[idx]?.id || null;
+  state.members = [];
+  state.ingresos = [];
+  state.gastos = [];
+  updateSidebarForPlan();
+  renderAll();
+  // Cargar datos de la nueva comunidad
+  if (state.activeCommunityId) {
+    await Promise.all([loadMembersFromAPI(), loadIncomeFromAPI(), loadExpensesFromAPI()]);
+    renderAll();
+  }
 }
 
 // ── MODALS ──
 function openModal(id) { document.getElementById(id).classList.add('open') }
 function closeModal(id) { document.getElementById(id).classList.remove('open') }
 document.querySelectorAll('.modal-overlay').forEach(m => {
-  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open') });
+  m.addEventListener('click', e => { if(e.target===m) m.classList.remove('open') });
 });
+
+function openEditCommunity() {
+  if (state.activeCommunity === null) { showToast('Selecciona una comunidad primero', 'error'); return; }
+  const c = state.communities[state.activeCommunity];
+  document.getElementById('edit-community-name').value = c?.nombre || '';
+  document.getElementById('edit-community-fee').value = c?.monthly_fee || '';
+  openModal('modalEditCommunity');
+}
 
 // ── TOAST ──
 function showToast(msg, type='success') {
@@ -695,16 +932,14 @@ function showToast(msg, type='success') {
 }
 
 // ── FORMAT ──
-function fmtMoney(n) {
-  return '$' + Number(n).toLocaleString('es-CL');
-}
+function fmtMoney(n) { return '$' + Number(n).toLocaleString('es-CL') }
 function fmtDate(d) {
   if (!d) return '';
   const [y,m,day] = d.split('-');
   return `${day}/${m}/${y}`;
 }
 function initials(nombre, apellido) {
-  return ((nombre||'')[0]||'') + ((apellido||'')[0]||'');
+  return ((nombre||'')[0]||'').toUpperCase() + ((apellido||'')[0]||'').toUpperCase();
 }
 
 // ── STATS ──
@@ -717,15 +952,16 @@ function updateStats() {
   document.getElementById('stat-miembros').textContent = state.members.length;
   document.getElementById('members-count').textContent = state.members.length;
 
-  // Deshabilitar agregar miembro si llegó a 10
+  const limit = state.memberLimit;
   const btn = document.getElementById('btn-add-member');
-  if (state.members.length >= 10) {
+  if (state.members.length >= limit) {
     btn.disabled = true;
     btn.style.opacity = '.5';
-    btn.title = 'Límite de 10 miembros en el plan gratuito';
+    btn.title = `Límite de ${limit} miembros alcanzado`;
   } else {
     btn.disabled = false;
     btn.style.opacity = '1';
+    btn.title = '';
   }
 }
 
@@ -733,7 +969,7 @@ function updateStats() {
 function renderDashboardIngresos() {
   const el = document.getElementById('dashboard-ingresos');
   if (!state.ingresos.length) {
-    el.innerHTML = '<div class="card-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Sin ingresos registrados aún.<br><a onclick="showPage(\'ingresos\')" style="color:var(--g);font-weight:600;cursor:pointer">Registrar primero →</a></div>';
+    el.innerHTML = '<div class="card-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Sin ingresos aún.<br><a onclick="showPage(\'ingresos\')" style="color:var(--g);font-weight:600;cursor:pointer">Registrar →</a></div>';
     return;
   }
   const items = state.ingresos.slice(-3).reverse();
@@ -743,7 +979,7 @@ function renderDashboardIngresos() {
 function renderDashboardGastos() {
   const el = document.getElementById('dashboard-gastos');
   if (!state.gastos.length) {
-    el.innerHTML = '<div class="card-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Sin gastos registrados aún.<br><a onclick="showPage(\'gastos\')" style="color:var(--g);font-weight:600;cursor:pointer">Registrar primero →</a></div>';
+    el.innerHTML = '<div class="card-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Sin gastos aún.<br><a onclick="showPage(\'gastos\')" style="color:var(--g);font-weight:600;cursor:pointer">Registrar →</a></div>';
     return;
   }
   const items = state.gastos.slice(-3).reverse();
@@ -767,7 +1003,7 @@ function renderMembersList() {
   }
   el.innerHTML = state.members.map((m,i) => `
     <div class="member-row">
-      <div class="member-avatar">${initials(m.nombre, m.apellido).toUpperCase()}</div>
+      <div class="member-avatar">${initials(m.nombre, m.apellido)}</div>
       <div class="member-info">
         <div class="member-name">${m.nombre} ${m.apellido}</div>
         <div class="member-email">${m.email}${m.telefono ? ' · ' + m.telefono : ''}</div>
@@ -798,6 +1034,7 @@ function renderGastosList() {
 
 function renderAll() {
   updateStats();
+  updateSidebarForPlan();
   renderDashboardIngresos();
   renderDashboardGastos();
   renderDashboardMiembros();
@@ -806,63 +1043,175 @@ function renderAll() {
   renderGastosList();
 }
 
+// ── LOAD FROM API ──
+async function loadCommunityFromAPI() {
+  if (!userId) {
+    // Demo: cargar datos de ejemplo
+    loadDemoData();
+    return;
+  }
+  try {
+    const data = await api(`get_community?user_id=${userId}`);
+    if (data.community_id) {
+      const plan = data.plan || 'free';
+      state.communities = [{ id: data.community_id, nombre: data.name, monthly_fee: data.monthly_fee, tipo: data.type || 'curso', plan }];
+      state.activeCommunity = 0;
+      state.activeCommunityId = data.community_id;
+      const sel = document.getElementById('communitySelect');
+      sel.innerHTML = `<option value="0">${data.name} ${plan==='pro'?'⭐':''}</option>`;
+      sel.value = '0';
+      await Promise.all([loadMembersFromAPI(), loadIncomeFromAPI(), loadExpensesFromAPI()]);
+      renderAll();
+    }
+  } catch(e) { console.error('Error cargando comunidad:', e); }
+}
+
+function loadDemoData() {
+  // Demo para visualizar sin API
+  state.communities = [
+    { id: 'demo1', nombre: '5°B 2025 (Demo)', monthly_fee: 8000, tipo: 'curso', plan: 'free' },
+    { id: 'demo2', nombre: 'Club Deportivo (Demo)', monthly_fee: 5000, tipo: 'club', plan: 'pro' }
+  ];
+  state.activeCommunity = 0;
+  state.activeCommunityId = 'demo1';
+  const sel = document.getElementById('communitySelect');
+  sel.innerHTML = state.communities.map((c,i) => `<option value="${i}">${c.nombre} ${c.plan==='pro'?'⭐':''}</option>`).join('');
+  sel.value = '0';
+  renderAll();
+}
+
+async function loadMembersFromAPI() {
+  if (!state.activeCommunityId || state.activeCommunityId.startsWith('demo')) return;
+  try {
+    const data = await api(`get_members?community_id=${state.activeCommunityId}`);
+    if (data.members) {
+      state.members = data.members.map(m => ({
+        id: m._id, nombre: m.name||'', apellido: '', email: m.email||'', telefono: ''
+      }));
+    }
+  } catch(e) { console.error('Error cargando miembros:', e); }
+}
+
+async function loadIncomeFromAPI() {
+  if (!state.activeCommunityId || state.activeCommunityId.startsWith('demo')) return;
+  try {
+    const data = await api(`get_income?community_id=${state.activeCommunityId}`);
+    if (data.income) {
+      state.ingresos = data.income.map(i => ({
+        id: i._id, desc: i.month||'Ingreso', monto: i.amount||0,
+        fecha: i.payment_date ? i.payment_date.split('T')[0] : ''
+      }));
+    }
+  } catch(e) { console.error('Error cargando ingresos:', e); }
+}
+
+async function loadExpensesFromAPI() {
+  if (!state.activeCommunityId || state.activeCommunityId.startsWith('demo')) return;
+  try {
+    const data = await api(`get_expenses?community_id=${state.activeCommunityId}`);
+    if (data.expenses) {
+      state.gastos = data.expenses.map(g => ({
+        id: g._id, desc: g.description||'Gasto', monto: g.amount||0,
+        fecha: g.date ? g.date.split('T')[0] : '', cat: g.category||'otros'
+      }));
+    }
+  } catch(e) { console.error('Error cargando gastos:', e); }
+}
+
 // ── ACTIONS ──
 async function createCommunity() {
   const nombre = document.getElementById('new-community-name').value.trim();
-  const monthly_fee = document.getElementById('new-community-fee')?.value || 0;
+  const tipo   = document.getElementById('new-community-type').value;
+  const fee    = document.getElementById('new-community-fee').value || 0;
+  const plan   = document.getElementById('new-community-plan').value;
   if (!nombre) { showToast('Ingresa un nombre para la comunidad', 'error'); return; }
-  if (state.communities.length >= 1) { showToast('Plan gratuito permite solo 1 comunidad', 'error'); return; }
+
+  if (!userId) {
+    // Demo
+    const idx = state.communities.length;
+    state.communities.push({ id: 'demo'+Date.now(), nombre, tipo, monthly_fee: parseFloat(fee)||0, plan });
+    const sel = document.getElementById('communitySelect');
+    sel.innerHTML = state.communities.map((c,i) => `<option value="${i}">${c.nombre} ${c.plan==='pro'?'⭐':''}</option>`).join('');
+    sel.value = idx;
+    state.activeCommunity = idx;
+    state.activeCommunityId = state.communities[idx].id;
+    state.members = []; state.ingresos = []; state.gastos = [];
+    closeModal('modalNewCommunity');
+    document.getElementById('new-community-name').value = '';
+    document.getElementById('new-community-fee').value = '';
+    selectPlan('free');
+    updateSidebarForPlan();
+    renderAll();
+    showToast('Comunidad creada');
+    return;
+  }
+
   try {
     const data = await api('create_community', 'POST', {
-      user_id: userId, name: nombre,
-      monthly_fee: parseFloat(monthly_fee) || 0,
-      year: new Date().getFullYear().toString()
+      user_id: userId, name: nombre, monthly_fee: parseFloat(fee)||0,
+      year: new Date().getFullYear().toString(), plan
     });
     if (data.community_id) {
-      state.activeCommunityId = data.community_id;
-      state.communities = [{ id: data.community_id, nombre }];
-      state.activeCommunity = 0;
+      const idx = state.communities.length;
+      state.communities.push({ id: data.community_id, nombre, tipo, monthly_fee: parseFloat(fee)||0, plan });
       const sel = document.getElementById('communitySelect');
-      sel.innerHTML = `<option value="${data.community_id}">${nombre}</option>`;
-      sel.value = data.community_id;
+      sel.innerHTML = state.communities.map((c,i)=>`<option value="${i}">${c.nombre} ${c.plan==='pro'?'⭐':''}</option>`).join('');
+      sel.value = idx;
+      state.activeCommunity = idx;
+      state.activeCommunityId = data.community_id;
+      state.members = []; state.ingresos = []; state.gastos = [];
       closeModal('modalNewCommunity');
       document.getElementById('new-community-name').value = '';
-      showToast('Comunidad creada exitosamente');
+      selectPlan('free');
+      updateSidebarForPlan();
       renderAll();
+      showToast('Comunidad creada exitosamente');
     }
   } catch(e) { showToast('Error al crear comunidad', 'error'); }
 }
 
 function editCommunity() {
   const nombre = document.getElementById('edit-community-name').value.trim();
+  const fee = document.getElementById('edit-community-fee').value;
   if (!nombre || state.activeCommunity === null) return;
   state.communities[state.activeCommunity].nombre = nombre;
-  document.getElementById('communitySelect').options[state.activeCommunity].text = nombre;
+  if (fee) state.communities[state.activeCommunity].monthly_fee = parseFloat(fee);
+  const sel = document.getElementById('communitySelect');
+  const opt = sel.options[sel.selectedIndex];
+  const isPro = state.activePlan === 'pro';
+  if (opt) opt.text = nombre + (isPro ? ' ⭐' : '');
   closeModal('modalEditCommunity');
   showToast('Comunidad actualizada');
 }
 
-function loadCommunity() {
-  const val = document.getElementById('communitySelect').value;
-  state.activeCommunityId = val || null;
-}
-
 async function addMember() {
-  if (state.members.length >= 10) { showToast('Límite de 10 miembros en plan gratuito', 'error'); return; }
+  if (state.members.length >= state.memberLimit) {
+    showToast(`Límite de ${state.memberLimit} miembros alcanzado`, 'error');
+    return;
+  }
   const nombre = document.getElementById('new-member-nombre').value.trim();
   const apellido = document.getElementById('new-member-apellido').value.trim();
   const email = document.getElementById('new-member-email').value.trim();
+  const telefono = document.getElementById('new-member-telefono').value.trim();
   if (!nombre || !email) { showToast('Nombre y email son requeridos', 'error'); return; }
-  if (!state.activeCommunityId) { showToast('Selecciona una comunidad primero', 'error'); return; }
+
+  if (!state.activeCommunityId || state.activeCommunityId.startsWith('demo')) {
+    state.members.push({ id: 'm'+Date.now(), nombre, apellido, email, telefono });
+    ['new-member-nombre','new-member-apellido','new-member-email','new-member-telefono'].forEach(id=>document.getElementById(id).value='');
+    closeModal('modalNewMember');
+    renderAll();
+    showToast('Miembro agregado');
+    return;
+  }
+
   try {
     const data = await api('add_member', 'POST', {
       community_id: state.activeCommunityId,
-      name: nombre + (apellido ? ' ' + apellido : ''),
-      email
+      name: nombre + (apellido ? ' '+apellido : ''), email
     });
     if (data.member_id) {
-      state.members.push({ id: data.member_id, nombre, apellido, email, telefono: document.getElementById('new-member-telefono').value.trim() });
-      ['new-member-nombre','new-member-apellido','new-member-email','new-member-telefono'].forEach(id => document.getElementById(id).value = '');
+      state.members.push({ id: data.member_id, nombre, apellido, email, telefono });
+      ['new-member-nombre','new-member-apellido','new-member-email','new-member-telefono'].forEach(id=>document.getElementById(id).value='');
       closeModal('modalNewMember');
       renderAll();
       showToast('Miembro agregado exitosamente');
@@ -872,12 +1221,12 @@ async function addMember() {
 
 async function removeMember(i) {
   const member = state.members[i];
-  if (!member?.id) { state.members.splice(i,1); renderAll(); return; }
+  if (!member?.id || member.id.startsWith('m')) {
+    state.members.splice(i,1); renderAll(); return;
+  }
   try {
     await api('delete_member', 'POST', { member_id: member.id });
-    state.members.splice(i, 1);
-    renderAll();
-    showToast('Miembro eliminado');
+    state.members.splice(i,1); renderAll(); showToast('Miembro eliminado');
   } catch(e) { showToast('Error al eliminar miembro', 'error'); }
 }
 
@@ -886,34 +1235,36 @@ async function addIngreso() {
   const monto = document.getElementById('new-ingreso-monto').value;
   const fecha = document.getElementById('new-ingreso-fecha').value;
   if (!desc || !monto) { showToast('Descripción y monto son requeridos', 'error'); return; }
-  if (!state.activeCommunityId) { showToast('Selecciona una comunidad primero', 'error'); return; }
+
+  if (!state.activeCommunityId || state.activeCommunityId.startsWith('demo')) {
+    state.ingresos.push({ id: 'i'+Date.now(), desc, monto: parseFloat(monto), fecha });
+    ['new-ingreso-desc','new-ingreso-monto'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('new-ingreso-fecha').valueAsDate = new Date();
+    closeModal('modalNewIngreso'); renderAll(); showToast('Ingreso registrado'); return;
+  }
+
   try {
     const data = await api('create_income', 'POST', {
-      community_id: state.activeCommunityId,
-      amount: parseFloat(monto),
-      month: desc,
-      payment_date: fecha || new Date().toISOString().split('T')[0],
-      status: 'pagado'
+      community_id: state.activeCommunityId, amount: parseFloat(monto), month: desc,
+      payment_date: fecha||new Date().toISOString().split('T')[0], status: 'pagado'
     });
     if (data.income_id) {
       state.ingresos.push({ id: data.income_id, desc, monto: parseFloat(monto), fecha });
-      ['new-ingreso-desc','new-ingreso-monto'].forEach(id => document.getElementById(id).value = '');
+      ['new-ingreso-desc','new-ingreso-monto'].forEach(id=>document.getElementById(id).value='');
       document.getElementById('new-ingreso-fecha').valueAsDate = new Date();
-      closeModal('modalNewIngreso');
-      renderAll();
-      showToast('Ingreso registrado');
+      closeModal('modalNewIngreso'); renderAll(); showToast('Ingreso registrado');
     }
   } catch(e) { showToast('Error al registrar ingreso', 'error'); }
 }
 
 async function removeIngreso(i) {
   const ingreso = state.ingresos[i];
-  if (!ingreso?.id) { state.ingresos.splice(i,1); renderAll(); return; }
+  if (!ingreso?.id || ingreso.id.startsWith('i')) {
+    state.ingresos.splice(i,1); renderAll(); return;
+  }
   try {
     await api('delete_income', 'POST', { income_id: ingreso.id });
-    state.ingresos.splice(i, 1);
-    renderAll();
-    showToast('Ingreso eliminado');
+    state.ingresos.splice(i,1); renderAll(); showToast('Ingreso eliminado');
   } catch(e) { showToast('Error al eliminar ingreso', 'error'); }
 }
 
@@ -923,68 +1274,70 @@ async function addGasto() {
   const fecha = document.getElementById('new-gasto-fecha').value;
   const cat = document.getElementById('new-gasto-cat').value;
   if (!desc || !monto) { showToast('Descripción y monto son requeridos', 'error'); return; }
-  if (!state.activeCommunityId) { showToast('Selecciona una comunidad primero', 'error'); return; }
+
+  if (!state.activeCommunityId || state.activeCommunityId.startsWith('demo')) {
+    state.gastos.push({ id: 'g'+Date.now(), desc, monto: parseFloat(monto), fecha, cat });
+    ['new-gasto-desc','new-gasto-monto'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('new-gasto-fecha').valueAsDate = new Date();
+    closeModal('modalNewGasto'); renderAll(); showToast('Gasto registrado'); return;
+  }
+
   try {
     const data = await api('create_expense', 'POST', {
-      community_id: state.activeCommunityId,
-      description: desc,
-      amount: parseFloat(monto),
-      date: fecha || new Date().toISOString().split('T')[0],
-      category: cat
+      community_id: state.activeCommunityId, description: desc,
+      amount: parseFloat(monto), date: fecha||new Date().toISOString().split('T')[0], category: cat
     });
     if (data.expense_id) {
       state.gastos.push({ id: data.expense_id, desc, monto: parseFloat(monto), fecha, cat });
-      ['new-gasto-desc','new-gasto-monto'].forEach(id => document.getElementById(id).value = '');
+      ['new-gasto-desc','new-gasto-monto'].forEach(id=>document.getElementById(id).value='');
       document.getElementById('new-gasto-fecha').valueAsDate = new Date();
-      closeModal('modalNewGasto');
-      renderAll();
-      showToast('Gasto registrado');
+      closeModal('modalNewGasto'); renderAll(); showToast('Gasto registrado');
     }
   } catch(e) { showToast('Error al registrar gasto', 'error'); }
 }
 
 async function removeGasto(i) {
   const gasto = state.gastos[i];
-  if (!gasto?.id) { state.gastos.splice(i,1); renderAll(); return; }
+  if (!gasto?.id || gasto.id.startsWith('g')) {
+    state.gastos.splice(i,1); renderAll(); return;
+  }
   try {
     await api('delete_expense', 'POST', { expense_id: gasto.id });
-    state.gastos.splice(i, 1);
-    renderAll();
-    showToast('Gasto eliminado');
+    state.gastos.splice(i,1); renderAll(); showToast('Gasto eliminado');
   } catch(e) { showToast('Error al eliminar gasto', 'error'); }
 }
 
 function downloadReport() {
-  const totalIngresos = state.ingresos.reduce((s,i) => s + Number(i.monto), 0);
-  const totalGastos = state.gastos.reduce((s,g) => s + Number(g.monto), 0);
+  const totalIngresos = state.ingresos.reduce((s,i)=>s+Number(i.monto),0);
+  const totalGastos = state.gastos.reduce((s,g)=>s+Number(g.monto),0);
   const comunidad = state.communities[state.activeCommunity]?.nombre || 'Mi comunidad';
+  const plan = state.activePlan === 'pro' ? 'Plan Pro ⭐' : 'Plan Gratuito';
   const fecha = new Date().toLocaleDateString('es-CL');
 
   const content = `RESUMEN DE TESORERÍA — ${comunidad.toUpperCase()}
-Generado: ${fecha}
+Generado: ${fecha} | ${plan}
 ${'─'.repeat(50)}
 
 RESUMEN GENERAL
 Total recaudado:  ${fmtMoney(totalIngresos)}
 Total gastos:     ${fmtMoney(totalGastos)}
 Saldo actual:     ${fmtMoney(totalIngresos - totalGastos)}
-Total miembros:   ${state.members.length}
+Total miembros:   ${state.members.length} / ${state.memberLimit}
 
 ${'─'.repeat(50)}
 INGRESOS (${state.ingresos.length})
-${state.ingresos.map(i => `  ${fmtDate(i.fecha) || 'Sin fecha'}  ${i.desc.padEnd(30)}  ${fmtMoney(i.monto)}`).join('\n') || '  Sin ingresos registrados'}
+${state.ingresos.map(i=>`  ${fmtDate(i.fecha)||'Sin fecha'}  ${i.desc.padEnd(30)}  ${fmtMoney(i.monto)}`).join('\n')||'  Sin ingresos registrados'}
 
 ${'─'.repeat(50)}
 GASTOS (${state.gastos.length})
-${state.gastos.map(g => `  ${fmtDate(g.fecha) || 'Sin fecha'}  ${g.desc.padEnd(30)}  ${fmtMoney(g.monto)}`).join('\n') || '  Sin gastos registrados'}
+${state.gastos.map(g=>`  ${fmtDate(g.fecha)||'Sin fecha'}  ${g.desc.padEnd(30)}  ${fmtMoney(g.monto)}`).join('\n')||'  Sin gastos registrados'}
 
 ${'─'.repeat(50)}
-MIEMBROS (${state.members.length}/10)
-${state.members.map(m => `  ${(m.nombre+' '+m.apellido).padEnd(25)}  ${m.email}`).join('\n') || '  Sin miembros'}
+MIEMBROS (${state.members.length})
+${state.members.map(m=>`  ${(m.nombre+' '+m.apellido).padEnd(25)}  ${m.email}`).join('\n')||'  Sin miembros'}
 
 ${'─'.repeat(50)}
-Generado por QuotApp — www.quotapp.cl
-Plan Gratuito`;
+Generado por QuotApp — www.quotapp.cl`;
 
   const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
@@ -999,7 +1352,7 @@ Plan Gratuito`;
 // ── INIT ──
 document.getElementById('new-ingreso-fecha').valueAsDate = new Date();
 document.getElementById('new-gasto-fecha').valueAsDate = new Date();
-renderAll();
+updateSidebarForPlan();
 loadCommunityFromAPI();
 </script>
 </body>
