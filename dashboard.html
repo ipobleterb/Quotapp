@@ -1018,7 +1018,7 @@ function renderDashboardMiembros() {
     el.innerHTML = '<div class="card-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Aún no hay miembros.<br><a onclick="showPage(\'miembros\')" style="color:var(--g);font-weight:600;cursor:pointer">Agregar miembros →</a></div>';
     return;
   }
-  el.innerHTML = `<table class="table"><thead><tr><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Rol</th></tr></thead><tbody>${state.members.slice(0,5).map(m=>`<tr><td>${m.nombre} ${m.apellido}</td><td>${m.email||'—'}</td><td>${m.telefono||'—'}</td><td><span class="badge-role ${m.role==='tesorero'?'badge-tesorero':'badge-miembro'}">${m.role||'miembro'}</span></td></tr>`).join('')}</tbody></table>`;
+  el.innerHTML = `<table class="table"><thead><tr><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Rol</th></tr></thead><tbody>${state.members.slice(0,5).map(m=>`<tr><td>${m.nombre} ${m.apellido}</td><td>${m.email||'—'}</td><td>${m.telefono||'—'}</td><td><span style=\"font-size:.7rem;font-weight:600;padding:2px 8px;border-radius:20px;background:${m.role==='tesorero'?'#d1fae5':'#e0f2fe'};color:${m.role==='tesorero'?'#065f46':'#0369a1'}\">${(m.role||'miembro').charAt(0).toUpperCase()+(m.role||'miembro').slice(1)}</span></td></tr>`).join('')}</tbody></table>`;
 }
 
 function renderMembersList() {
