@@ -1150,10 +1150,20 @@ async function loadMembersFromAPI() {
   if (!state.activeCommunityId || state.activeCommunityId.startsWith('demo')) return;
   try {
     const data = await api(`get_members?community_id=${state.activeCommunityId}`);
-    if ((data.response?.members || data.members)) {
-      const _members = data.response?.members || data.members;
-      state.members = _members.map(m => ({
-        id: m._id, nombre: m.name||'', apellido: '', email: m.email||'', telefono: ''
+    const r = data.response || data;
+    const ids    = r.member_ids    || [];
+    const names  = r['member_names '] || r.member_names || [];
+    const emails = r.member_emails || [];
+    const phones = r.member_phones || [];
+    const roles  = r.member_roles  || [];
+    if (ids.length > 0) {
+      state.members = ids.map((id, i) => ({
+        id,
+        nombre:   names[i]  || '',
+        apellido: '',
+        email:    emails[i] || '',
+        telefono: phones[i] || '',
+        role:     roles[i]  || 'miembro'
       }));
     }
   } catch(e) { console.error('Error cargando miembros:', e); }
