@@ -477,6 +477,17 @@ async function elegirPlan(plan, btn) {
   btn.disabled = true;
 
   try {
+    // 1. Actualizar el plan de la comunidad en Bubble
+    const planLabel = plan === 'pro' ? 'pro' : 'free';
+    if (communityId) {
+      await fetch('https://app.quotapp.cl/version-test/api/1.1/wf/update_community_plan', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ community_id: communityId, plan: planLabel })
+      });
+    }
+
+    // 2. Registrar elección de plan (workflow existente)
     const res = await fetch(BUBBLE_API, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -484,7 +495,6 @@ async function elegirPlan(plan, btn) {
     });
     const data = await res.json();
     if (res.ok && data.status === 'success') {
-      const planLabel = plan === 'pro' ? 'pro' : 'free';
       let nextUrl = `https://www.quotapp.cl/invite-members?plan=${planLabel}`;
       if (communityId) nextUrl += `&community=${communityId}`;
       if (nombre)      nextUrl += `&nombre=${encodeURIComponent(nombre)}`;
