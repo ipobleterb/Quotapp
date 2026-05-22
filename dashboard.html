@@ -1071,24 +1071,62 @@ function renderAll() {
 // ── LOAD FROM API ──
 async function loadCommunityFromAPI() {
   if (!userId) {
-    // Demo: cargar datos de ejemplo
     loadDemoData();
     return;
   }
   try {
-    const data = await api(`get_community?user_id=${userId}`);
-    if (data.community_id) {
-      const plan = data.plan || 'free';
-      state.communities = [{ id: data.community_id, nombre: data.name, monthly_fee: data.monthly_fee, tipo: data.type || 'curso', plan }];
-      state.activeCommunity = 0;
-      state.activeCommunityId = data.community_id;
-      const sel = document.getElementById('communitySelect');
-      sel.innerHTML = `<option value="0">${data.name} ${plan==='pro'?'⭐':''}</option>`;
-      sel.value = '0';
-      await Promise.all([loadMembersFromAPI(), loadIncomeFromAPI(), loadExpensesFromAPI()]);
+    const data = await api(`get_communities?user_id=${userId}`);
+
+    const ids   = data.community_ids   || [];
+    const names = data.community_names || [];
+    const plans = data.community_plans || [];
+    const fees  = data.community_fees  || [];
+    const types = data.community_types || [];
+
+    if (ids.length === 0) {
       renderAll();
+      showToast('Aun no tienes comunidades. Crea la primera!', 'error');
+      return;
     }
-  } catch(e) { console.error('Error cargando comunidad:', e); }
+
+    state.communities = ids.map((id, i) => ({
+      id,
+      nombre:      names[i] || 'Sin nombre',
+      plan:        (plans[i] || 'free').toLowerCase(),
+      monthly_fee: fees[i]  || 0,
+      tipo:        types[i] || 'otro'
+    }));
+
+    const sel = document.getElementById('communitySelect');
+    sel.innerHTML = state.communities.map((c, i) =>
+      `<option value="${i}">${c.nombre}${c.plan === 'pro' ? ' ⭐' : ''}</option>`
+    ).join('');
+
+    // Si viene community en la URL (desde welcome), cargar esa comunidad
+    const urlCommunityId = urlParams.get('community') || '';
+    const urlPlan        = urlParams.get('plan') || '';
+    let targetIdx = 0;
+
+    if (urlCommunityId) {
+      const found = state.communities.findIndex(c => c.id === urlCommunityId);
+      if (found >= 0) targetIdx = found;
+    }
+
+    if (urlPlan && state.communities[targetIdx]) {
+      state.communities[targetIdx].plan = urlPlan;
+    }
+
+    sel.value = targetIdx;
+    state.activeCommunity = targetIdx;
+    state.activeCommunityId = state.communities[targetIdx].id;
+
+    await Promise.all([loadMembersFromAPI(), loadIncomeFromAPI(), loadExpensesFromAPI()]);
+    renderAll();
+
+  } catch(e) {
+    console.error('Error cargando comunidades:', e);
+    showToast('Error al cargar tus comunidades', 'error');
+  }
 }
 
 function loadDemoData() {
