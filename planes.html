@@ -284,6 +284,31 @@ a{color:inherit;text-decoration:none}
   .billing-pill{flex-direction:column;align-items:flex-start;padding:10px 14px;gap:8px;border-radius:14px}
 }
 </style>
+<!-- ── AUTH GUARD ── -->
+<script>
+(function(){
+  var p = new URLSearchParams(window.location.search);
+  var uid = p.get('user_id') || '';
+  if (!uid) { window.location.replace('https://www.quotapp.cl/login'); return; }
+  document.documentElement.style.visibility = 'hidden';
+  fetch('https://app.quotapp.cl/version-test/api/1.1/wf/validate_user', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_id: uid })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    if (d && d.status === 'success') {
+      document.documentElement.style.visibility = 'visible';
+    } else {
+      window.location.replace('https://www.quotapp.cl/login');
+    }
+  })
+  .catch(function(){
+    window.location.replace('https://www.quotapp.cl/login');
+  });
+})();
+</script>
 </head>
 <body>
 
