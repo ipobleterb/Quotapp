@@ -264,7 +264,7 @@ a{color:inherit;text-decoration:none}
     </div>
     <span class="planes-brand">Quot<span>App</span></span>
   </a>
-  <span class="planes-step">Paso 4 de 4 — Invita a tus miembros</span>
+  <span class="planes-step">Paso 4 de 5 — Invita a tus miembros</span>
 </nav>
 
 <!-- HERO -->
@@ -272,14 +272,16 @@ a{color:inherit;text-decoration:none}
   <div class="si">
     <div class="si-item done"><div class="si-num">✓</div> Tu cuenta</div>
     <div class="si-line"></div>
-    <div class="si-item done"><div class="si-num">✓</div> Tu plan</div>
-    <div class="si-line"></div>
     <div class="si-item done"><div class="si-num">✓</div> Tu comunidad</div>
     <div class="si-line"></div>
-    <div class="si-item active"><div class="si-num">4</div> ¡Listo!</div>
+    <div class="si-item done"><div class="si-num">✓</div> Tu plan</div>
+    <div class="si-line"></div>
+    <div class="si-item active"><div class="si-num">4</div> Miembros</div>
+    <div class="si-line"></div>
+    <div class="si-item"><div class="si-num">5</div> ¡Listo!</div>
   </div>
   <h1>Invita a tus <em>miembros</em></h1>
-  <p class="planes-hero-sub">Hasta 10 miembros (tesorero incluido). Puedes hacerlo ahora o después desde el dashboard.</p>
+  <p class="planes-hero-sub" id="limite-sub">Hasta 10 miembros (tesorero incluido). Puedes hacerlo ahora o después desde el dashboard.</p>
 </div>
 
 <!-- MAIN -->
@@ -388,15 +390,22 @@ a{color:inherit;text-decoration:none}
 <script>
 // ── Config ──
 const BUBBLE_INVITE_URL  = 'https://app.quotapp.cl/version-test/api/1.1/wf/invitar_miembro';
-const WELCOME_URL        = 'https://www.quotapp.cl/welcome.html';
-const MAX_MEMBERS        = 9;
+const WELCOME_URL        = 'https://www.quotapp.cl/welcome';
 
 const params      = new URLSearchParams(window.location.search);
 const communityId = params.get('community') || '';
 const userId      = params.get('user_id')   || '';
+const plan        = params.get('plan')      || 'free';
+const MAX_MEMBERS = plan === 'pro' ? 49 : 9; // -1 para incluir al tesorero
 
 // Código único secuencial que viene desde Bubble (ej. QA1306)
 const communityCode = params.get('code') || 'QA1306';
+
+// Texto dinámico según plan
+document.getElementById('limite-sub').textContent =
+  plan === 'pro'
+    ? 'Hasta 50 miembros (tesorero incluido). Puedes hacerlo ahora o después desde el dashboard.'
+    : 'Hasta 10 miembros (tesorero incluido). Puedes hacerlo ahora o después desde el dashboard.';
 
 // Link de invitación
 const inviteLink = communityId
@@ -516,6 +525,7 @@ function irAlDashboard() {
     + (params.get('code')   ? '&code='    + params.get('code')   : '')
     + (params.get('nombre') ? '&nombre='  + encodeURIComponent(params.get('nombre')) : '')
     + '&members=' + membersCount
+    + '&plan=' + plan
     + (userId ? '&user_id=' + userId : '');
 }
 </script>

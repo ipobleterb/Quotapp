@@ -220,7 +220,7 @@ a{color:inherit;text-decoration:none}
     </div>
     <span class="planes-brand">Quot<span>App</span></span>
   </a>
-  <span class="planes-step">Paso 3 de 4 — Crea tu comunidad</span>
+  <span class="planes-step">Paso 2 de 5 — Crea tu comunidad</span>
 </nav>
 
 <!-- HERO -->
@@ -228,11 +228,13 @@ a{color:inherit;text-decoration:none}
   <div class="si">
     <div class="si-item done"><div class="si-num">✓</div> Tu cuenta</div>
     <div class="si-line"></div>
-    <div class="si-item done"><div class="si-num">✓</div> Tu plan</div>
+    <div class="si-item active"><div class="si-num">2</div> Tu comunidad</div>
     <div class="si-line"></div>
-    <div class="si-item active"><div class="si-num">3</div> Tu comunidad</div>
+    <div class="si-item"><div class="si-num">3</div> Tu plan</div>
     <div class="si-line"></div>
-    <div class="si-item"><div class="si-num">4</div> ¡Listo!</div>
+    <div class="si-item"><div class="si-num">4</div> Miembros</div>
+    <div class="si-line"></div>
+    <div class="si-item"><div class="si-num">5</div> ¡Listo!</div>
   </div>
   <h1>Crea tu <em>comunidad</em></h1>
   <p class="planes-hero-sub">Solo toma un minuto. Después invitas a tus miembros.</p>
@@ -242,10 +244,7 @@ a{color:inherit;text-decoration:none}
 <div class="form-section">
   <div class="form-card">
 
-    <div class="plan-badge">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      Plan Gratuito · hasta 10 miembros (tesorero incluido)
-    </div>
+    <!-- plan se elige en el paso siguiente -->
 
     <div class="field">
       <label for="comunidad-nombre">Nombre de la comunidad</label>
@@ -301,7 +300,7 @@ a{color:inherit;text-decoration:none}
 
 <script>
 const BUBBLE_CREATE_COMMUNITY_URL = 'https://app.quotapp.cl/version-test/api/1.1/wf/create_community';
-const NEXT_STEP_URL = 'https://www.quotapp.cl/invite-members.html';
+const NEXT_STEP_URL = 'https://www.quotapp.cl/planes';
 
 const params = new URLSearchParams(window.location.search);
 const userId = params.get('user_id') || '';

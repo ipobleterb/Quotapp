@@ -124,9 +124,11 @@ html,body{margin:0;padding:0;font-family:"Instrument Sans",sans-serif;line-heigh
       <div class="steps">
         <div class="step active"><div class="step-num">1</div> Tu cuenta</div>
         <div class="step-line"></div>
-        <div class="step"><div class="step-num">2</div> Elige tu plan</div>
+        <div class="step"><div class="step-num">2</div> Tu comunidad</div>
         <div class="step-line"></div>
-        <div class="step"><div class="step-num">3</div> ¡Listo!</div>
+        <div class="step"><div class="step-num">3</div> Tu plan</div>
+        <div class="step-line"></div>
+        <div class="step"><div class="step-num">4</div> ¡Listo!</div>
       </div>
 
       <h1 class="form-title">Crea tu cuenta gratis</h1>
@@ -251,7 +253,7 @@ async function handleSubmit(e) {
     if (res.ok && data.status === 'success') {
       const userId = data.response?.user_id || '';
       window.location.href = rol === 'Tesorero'
-        ? `https://www.quotapp.cl/planes?user_id=${userId}`
+        ? `https://www.quotapp.cl/create-community?user_id=${userId}`
         : `https://app.quotapp.cl/version-test/unirse?user_id=${userId}`;
     } else {
       btn.classList.remove('loading');

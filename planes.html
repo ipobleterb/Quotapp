@@ -301,7 +301,7 @@ a{color:inherit;text-decoration:none}
     </div>
     <span class="planes-brand">Quot<span>App</span></span>
   </a>
-  <span class="planes-step">Paso 2 de 4 — Elige tu plan</span>
+  <span class="planes-step">Paso 3 de 5 — Elige tu plan</span>
 </nav>
 
 <!-- HERO -->
@@ -309,11 +309,13 @@ a{color:inherit;text-decoration:none}
   <div class="si">
     <div class="si-item done"><div class="si-num">✓</div> Tu cuenta</div>
     <div class="si-line"></div>
-    <div class="si-item active"><div class="si-num">2</div> Tu plan</div>
+    <div class="si-item done"><div class="si-num">✓</div> Tu comunidad</div>
     <div class="si-line"></div>
-    <div class="si-item"><div class="si-num">3</div> Tu comunidad</div>
+    <div class="si-item active"><div class="si-num">3</div> Tu plan</div>
     <div class="si-line"></div>
-    <div class="si-item"><div class="si-num">4</div> ¡Listo!</div>
+    <div class="si-item"><div class="si-num">4</div> Miembros</div>
+    <div class="si-line"></div>
+    <div class="si-item"><div class="si-num">5</div> ¡Listo!</div>
   </div>
   <h1>Elige el plan para tu <em>comunidad</em></h1>
   <p class="planes-hero-sub">Sin letra chica. Puedes cambiar de plan cuando quieras.</p>
@@ -420,7 +422,10 @@ a{color:inherit;text-decoration:none}
 <script>
 const BUBBLE_API = 'https://app.quotapp.cl/version-test/api/1.1/wf/elegir_plan';
 const params = new URLSearchParams(window.location.search);
-const userId = params.get('user_id') || '';
+const userId      = params.get('user_id')   || '';
+const communityId = params.get('community') || '';
+const nombre      = params.get('nombre')    || '';
+const code        = params.get('code')      || '';
 let billingMode = 'm';
 
 function setBilling(t) {
@@ -454,9 +459,13 @@ async function elegirPlan(plan, btn) {
     });
     const data = await res.json();
     if (res.ok && data.status === 'success') {
-      window.location.href = plan === 'gratis'
-        ? `https://www.quotapp.cl/create-community.html?user_id=${userId}`
-        : `https://app.quotapp.cl/version-test/dashboard?user_id=${userId}`;
+      const planLabel = plan === 'pro' ? 'pro' : 'free';
+      let nextUrl = `https://www.quotapp.cl/invite-members?plan=${planLabel}`;
+      if (communityId) nextUrl += `&community=${communityId}`;
+      if (nombre)      nextUrl += `&nombre=${encodeURIComponent(nombre)}`;
+      if (code)        nextUrl += `&code=${code}`;
+      if (userId)      nextUrl += `&user_id=${userId}`;
+      window.location.href = nextUrl;
     } else {
       btn.classList.remove('loading');
       btn.innerHTML = orig;
