@@ -1289,7 +1289,7 @@ async function createCommunity() {
 
   try {
     const data = await api('create_community', 'POST', {
-      user_id: userId, name: nombre, monthly_fee: parseFloat(fee)||0,
+      user_id: userId, name: nombre, type: tipo, monthly_fee: parseFloat(fee)||0,
       year: new Date().getFullYear().toString(), plan
     });
 
