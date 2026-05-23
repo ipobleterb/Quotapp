@@ -863,6 +863,40 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
   </div>
 </div>
 
+<!-- Modal: Editar miembro -->
+<div class="modal-overlay" id="modalEditMember">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Editar miembro</div>
+      <button class="modal-close" onclick="closeModal('modalEditMember')">✕</button>
+    </div>
+    <div class="form-field">
+      <label>Nombre completo</label>
+      <input type="text" id="edit-member-nombre" placeholder="María González">
+    </div>
+    <div class="form-field">
+      <label>Email</label>
+      <input type="email" id="edit-member-email" placeholder="maria@ejemplo.com">
+    </div>
+    <div class="form-field">
+      <label>Teléfono (opcional)</label>
+      <input type="tel" id="edit-member-telefono" placeholder="+56 9 1234 5678">
+    </div>
+    <div class="form-field">
+      <label>Rol</label>
+      <select id="edit-member-rol">
+        <option value="miembro">Miembro</option>
+        <option value="tesorero">Tesorero</option>
+      </select>
+    </div>
+    <input type="hidden" id="edit-member-idx">
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modalEditMember')">Cancelar</button>
+      <button class="btn-primary" onclick="saveEditMember()">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
 <!-- Modal: Límite de miembros — Activa Pro -->
 <div class="modal-overlay" id="modalMemberLimit">
   <div class="modal upgrade-modal" style="position:relative">
@@ -1306,11 +1340,15 @@ function renderMembersList() {
     <div class="member-row">
       <div class="member-avatar">${initials(m.nombre)}</div>
       <div class="member-info">
-        <div class="member-name">${m.nombre} ${m.apellido}</div>
+        <div class="member-name" style="display:flex;align-items:center;gap:8px">
+          ${m.nombre}
+          <span style="font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:99px;background:${(m.role||m.rol||'').toLowerCase()==='tesorero'?'var(--g3)':'#EFF6FF'};color:${(m.role||m.rol||'').toLowerCase()==='tesorero'?'var(--g2)':'#1D4ED8'}">${(m.role||m.rol||'miembro').charAt(0).toUpperCase()+(m.role||m.rol||'miembro').slice(1)}</span>
+        </div>
         <div class="member-email">${m.email}${m.telefono ? ' · ' + m.telefono : ''}</div>
       </div>
       <div class="member-actions">
-        <button class="btn-sm btn-sm-danger" onclick="removeMember(${i})">Eliminar</button>
+        <button class="btn-icon btn-icon-edit" title="Editar" onclick="openEditMember(${i})">${EDIT_ICON}</button>
+        <button class="btn-icon btn-icon-delete" title="Eliminar" onclick="removeMember(${i})">${TRASH_ICON}</button>
       </div>
     </div>`).join('');
 }
@@ -2031,6 +2069,32 @@ async function saveEditGasto() {
   closeModal('modalEditGasto');
   renderAll();
   showToast('Gasto actualizado');
+}
+
+// ── EDITAR MIEMBRO ──
+function openEditMember(i) {
+  const m = state.members[i];
+  if (!m) return;
+  document.getElementById('edit-member-idx').value = i;
+  document.getElementById('edit-member-nombre').value = m.nombre || '';
+  document.getElementById('edit-member-email').value = m.email || '';
+  document.getElementById('edit-member-telefono').value = m.telefono || '';
+  document.getElementById('edit-member-rol').value = (m.role || m.rol || 'miembro').toLowerCase();
+  openModal('modalEditMember');
+}
+
+async function saveEditMember() {
+  const i = parseInt(document.getElementById('edit-member-idx').value);
+  const nombre   = document.getElementById('edit-member-nombre').value.trim();
+  const email    = document.getElementById('edit-member-email').value.trim();
+  const telefono = document.getElementById('edit-member-telefono').value.trim();
+  const rol      = document.getElementById('edit-member-rol').value;
+  if (!nombre || !email) { showToast('Nombre y email son requeridos', 'error'); return; }
+
+  state.members[i] = { ...state.members[i], nombre, email, telefono, role: rol, rol };
+  closeModal('modalEditMember');
+  renderAll();
+  showToast('Miembro actualizado');
 }
 
 // ── INIT ──
