@@ -625,8 +625,24 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
       </div>
     </div>
 
+    <!-- Datos del tesorero -->
+    <div class="form-field" style="margin-top:4px">
+      <label>Tu nombre (tesorero)</label>
+      <input type="text" id="new-community-treasurer-name" placeholder="María González">
+    </div>
+    <div class="form-row">
+      <div class="form-field" style="margin-bottom:0">
+        <label>Tu email</label>
+        <input type="email" id="new-community-treasurer-email" placeholder="maria@ejemplo.com">
+      </div>
+      <div class="form-field" style="margin-bottom:0">
+        <label>Tu teléfono</label>
+        <input type="tel" id="new-community-treasurer-phone" placeholder="+56 9 1234 5678">
+      </div>
+    </div>
+
     <!-- Plan selector -->
-    <div class="form-field" style="margin-top:16px">
+    <div class="form-field" style="margin-top:8px">
       <label>Selecciona el plan para esta comunidad</label>
     </div>
     <div class="plan-selector">
@@ -865,6 +881,7 @@ const state = {
   members: [],
   ingresos: [],
   gastos: [],
+  treasurer: { name: '', email: '', phone: '' },
   get activePlan() {
     if (this.activeCommunity === null) return 'free';
     return this.communities[this.activeCommunity]?.plan || 'free';
@@ -997,7 +1014,18 @@ async function switchCommunity() {
 }
 
 // ── MODALS ──
-function openModal(id) { document.getElementById(id).classList.add('open') }
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  // Pre-llenar datos del tesorero si abrimos nueva comunidad
+  if (id === 'modalNewCommunity') {
+    const nameEl  = document.getElementById('new-community-treasurer-name');
+    const emailEl = document.getElementById('new-community-treasurer-email');
+    const phoneEl = document.getElementById('new-community-treasurer-phone');
+    if (nameEl  && !nameEl.value)  nameEl.value  = state.treasurer.name  || '';
+    if (emailEl && !emailEl.value) emailEl.value = state.treasurer.email || '';
+    if (phoneEl && !phoneEl.value) phoneEl.value = state.treasurer.phone || '';
+  }
+}
 function closeModal(id) { document.getElementById(id).classList.remove('open') }
 document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', e => { if(e.target===m) m.classList.remove('open') });
@@ -1227,6 +1255,15 @@ async function loadMembersFromAPI() {
         telefono: phones[i] || '',
         role:     roles[i]  || 'miembro'
       }));
+      // Guardar datos del tesorero en state para reusar en nueva comunidad
+      const tIdx = roles.findIndex(r => r && r.toLowerCase() === 'tesorero');
+      if (tIdx >= 0) {
+        state.treasurer = {
+          name:  names[tIdx]  || '',
+          email: emails[tIdx] || '',
+          phone: phones[tIdx] || ''
+        };
+      }
     }
   } catch(e) { console.error('Error cargando miembros:', e); }
 }
@@ -1288,9 +1325,15 @@ async function createCommunity() {
   }
 
   try {
+    const tName  = document.getElementById('new-community-treasurer-name').value.trim();
+    const tEmail = document.getElementById('new-community-treasurer-email').value.trim();
+    const tPhone = document.getElementById('new-community-treasurer-phone').value.trim();
+    if (!tName || !tEmail) { showToast('Ingresa tu nombre y email de tesorero', 'error'); return; }
+
     const data = await api('create_community', 'POST', {
       user_id: userId, name: nombre, type: tipo, monthly_fee: parseFloat(fee)||0,
-      year: new Date().getFullYear().toString(), plan
+      year: new Date().getFullYear().toString(), plan,
+      treasurer_name: tName, treasurer_email: tEmail, treasurer_phone: tPhone || ''
     });
 
     // Bubble puede retornar el ID dentro de data.response o directo en data
@@ -1318,6 +1361,8 @@ async function createCommunity() {
       closeModal('modalNewCommunity');
       document.getElementById('new-community-name').value = '';
       document.getElementById('new-community-fee').value = '';
+      // Guardar en state para futuras comunidades
+      state.treasurer = { name: tName, email: tEmail, phone: tPhone };
       selectPlan('free');
       updateSidebarForPlan();
       renderAll();
