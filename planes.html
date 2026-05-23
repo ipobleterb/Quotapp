@@ -415,9 +415,9 @@ a{color:inherit;text-decoration:none}
     </div>
 
     <!-- PRO+ -->
-    <div class="price-card" id="card-proplus" style="border-color:var(--navy2)" onmouseenter="renderSteps(true)" onfocus="renderSteps(true)">
-      <div class="price-pop" style="background:var(--navy)">🚀 Máximo alcance</div>
-      <div class="price-plan" style="color:var(--navy)">Pro+</div>
+    <div class="price-card" id="card-proplus" style="border-color:#7C3AED;border-width:1.5px;background:linear-gradient(150deg,#FAFAFF 0%,#fff 100%);" onmouseenter="renderSteps(true)" onfocus="renderSteps(true)">
+      <div class="price-pop" style="background:linear-gradient(135deg,#7C3AED,#A855F7);">🚀 Máximo alcance</div>
+      <div class="price-plan" style="color:#7C3AED;">Pro+</div>
       <div class="price-amount" id="price-proplus-amount"><sup>$</sup>6.990<span class="period">/mes</span></div>
       <p class="price-desc">Para comunidades grandes que necesitan escalar sin límites.</p>
       <div class="price-sep"></div>
@@ -514,16 +514,22 @@ function setBilling(t) {
   billingMode = t;
   document.getElementById('btn-mensual').className = t === 'm' ? 'billing-btn active' : 'billing-btn inactive';
   document.getElementById('btn-anual').className   = t === 'a' ? 'billing-btn active' : 'billing-btn inactive';
-  document.getElementById('price-pro-amount').innerHTML =
-    '<sup>$</sup>' + fmtNum(PRICES.pro[t]) + '<span class="period">/mes</span>';
-  document.getElementById('price-pro-note').textContent = t === 'm'
-    ? '7 días gratis, luego $3.990/mes. Cancela cuando quieras.'
-    : '$' + fmtNum(PRICES.pro.anual) + '/año — equivale a 2 meses gratis.';
-  document.getElementById('price-proplus-amount').innerHTML =
-    '<sup>$</sup>' + fmtNum(PRICES.proplus[t]) + '<span class="period">/mes</span>';
-  document.getElementById('price-proplus-note').textContent = t === 'm'
-    ? '7 días gratis, luego $6.990/mes. Cancela cuando quieras.'
-    : '$' + fmtNum(PRICES.proplus.anual) + '/año — equivale a 2 meses gratis.';
+
+  // Pro
+  document.getElementById('price-pro-amount').innerHTML = t === 'a'
+    ? '<sup>$</sup>' + fmtNum(PRICES.pro.anual) + '<span class="period">/año</span>'
+    : '<sup>$</sup>' + fmtNum(PRICES.pro.m) + '<span class="period">/mes</span>';
+  document.getElementById('price-pro-note').textContent = t === 'a'
+    ? '2 meses gratis incluidos. Cancela cuando quieras.'
+    : '7 días gratis, luego $3.990/mes. Cancela cuando quieras.';
+
+  // Pro+
+  document.getElementById('price-proplus-amount').innerHTML = t === 'a'
+    ? '<sup>$</sup>' + fmtNum(PRICES.proplus.anual) + '<span class="period">/año</span>'
+    : '<sup>$</sup>' + fmtNum(PRICES.proplus.m) + '<span class="period">/mes</span>';
+  document.getElementById('price-proplus-note').textContent = t === 'a'
+    ? '2 meses gratis incluidos. Cancela cuando quieras.'
+    : '7 días gratis, luego $6.990/mes. Cancela cuando quieras.';
 }
 
 async function elegirPlan(plan, btn) {
