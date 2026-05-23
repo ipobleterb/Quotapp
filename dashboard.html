@@ -67,7 +67,19 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
 .btn-top-ghost:hover{border-color:var(--g);color:var(--g)}
 .btn-top-primary{background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(29,158,117,.25)}
 .btn-top-primary:hover{background:var(--g2)}
-.avatar{width:32px;height:32px;border-radius:50%;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;cursor:pointer}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;cursor:pointer;user-select:none}
+/* ── USER DROPDOWN ── */
+.user-menu{position:relative;flex-shrink:0}
+.user-dropdown{position:absolute;top:calc(100% + 8px);right:0;background:var(--white);border:1.5px solid var(--bdr);border-radius:12px;box-shadow:0 8px 32px rgba(15,19,38,.12);padding:6px;min-width:200px;display:none;z-index:300}
+.user-dropdown.open{display:block}
+.user-dropdown-header{padding:10px 12px 8px;border-bottom:1px solid var(--bdr);margin-bottom:4px}
+.user-dropdown-name{font-size:.84rem;font-weight:700;color:var(--navy);margin-bottom:1px}
+.user-dropdown-email{font-size:.74rem;color:var(--txt3)}
+.user-dropdown-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;font-size:.83rem;font-weight:500;color:var(--txt2);cursor:pointer;transition:background .15s;border:none;background:none;width:100%;font-family:inherit;text-align:left}
+.user-dropdown-item:hover{background:var(--bg);color:var(--navy)}
+.user-dropdown-item.danger{color:#DC2626}
+.user-dropdown-item.danger:hover{background:#FEE2E2}
+.user-dropdown-divider{height:1px;background:var(--bdr);margin:4px 0}
 
 /* ── MAIN ── */
 .main{padding:28px;overflow-y:auto}
@@ -364,7 +376,28 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         + Comunidad
       </button>
-      <div class="avatar" id="userAvatar">IP</div>
+      <div class="user-menu" id="userMenu">
+        <div class="avatar" id="userAvatar" onclick="toggleUserMenu()">IP</div>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="user-dropdown-header">
+            <div class="user-dropdown-name" id="userDropdownName">Usuario</div>
+            <div class="user-dropdown-email" id="userDropdownEmail"></div>
+          </div>
+          <button class="user-dropdown-item" onclick="openModal('modalUpdateProfile'); closeUserMenu()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Actualizar tus datos
+          </button>
+          <button class="user-dropdown-item" onclick="openModal('modalChangePassword'); closeUserMenu()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Cambiar contraseña
+          </button>
+          <div class="user-dropdown-divider"></div>
+          <button class="user-dropdown-item danger" onclick="cerrarSesion()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Cerrar sesión
+          </button>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -852,6 +885,61 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
   </div>
 </div>
 
+<!-- Modal: Actualizar datos -->
+<div class="modal-overlay" id="modalUpdateProfile">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Actualizar tus datos</div>
+      <button class="modal-close" onclick="closeModal('modalUpdateProfile')">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-field" style="margin-bottom:0">
+        <label>Nombre</label>
+        <input type="text" id="profile-nombre" placeholder="María">
+      </div>
+      <div class="form-field" style="margin-bottom:0">
+        <label>Apellido</label>
+        <input type="text" id="profile-apellido" placeholder="González">
+      </div>
+    </div>
+    <div class="form-field">
+      <label>Teléfono</label>
+      <input type="tel" id="profile-telefono" placeholder="+56 9 1234 5678">
+    </div>
+    <p style="font-size:.78rem;color:var(--txt3);margin-top:-4px">El email no se puede cambiar desde aquí.</p>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modalUpdateProfile')">Cancelar</button>
+      <button class="btn-primary" onclick="updateProfile()">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Cambiar contraseña -->
+<div class="modal-overlay" id="modalChangePassword">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Cambiar contraseña</div>
+      <button class="modal-close" onclick="closeModal('modalChangePassword')">✕</button>
+    </div>
+    <div class="form-field">
+      <label>Contraseña actual</label>
+      <input type="password" id="pwd-actual" placeholder="••••••••">
+    </div>
+    <div class="form-field">
+      <label>Nueva contraseña</label>
+      <input type="password" id="pwd-nueva" placeholder="••••••••">
+    </div>
+    <div class="form-field">
+      <label>Confirmar nueva contraseña</label>
+      <input type="password" id="pwd-confirmar" placeholder="••••••••">
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modalChangePassword')">Cancelar</button>
+      <button class="btn-primary" onclick="changePassword()">Cambiar contraseña</button>
+    </div>
+  </div>
+</div>
+
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
@@ -1248,6 +1336,7 @@ async function loadMembersFromAPI() {
           email: emails[tIdx] || '',
           phone: phones[tIdx] || ''
         };
+        updateUserAvatar(state.treasurer.name, state.treasurer.email);
       }
     }
   } catch(e) { console.error('Error cargando miembros:', e); }
@@ -1541,6 +1630,59 @@ Generado por QuotApp — www.quotapp.cl`;
   a.click();
   URL.revokeObjectURL(url);
   showToast('Reporte descargado');
+}
+
+// ── USER MENU ──
+function toggleUserMenu() {
+  document.getElementById('userDropdown').classList.toggle('open');
+}
+function closeUserMenu() {
+  document.getElementById('userDropdown').classList.remove('open');
+}
+// Cerrar al hacer click fuera
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#userMenu')) closeUserMenu();
+});
+
+function updateUserAvatar(name, email) {
+  // Iniciales
+  const parts = (name || '').trim().split(' ');
+  const initials = parts.length >= 2
+    ? (parts[0][0] + parts[parts.length-1][0]).toUpperCase()
+    : (name || 'U').substring(0, 2).toUpperCase();
+  document.getElementById('userAvatar').textContent = initials;
+  document.getElementById('userDropdownName').textContent = name || 'Usuario';
+  document.getElementById('userDropdownEmail').textContent = email || '';
+}
+
+function cerrarSesion() {
+  closeUserMenu();
+  window.location.replace('https://www.quotapp.cl/login');
+}
+
+async function updateProfile() {
+  const nombre   = document.getElementById('profile-nombre').value.trim();
+  const apellido = document.getElementById('profile-apellido').value.trim();
+  const telefono = document.getElementById('profile-telefono').value.trim();
+  if (!nombre) { showToast('El nombre es requerido', 'error'); return; }
+  // Por ahora actualiza el state y el avatar (cuando haya endpoint en Bubble se conecta aquí)
+  const fullName = nombre + (apellido ? ' ' + apellido : '');
+  state.treasurer.name  = fullName;
+  state.treasurer.phone = telefono;
+  updateUserAvatar(fullName, state.treasurer.email);
+  closeModal('modalUpdateProfile');
+  showToast('Datos actualizados');
+}
+
+async function changePassword() {
+  const actual    = document.getElementById('pwd-actual').value;
+  const nueva     = document.getElementById('pwd-nueva').value;
+  const confirmar = document.getElementById('pwd-confirmar').value;
+  if (!actual || !nueva) { showToast('Completa todos los campos', 'error'); return; }
+  if (nueva !== confirmar) { showToast('Las contraseñas no coinciden', 'error'); return; }
+  if (nueva.length < 8) { showToast('La contraseña debe tener al menos 8 caracteres', 'error'); return; }
+  // Placeholder hasta tener endpoint en Bubble
+  showToast('Funcionalidad disponible próximamente', 'error');
 }
 
 // ── CUSTOM DATEPICKER ──
