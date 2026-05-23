@@ -74,6 +74,19 @@ html,body{margin:0;padding:0;font-family:"Instrument Sans",sans-serif;line-heigh
 .login-link{text-align:center;font-size:.88rem;color:var(--txt3)}
 .login-link a{color:var(--g);font-weight:600;text-decoration:none}
 .login-link a:hover{color:var(--g2);text-decoration:underline}
+/* ── VALIDACIÓN INLINE ── */
+.field input.valid,.field select.valid{border-color:#1D9E75;box-shadow:0 0 0 3px rgba(29,158,117,.10)}
+.field input.invalid,.field select.invalid{border-color:#E94F4F;box-shadow:0 0 0 3px rgba(233,79,79,.10)}
+.field-msg{font-size:.78rem;margin-top:5px;min-height:16px;transition:opacity .2s}
+.field-msg.ok{color:#1D9E75}
+.field-msg.err{color:#E94F4F}
+.pass-strength{height:3px;border-radius:99px;margin-top:6px;background:#E4E7F0;overflow:hidden}
+.pass-strength-bar{height:100%;border-radius:99px;transition:width .3s,background .3s;width:0}
+.pass-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#8890AA;padding:2px;display:flex;align-items:center}
+.pass-toggle:hover{color:#4A5070}
+.pass-wrap{position:relative}
+.pass-wrap input{padding-right:44px}
+
 @media(max-width:860px){
   .page{grid-template-columns:1fr}
   .left{display:none}
@@ -141,22 +154,42 @@ html,body{margin:0;padding:0;font-family:"Instrument Sans",sans-serif;line-heigh
 
         <div class="field">
             <label for="nombre">Nombre completo</label>
-            <input type="text" id="nombre" placeholder="María Paz Urzúa" required>
+            <input type="text" id="nombre" placeholder="María Paz Urzúa" autocomplete="name" required oninput="validateNombre()">
+            <div class="field-msg" id="msg-nombre"></div>
           </div>
 
         <div class="field">
           <label for="email">Correo electrónico</label>
-          <input type="email" id="email" placeholder="tu@email.com" autocomplete="email" required>
+          <input type="email" id="email" placeholder="tu@email.com" autocomplete="email" required oninput="validateEmail()">
+          <div class="field-msg" id="msg-email"></div>
         </div>
 
         <div class="field">
           <label for="telefono">Teléfono</label>
-          <input type="tel" id="telefono" placeholder="+56 9 1234 5678" required>
+          <input type="tel" id="telefono" placeholder="+56 9 1234 5678" required oninput="formatTelefono(this)" onblur="validateTelefono()">
+          <div class="field-msg" id="msg-telefono"></div>
         </div>
 
         <div class="field">
           <label for="password">Contraseña</label>
-          <input type="password" id="password" placeholder="Mínimo 8 caracteres" autocomplete="new-password" required>
+          <div class="pass-wrap">
+            <input type="password" id="password" placeholder="Mínimo 8 caracteres" autocomplete="new-password" required oninput="validatePassword()">
+            <button type="button" class="pass-toggle" onclick="togglePass('password','eye1')" tabindex="-1">
+              <svg id="eye1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="pass-strength"><div class="pass-strength-bar" id="strength-bar"></div></div>
+          <div class="field-msg" id="msg-password"></div>
+        </div>
+        <div class="field">
+          <label for="password2">Confirmar contraseña</label>
+          <div class="pass-wrap">
+            <input type="password" id="password2" placeholder="Repite tu contraseña" autocomplete="new-password" required oninput="validatePassword2()">
+            <button type="button" class="pass-toggle" onclick="togglePass('password2','eye2')" tabindex="-1">
+              <svg id="eye2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="field-msg" id="msg-password2"></div>
         </div>
 
         <div class="field">
@@ -195,6 +228,101 @@ html,body{margin:0;padding:0;font-family:"Instrument Sans",sans-serif;line-heigh
 <script>
 const BUBBLE_API = 'https://app.quotapp.cl/version-test/api/1.1/wf/sign_up';
 
+// ── HELPERS ──
+function setMsg(id, msg, type) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'field-msg' + (msg ? ' ' + type : '');
+}
+function setField(id, ok) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.toggle('valid', ok);
+  el.classList.toggle('invalid', !ok && el.value.length > 0);
+}
+
+// ── TOGGLE CONTRASEÑA ──
+function togglePass(inputId, eyeId) {
+  const inp = document.getElementById(inputId);
+  const eye = document.getElementById(eyeId);
+  const isPass = inp.type === 'password';
+  inp.type = isPass ? 'text' : 'password';
+  eye.innerHTML = isPass
+    ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>'
+    : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+}
+
+// ── VALIDACIONES EN TIEMPO REAL ──
+function validateNombre() {
+  const v = document.getElementById('nombre').value.trim();
+  const ok = v.length >= 2 && v.includes(' ');
+  setField('nombre', ok);
+  setMsg('msg-nombre', ok ? '✓ Nombre válido' : v.length > 0 ? 'Ingresa nombre y apellido' : '', ok ? 'ok' : 'err');
+  return ok;
+}
+
+function validateEmail() {
+  const v = document.getElementById('email').value.trim();
+  const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  setField('email', ok);
+  setMsg('msg-email', ok ? '✓ Correo válido' : v.length > 0 ? 'Ingresa un correo válido (ej. tu@email.com)' : '', ok ? 'ok' : 'err');
+  return ok;
+}
+
+function formatTelefono(input) {
+  let v = input.value.replace(/[^\d+]/g, '');
+  if (v.startsWith('9') && v.length <= 9) v = '+569' + v.slice(1);
+  else if (v.startsWith('569')) v = '+' + v;
+  else if (v.startsWith('56')) v = '+' + v;
+  input.value = v;
+}
+function validateTelefono() {
+  const v = document.getElementById('telefono').value.replace(/\s/g, '');
+  const ok = /^(\+?56)?9\d{8}$/.test(v) || /^\+569\d{8}$/.test(v) || /^9\d{8}$/.test(v);
+  setField('telefono', ok);
+  setMsg('msg-telefono', ok ? '✓ Teléfono válido' : v.length > 0 ? 'Formato: +56 9 1234 5678' : '', ok ? 'ok' : 'err');
+  return ok;
+}
+
+function validatePassword() {
+  const v = document.getElementById('password').value;
+  const bar = document.getElementById('strength-bar');
+  const len = v.length;
+  let strength = 0;
+  if (len >= 8) strength++;
+  if (/[A-Z]/.test(v)) strength++;
+  if (/[0-9]/.test(v)) strength++;
+  if (/[^A-Za-z0-9]/.test(v)) strength++;
+
+  const colors = ['#E94F4F','#FFB347','#FFD166','#1D9E75'];
+  const labels = ['Muy débil','Débil','Buena','Fuerte'];
+  const widths = ['25%','50%','75%','100%'];
+
+  if (len === 0) { bar.style.width = '0'; setMsg('msg-password','',''); return false; }
+  bar.style.width = widths[strength - 1] || '25%';
+  bar.style.background = colors[strength - 1] || colors[0];
+
+  const ok = len >= 8;
+  setField('password', ok);
+  setMsg('msg-password',
+    ok ? `Contraseña ${labels[strength-1] || 'Muy débil'}` : 'Mínimo 8 caracteres',
+    ok ? (strength >= 3 ? 'ok' : 'err') : 'err'
+  );
+  validatePassword2();
+  return ok;
+}
+
+function validatePassword2() {
+  const p1 = document.getElementById('password').value;
+  const p2 = document.getElementById('password2').value;
+  if (!p2.length) { setMsg('msg-password2','',''); return false; }
+  const ok = p1 === p2 && p2.length >= 8;
+  setField('password2', ok);
+  setMsg('msg-password2', ok ? '✓ Las contraseñas coinciden' : 'Las contraseñas no coinciden', ok ? 'ok' : 'err');
+  return ok;
+}
+
 function handleRol() {
   const rol = document.getElementById('rol').value;
   document.getElementById('info-tesorero').classList.toggle('show', rol === 'Tesorero');
@@ -224,15 +352,22 @@ async function handleSubmit(e) {
   const rol      = document.getElementById('rol').value;
   const terms    = document.getElementById('terms').checked;
 
-  if (!nombre || !email || !telefono || !password || !rol) {
-    showError('Por favor completa todos los campos.'); return;
-  }
-  if (password.length < 8) {
-    showError('La contraseña debe tener al menos 8 caracteres.'); return;
-  }
-  if (!terms) {
-    showError('Debes aceptar los términos y condiciones.'); return;
-  }
+  const password2 = document.getElementById('password2').value;
+
+  // Validar todos los campos
+  const vNombre   = validateNombre();
+  const vEmail    = validateEmail();
+  const vTel      = validateTelefono();
+  const vPass     = validatePassword();
+  const vPass2    = validatePassword2();
+
+  if (!nombre || !vNombre) { showError('Ingresa tu nombre completo (nombre y apellido).'); return; }
+  if (!email  || !vEmail)  { showError('Ingresa un correo electrónico válido.'); return; }
+  if (!telefono || !vTel)  { showError('Ingresa un teléfono válido (ej. +56 9 1234 5678).'); return; }
+  if (!vPass)              { showError('La contraseña debe tener al menos 8 caracteres.'); return; }
+  if (!vPass2)             { showError('Las contraseñas no coinciden.'); return; }
+  if (!rol)                { showError('Selecciona tu rol.'); return; }
+  if (!terms)              { showError('Debes aceptar los términos y condiciones.'); return; }
 
   const btn = document.getElementById('signupBtn');
   btn.classList.add('loading');
