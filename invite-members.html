@@ -421,6 +421,18 @@ const params      = new URLSearchParams(window.location.search);
 const communityId = params.get('community') || '';
 const userId      = params.get('user_id')   || '';
 const plan        = params.get('plan')      || 'free';
+
+// Guarda: plan gratuito no debería llegar aquí → redirigir a welcome
+if (plan !== 'pro') {
+  window.location.replace(WELCOME_URL
+    + '?plan=free'
+    + (communityId ? '&community=' + communityId : '')
+    + (params.get('code')   ? '&code='   + params.get('code')   : '')
+    + (params.get('nombre') ? '&nombre=' + encodeURIComponent(params.get('nombre')) : '')
+    + (userId ? '&user_id=' + userId : '')
+    + '&members=0'
+  );
+}
 const MAX_MEMBERS = plan === 'pro' ? 49 : 9; // -1 para incluir al tesorero
 
 // Código único secuencial que viene desde Bubble (ej. QA1306)

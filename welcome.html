@@ -227,17 +227,8 @@ a{color:inherit;text-decoration:none}
 <!-- HERO -->
 <div class="hero">
 
-  <div class="si">
-    <div class="si-item done"><div class="si-num">✓</div> Tu cuenta</div>
-    <div class="si-line"></div>
-    <div class="si-item done"><div class="si-num">✓</div> Tu comunidad</div>
-    <div class="si-line"></div>
-    <div class="si-item done"><div class="si-num">✓</div> Tu plan</div>
-    <div class="si-line"></div>
-    <div class="si-item done"><div class="si-num">✓</div> Miembros</div>
-    <div class="si-line"></div>
-    <div class="si-item done"><div class="si-num">✓</div> ¡Listo!</div>
-  </div>
+  <!-- Step indicator dinámico según plan -->
+  <div class="si" id="stepIndicator"></div>
 
   <div class="check-wrap">
     <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -284,7 +275,7 @@ a{color:inherit;text-decoration:none}
         <span class="summary-value" id="sumPlan">—</span>
       </div>
     </div>
-    <div class="summary-row">
+    <div class="summary-row" id="rowMembers" style="display:none">
       <div class="summary-icon">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       </div>
@@ -325,18 +316,54 @@ const code        = params.get('code')      || '—';
 const nombre      = params.get('nombre')    || '—';
 const members     = params.get('members')   || '0';
 const plan        = params.get('plan')      || 'free';
+const isPro       = plan === 'pro';
 
-// Poblar summary
-document.getElementById('sumNombre').textContent  = decodeURIComponent(nombre);
-document.getElementById('sumCode').textContent    = code;
-document.getElementById('sumPlan').textContent    = plan === 'pro'
+// ── STEP INDICATOR ──
+(function renderSteps() {
+  const si = document.getElementById('stepIndicator');
+  if (!si) return;
+  const line = `<div class="si-line"></div>`;
+  const done = (label) => `<div class="si-item done"><div class="si-num">✓</div> ${label}</div>`;
+  if (isPro) {
+    si.innerHTML = done('Tu cuenta') + line + done('Tu comunidad') + line
+      + done('Tu plan') + line + done('Miembros') + line + done('¡Listo!');
+  } else {
+    si.innerHTML = done('Tu cuenta') + line + done('Tu comunidad') + line
+      + done('Tu plan') + line + done('¡Listo!');
+  }
+})();
+
+// ── CONTENIDO DINÁMICO SEGÚN PLAN ──
+// Título y subtítulo
+if (!isPro) {
+  document.querySelector('.hero h1').innerHTML = '¡Tu comunidad está <em>activa</em>!';
+  document.querySelector('.hero-sub').textContent =
+    'Ya puedes empezar a registrar pagos y gestionar tu comunidad. Cuando quieras crecer, actualiza a Pro.';
+  document.querySelector('.hero-tag').textContent = '✅ Configuración completada';
+  document.querySelector('.planes-step').textContent = '✓ ¡Listo!';
+
+  // CTA note diferente para gratuito
+  document.querySelector('.cta-note').innerHTML =
+    'Tu plan gratuito está activo. <a href="/planes" style="color:var(--g);font-weight:600">Conoce el plan Pro →</a>';
+}
+
+// ── POBLAR SUMMARY ──
+document.getElementById('sumNombre').textContent = decodeURIComponent(nombre);
+document.getElementById('sumCode').textContent   = code;
+document.getElementById('sumPlan').textContent   = isPro
   ? '⭐ Pro · hasta 50 miembros'
   : 'Gratuito · hasta 10 miembros';
-document.getElementById('sumMembers').textContent = members === '0'
-  ? 'Ninguno aún — puedes invitar desde el dashboard'
-  : members + ' miembro' + (Number(members) !== 1 ? 's' : '') + ' invitado' + (Number(members) !== 1 ? 's' : '');
 
-// Confetti
+// Fila miembros: solo para Pro
+if (isPro) {
+  const rowMembers = document.getElementById('rowMembers');
+  if (rowMembers) rowMembers.style.display = 'flex';
+  document.getElementById('sumMembers').textContent = members === '0'
+    ? 'Ninguno aún — puedes invitar desde el dashboard'
+    : members + ' miembro' + (Number(members) !== 1 ? 's' : '') + ' invitado' + (Number(members) !== 1 ? 's' : '');
+}
+
+// ── CONFETTI ──
 function launchConfetti() {
   const colors = ['#1D9E75','#0F6E56','#6ee7c0','#FFD166','#0F1326','#E1F5EE'];
   for (let i = 0; i < 60; i++) {
