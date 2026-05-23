@@ -778,6 +778,19 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
       <label>Descripción</label>
       <input type="text" id="new-ingreso-desc" placeholder="Ej: Cuota Enero">
     </div>
+    <div class="form-field">
+      <label>Categoría</label>
+      <select id="new-ingreso-cat">
+        <option value="cuotas">Cuotas y Membresías</option>
+        <option value="eventos">Eventos y Actividades</option>
+        <option value="donaciones">Donaciones y Aportes</option>
+        <option value="ventas">Ventas</option>
+        <option value="servicios">Servicios y Arriendos</option>
+        <option value="fondos">Fondos y Subvenciones</option>
+        <option value="inversiones">Inversiones y Rentabilidad</option>
+        <option value="otros">Otros</option>
+      </select>
+    </div>
     <div class="form-row">
       <div class="form-field" style="margin-bottom:0">
         <label>Monto ($)</label>
@@ -948,6 +961,19 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
     <div class="form-field">
       <label>Descripción</label>
       <input type="text" id="edit-ingreso-desc" placeholder="Ej: Cuota Enero">
+    </div>
+    <div class="form-field">
+      <label>Categoría</label>
+      <select id="edit-ingreso-cat">
+        <option value="cuotas">Cuotas y Membresías</option>
+        <option value="eventos">Eventos y Actividades</option>
+        <option value="donaciones">Donaciones y Aportes</option>
+        <option value="ventas">Ventas</option>
+        <option value="servicios">Servicios y Arriendos</option>
+        <option value="fondos">Fondos y Subvenciones</option>
+        <option value="inversiones">Inversiones y Rentabilidad</option>
+        <option value="otros">Otros</option>
+      </select>
     </div>
     <div class="form-row">
       <div class="form-field" style="margin-bottom:0">
@@ -1295,7 +1321,7 @@ function renderIngresosList() {
     el.innerHTML = '<div class="card-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Sin ingresos registrados.<br>Agrega el primero arriba.</div>';
     return;
   }
-  el.innerHTML = `<table class="table"><thead><tr><th>Descripción</th><th>Fecha</th><th>Monto</th><th></th></tr></thead><tbody>${state.ingresos.slice().reverse().map((i,idx)=>`<tr><td>${i.desc}</td><td>${fmtDate(i.fecha)}</td><td style="color:var(--g);font-weight:600">${fmtMoney(i.monto)}</td><td><div class="btn-actions"><button class="btn-icon btn-icon-edit" title="Editar" onclick="openEditIngreso(${state.ingresos.length-1-idx})">${'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>'}</button><button class="btn-icon btn-icon-delete" title="Eliminar" onclick="removeIngreso(${state.ingresos.length-1-idx})">${'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>'}</button></div></td></tr>`).join('')}</tbody></table>`;
+  el.innerHTML = `<table class="table"><thead><tr><th>Descripción</th><th>Categoría</th><th>Fecha</th><th>Monto</th><th></th></tr></thead><tbody>${state.ingresos.slice().reverse().map((i,idx)=>`<tr><td>${i.desc}</td><td><span class="badge badge-green">${catLabel(i.cat,'ingreso')}</span></td><td>${fmtDate(i.fecha)}</td><td style="color:var(--g);font-weight:600">${fmtMoney(i.monto)}</td><td><div class="btn-actions"><button class="btn-icon btn-icon-edit" title="Editar" onclick="openEditIngreso(${state.ingresos.length-1-idx})">${'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>'}</button><button class="btn-icon btn-icon-delete" title="Eliminar" onclick="removeIngreso(${state.ingresos.length-1-idx})">${'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>'}</button></div></td></tr>`).join('')}</tbody></table>`;
 }
 
 function renderGastosList() {
@@ -1606,11 +1632,13 @@ async function addIngreso() {
   const desc = document.getElementById('new-ingreso-desc').value.trim();
   const monto = document.getElementById('new-ingreso-monto').value;
   const fecha = document.getElementById('new-ingreso-fecha').value;
+  const cat = document.getElementById('new-ingreso-cat').value;
   if (!desc || !monto) { showToast('Descripción y monto son requeridos', 'error'); return; }
 
   if (!state.activeCommunityId || state.activeCommunityId.startsWith('demo')) {
-    state.ingresos.push({ id: 'i'+Date.now(), desc, monto: parseFloat(monto), fecha });
+    state.ingresos.push({ id: 'i'+Date.now(), desc, monto: parseFloat(monto), fecha, cat });
     ['new-ingreso-desc','new-ingreso-monto'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('new-ingreso-cat').value = 'cuotas';
     dpInit('ingreso');
     closeModal('modalNewIngreso'); renderAll(); showToast('Ingreso registrado'); return;
   }
@@ -1624,6 +1652,7 @@ async function addIngreso() {
       const incomeId = data.response?.income_id || data.income_id;
       state.ingresos.push({ id: incomeId, desc, monto: parseFloat(monto), fecha });
       ['new-ingreso-desc','new-ingreso-monto'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('new-ingreso-cat').value = 'cuotas';
       dpInit('ingreso');
       closeModal('modalNewIngreso'); renderAll(); showToast('Ingreso registrado');
     }
@@ -1909,7 +1938,7 @@ function tryAddMember() {
 }
 
 // ── CATEGORIA LABEL ──
-const CAT_LABELS = {
+const CAT_LABELS_GASTO = {
   administracion: 'Administración y Operación',
   eventos: 'Eventos y Actividades',
   materiales: 'Materiales e Implementos',
@@ -1919,7 +1948,20 @@ const CAT_LABELS = {
   ahorro: 'Ahorro y Reserva',
   otros: 'Otros'
 };
-function catLabel(val) { return CAT_LABELS[val] || val || 'Otros'; }
+const CAT_LABELS_INGRESO = {
+  cuotas: 'Cuotas y Membresías',
+  eventos: 'Eventos y Actividades',
+  donaciones: 'Donaciones y Aportes',
+  ventas: 'Ventas',
+  servicios: 'Servicios y Arriendos',
+  fondos: 'Fondos y Subvenciones',
+  inversiones: 'Inversiones y Rentabilidad',
+  otros: 'Otros'
+};
+function catLabel(val, tipo='gasto') {
+  const map = tipo === 'ingreso' ? CAT_LABELS_INGRESO : CAT_LABELS_GASTO;
+  return map[val] || val || 'Otros';
+}
 
 // ── EDITAR INGRESO ──
 function openEditIngreso(i) {
@@ -1928,6 +1970,7 @@ function openEditIngreso(i) {
   document.getElementById('edit-ingreso-idx').value = i;
   document.getElementById('edit-ingreso-desc').value = ing.desc || '';
   document.getElementById('edit-ingreso-monto').value = ing.monto || '';
+  document.getElementById('edit-ingreso-cat').value = ing.cat || 'cuotas';
   if (ing.fecha) {
     const d = new Date(ing.fecha + 'T12:00:00');
     dpState['edit-ingreso'] = dpState['edit-ingreso'] || { year: null, month: null, selected: null };
@@ -1945,8 +1988,9 @@ async function saveEditIngreso() {
   const desc = document.getElementById('edit-ingreso-desc').value.trim();
   const monto = document.getElementById('edit-ingreso-monto').value;
   const fecha = document.getElementById('edit-ingreso-fecha').value;
+  const cat = document.getElementById('edit-ingreso-cat').value;
   if (!desc || !monto) { showToast('Descripción y monto son requeridos', 'error'); return; }
-  state.ingresos[i] = { ...state.ingresos[i], desc, monto: parseFloat(monto), fecha };
+  state.ingresos[i] = { ...state.ingresos[i], desc, monto: parseFloat(monto), fecha, cat };
   closeModal('modalEditIngreso');
   renderAll();
   showToast('Ingreso actualizado');
