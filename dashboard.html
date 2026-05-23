@@ -742,15 +742,9 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
       <div class="modal-title">Agregar miembro</div>
       <button class="modal-close" onclick="closeModal('modalNewMember')">✕</button>
     </div>
-    <div class="form-row">
-      <div class="form-field" style="margin-bottom:0">
-        <label>Nombre</label>
-        <input type="text" id="new-member-nombre" placeholder="María">
-      </div>
-      <div class="form-field" style="margin-bottom:0">
-        <label>Apellido</label>
-        <input type="text" id="new-member-apellido" placeholder="González">
-      </div>
+    <div class="form-field">
+      <label>Nombre completo</label>
+      <input type="text" id="new-member-nombre" placeholder="María González">
     </div>
     <div class="form-field">
       <label>Email</label>
@@ -892,15 +886,9 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
       <div class="modal-title">Actualizar tus datos</div>
       <button class="modal-close" onclick="closeModal('modalUpdateProfile')">✕</button>
     </div>
-    <div class="form-row">
-      <div class="form-field" style="margin-bottom:0">
-        <label>Nombre</label>
-        <input type="text" id="profile-nombre" placeholder="María">
-      </div>
-      <div class="form-field" style="margin-bottom:0">
-        <label>Apellido</label>
-        <input type="text" id="profile-apellido" placeholder="González">
-      </div>
+    <div class="form-field">
+      <label>Nombre completo</label>
+      <input type="text" id="profile-nombre" placeholder="María González">
     </div>
     <div class="form-field">
       <label>Teléfono</label>
@@ -1127,8 +1115,10 @@ function fmtDate(d) {
   const [y,m,day] = d.split('-');
   return `${day}/${m}/${y}`;
 }
-function initials(nombre, apellido) {
-  return ((nombre||'')[0]||'').toUpperCase() + ((apellido||'')[0]||'').toUpperCase();
+function initials(nombre) {
+  const parts = (nombre||'').trim().split(' ').filter(Boolean);
+  if (parts.length >= 2) return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+  return (nombre||'?')[0].toUpperCase();
 }
 
 // ── STATS ──
@@ -1192,7 +1182,7 @@ function renderMembersList() {
   }
   el.innerHTML = state.members.map((m,i) => `
     <div class="member-row">
-      <div class="member-avatar">${initials(m.nombre, m.apellido)}</div>
+      <div class="member-avatar">${initials(m.nombre)}</div>
       <div class="member-info">
         <div class="member-name">${m.nombre} ${m.apellido}</div>
         <div class="member-email">${m.email}${m.telefono ? ' · ' + m.telefono : ''}</div>
@@ -1470,14 +1460,13 @@ async function addMember() {
     return;
   }
   const nombre = document.getElementById('new-member-nombre').value.trim();
-  const apellido = document.getElementById('new-member-apellido').value.trim();
   const email = document.getElementById('new-member-email').value.trim();
   const telefono = document.getElementById('new-member-telefono').value.trim();
   if (!nombre || !email) { showToast('Nombre y email son requeridos', 'error'); return; }
 
   if (!state.activeCommunityId || state.activeCommunityId.startsWith('demo')) {
-    state.members.push({ id: 'm'+Date.now(), nombre, apellido, email, telefono });
-    ['new-member-nombre','new-member-apellido','new-member-email','new-member-telefono'].forEach(id=>document.getElementById(id).value='');
+    state.members.push({ id: 'm'+Date.now(), nombre, apellido: '', email, telefono });
+    ['new-member-nombre','new-member-email','new-member-telefono'].forEach(id=>document.getElementById(id).value='');
     closeModal('modalNewMember');
     renderAll();
     showToast('Miembro agregado');
@@ -1492,7 +1481,7 @@ async function addMember() {
     if (data.response?.member_id || data.member_id) {
       const memberId = data.response?.member_id || data.member_id;
       state.members.push({ id: memberId, nombre, apellido, email, telefono });
-      ['new-member-nombre','new-member-apellido','new-member-email','new-member-telefono'].forEach(id=>document.getElementById(id).value='');
+      ['new-member-nombre','new-member-email','new-member-telefono'].forEach(id=>document.getElementById(id).value='');
       closeModal('modalNewMember');
       renderAll();
       showToast('Miembro agregado exitosamente');
@@ -1617,7 +1606,7 @@ ${state.gastos.map(g=>`  ${fmtDate(g.fecha)||'Sin fecha'}  ${g.desc.padEnd(30)} 
 
 ${'─'.repeat(50)}
 MIEMBROS (${state.members.length})
-${state.members.map(m=>`  ${(m.nombre+' '+m.apellido).padEnd(25)}  ${m.email}`).join('\n')||'  Sin miembros'}
+${state.members.map(m=>`  ${(m.nombre).padEnd(25)}  ${m.email}`).join('\n')||'  Sin miembros'}
 
 ${'─'.repeat(50)}
 Generado por QuotApp — www.quotapp.cl`;
@@ -1662,12 +1651,9 @@ function cerrarSesion() {
 
 async function updateProfile() {
   const nombre   = document.getElementById('profile-nombre').value.trim();
-  const apellido = document.getElementById('profile-apellido').value.trim();
   const telefono = document.getElementById('profile-telefono').value.trim();
   if (!nombre) { showToast('El nombre es requerido', 'error'); return; }
-  // Por ahora actualiza el state y el avatar (cuando haya endpoint en Bubble se conecta aquí)
-  const fullName = nombre + (apellido ? ' ' + apellido : '');
-  state.treasurer.name  = fullName;
+  state.treasurer.name  = nombre;
   state.treasurer.phone = telefono;
   updateUserAvatar(fullName, state.treasurer.email);
   closeModal('modalUpdateProfile');
