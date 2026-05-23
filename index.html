@@ -263,6 +263,8 @@ img{display:block;max-width:100%}
   position:relative;transition:all .25s;
 }
 .price-card:hover{transform:translateY(-3px);box-shadow:var(--sh2)}
+.btn-proplus{background:transparent;border:1.5px solid #7C3AED;color:#7C3AED;transition:all .2s}
+.btn-proplus:hover{background:#7C3AED;color:#fff;box-shadow:0 4px 16px rgba(124,58,237,.3);transform:translateY(-1px)}
 .price-card.featured{
   border:2px solid var(--g);
   background:linear-gradient(145deg,#F7FFF9,#fff);
@@ -1004,7 +1006,7 @@ footer{
         <div class="pf-item"><span class="pf-check">✓</span>Cambio de año en 1 clic</div>
         <div class="pf-item"><span class="pf-check">✓</span>Soporte prioritario</div>
       </div>
-      <a href="signup" class="btn btn-ghost" style="width:100%;justify-content:center;border-color:#7C3AED;color:#7C3AED;">Empieza gratis 7 días →</a>
+      <a href="signup" class="btn btn-proplus" style="width:100%;justify-content:center;">Empieza gratis 7 días →</a>
       <p class="price-note" id="lnd-price-proplus-note">7 días gratis, luego $6.990/mes. Cancela cuando quieras.</p>
     </div>
 
@@ -1278,18 +1280,18 @@ function lndSetBilling(t) {
 
   // Pro
   document.getElementById('lnd-price-pro').innerHTML = t === 'a'
-    ? '<sup>$</sup>3.325<span class="period">/mes</span>'
+    ? '<sup>$</sup>39.900<span class="period">/año</span>'
     : '<sup>$</sup>3.990<span class="period">/mes</span>';
   document.getElementById('lnd-price-note').textContent = t === 'a'
-    ? '$39.900/año — equivale a 2 meses gratis.'
+    ? '2 meses gratis incluidos. Cancela cuando quieras.'
     : '7 días gratis, luego $3.990/mes. Cancela cuando quieras.';
 
   // Pro+
   document.getElementById('lnd-price-proplus').innerHTML = t === 'a'
-    ? '<sup>$</sup>5.825<span class="period">/mes</span>'
+    ? '<sup>$</sup>69.900<span class="period">/año</span>'
     : '<sup>$</sup>6.990<span class="period">/mes</span>';
   document.getElementById('lnd-price-proplus-note').textContent = t === 'a'
-    ? '$69.900/año — equivale a 2 meses gratis.'
+    ? '2 meses gratis incluidos. Cancela cuando quieras.'
     : '7 días gratis, luego $6.990/mes. Cancela cuando quieras.';
 }
 </script>
