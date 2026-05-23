@@ -625,24 +625,12 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
       </div>
     </div>
 
-    <!-- Datos del tesorero -->
-    <div class="form-field" style="margin-top:4px">
-      <label>Tu nombre (tesorero)</label>
-      <input type="text" id="new-community-treasurer-name" placeholder="María González">
-    </div>
-    <div class="form-row">
-      <div class="form-field" style="margin-bottom:0">
-        <label>Tu email</label>
-        <input type="email" id="new-community-treasurer-email" placeholder="maria@ejemplo.com">
-      </div>
-      <div class="form-field" style="margin-bottom:0">
-        <label>Tu teléfono</label>
-        <input type="tel" id="new-community-treasurer-phone" placeholder="+56 9 1234 5678">
-      </div>
-    </div>
-
     <!-- Plan selector -->
-    <div class="form-field" style="margin-top:8px">
+    <!-- Inputs ocultos para tesorero (se llenan desde state) -->
+    <input type="hidden" id="new-community-treasurer-name">
+    <input type="hidden" id="new-community-treasurer-email">
+    <input type="hidden" id="new-community-treasurer-phone">
+    <div class="form-field" style="margin-top:16px">
       <label>Selecciona el plan para esta comunidad</label>
     </div>
     <div class="plan-selector">
@@ -1016,14 +1004,11 @@ async function switchCommunity() {
 // ── MODALS ──
 function openModal(id) {
   document.getElementById(id).classList.add('open');
-  // Pre-llenar datos del tesorero si abrimos nueva comunidad
+  // Pre-llenar hidden inputs del tesorero desde state
   if (id === 'modalNewCommunity') {
-    const nameEl  = document.getElementById('new-community-treasurer-name');
-    const emailEl = document.getElementById('new-community-treasurer-email');
-    const phoneEl = document.getElementById('new-community-treasurer-phone');
-    if (nameEl  && !nameEl.value)  nameEl.value  = state.treasurer.name  || '';
-    if (emailEl && !emailEl.value) emailEl.value = state.treasurer.email || '';
-    if (phoneEl && !phoneEl.value) phoneEl.value = state.treasurer.phone || '';
+    document.getElementById('new-community-treasurer-name').value  = state.treasurer.name  || '';
+    document.getElementById('new-community-treasurer-email').value = state.treasurer.email || '';
+    document.getElementById('new-community-treasurer-phone').value = state.treasurer.phone || '';
   }
 }
 function closeModal(id) { document.getElementById(id).classList.remove('open') }
@@ -1328,7 +1313,6 @@ async function createCommunity() {
     const tName  = document.getElementById('new-community-treasurer-name').value.trim();
     const tEmail = document.getElementById('new-community-treasurer-email').value.trim();
     const tPhone = document.getElementById('new-community-treasurer-phone').value.trim();
-    if (!tName || !tEmail) { showToast('Ingresa tu nombre y email de tesorero', 'error'); return; }
 
     const data = await api('create_community', 'POST', {
       user_id: userId, name: nombre, type: tipo, monthly_fee: parseFloat(fee)||0,
