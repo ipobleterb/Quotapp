@@ -651,10 +651,14 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
       <div class="form-field" style="margin-bottom:0">
         <label>Tipo</label>
         <select id="new-community-type">
-          <option value="curso">Curso escolar</option>
-          <option value="club">Club deportivo</option>
-          <option value="condominio">Condominio / vecinos</option>
-          <option value="organizacion">Organización</option>
+          <option value="">Selecciona un tipo...</option>
+          <option value="habitacional">Habitacional</option>
+          <option value="educacion">Educación</option>
+          <option value="deportes">Deportes</option>
+          <option value="religiosa_social">Religiosa / Social</option>
+          <option value="negocios">Negocios</option>
+          <option value="financiera_digital">Financiera / Digital</option>
+          <option value="cultura_hobby">Cultura / Hobby</option>
           <option value="otro">Otro</option>
         </select>
       </div>
@@ -722,10 +726,14 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
       <div class="form-field" style="margin-bottom:0">
         <label>Tipo</label>
         <select id="edit-community-type">
-          <option value="curso">Curso escolar</option>
-          <option value="club">Club deportivo</option>
-          <option value="condominio">Condominio / vecinos</option>
-          <option value="organizacion">Organización</option>
+          <option value="">Selecciona un tipo...</option>
+          <option value="habitacional">Habitacional</option>
+          <option value="educacion">Educación</option>
+          <option value="deportes">Deportes</option>
+          <option value="religiosa_social">Religiosa / Social</option>
+          <option value="negocios">Negocios</option>
+          <option value="financiera_digital">Financiera / Digital</option>
+          <option value="cultura_hobby">Cultura / Hobby</option>
           <option value="otro">Otro</option>
         </select>
       </div>
@@ -881,13 +889,6 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
     <div class="form-field">
       <label>Teléfono (opcional)</label>
       <input type="tel" id="edit-member-telefono" placeholder="+56 9 1234 5678">
-    </div>
-    <div class="form-field">
-      <label>Rol</label>
-      <select id="edit-member-rol">
-        <option value="miembro">Miembro</option>
-        <option value="tesorero">Tesorero</option>
-      </select>
     </div>
     <input type="hidden" id="edit-member-idx">
     <div class="modal-footer">
@@ -2088,10 +2089,9 @@ async function saveEditMember() {
   const nombre   = document.getElementById('edit-member-nombre').value.trim();
   const email    = document.getElementById('edit-member-email').value.trim();
   const telefono = document.getElementById('edit-member-telefono').value.trim();
-  const rol      = document.getElementById('edit-member-rol').value;
   if (!nombre || !email) { showToast('Nombre y email son requeridos', 'error'); return; }
 
-  state.members[i] = { ...state.members[i], nombre, email, telefono, role: rol, rol };
+  state.members[i] = { ...state.members[i], nombre, email, telefono };
   closeModal('modalEditMember');
   renderAll();
   showToast('Miembro actualizado');
