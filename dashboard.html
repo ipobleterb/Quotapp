@@ -228,12 +228,14 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
 .portal-member-row:last-child{border-bottom:none}
 
 /* ── HELP WIDGET ── */
-.help-widget{margin:auto 12px 16px;background:#F0F9FF;border:1.5px solid #BAE6FD;border-radius:12px;padding:14px;position:relative}
-.help-widget-icon{width:28px;height:28px;background:#0EA5E9;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:10px;flex-shrink:0}
-.help-widget h4{font-size:.82rem;font-weight:700;color:#0C4A6E;margin-bottom:6px}
-.help-widget p{font-size:.74rem;color:#075985;line-height:1.5;margin-bottom:10px}
-.help-widget a{font-size:.78rem;font-weight:600;color:#0EA5E9;text-decoration:none;display:flex;align-items:center;gap:5px;cursor:pointer;transition:color .15s}
-.help-widget a:hover{color:#0284C7}
+.help-widget{margin:8px 12px 0;background:linear-gradient(135deg,#0F1326 0%,#1A2040 100%);border-radius:12px;padding:14px;position:relative;overflow:hidden}
+.help-widget::before{content:'';position:absolute;top:-20px;right:-20px;width:70px;height:70px;background:rgba(29,158,117,.15);border-radius:50%}
+.help-widget::after{content:'';position:absolute;bottom:-15px;left:-15px;width:50px;height:50px;background:rgba(29,158,117,.08);border-radius:50%}
+.help-widget-icon{width:30px;height:30px;background:rgba(29,158,117,.2);border:1px solid rgba(29,158,117,.3);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;position:relative;z-index:1}
+.help-widget h4{font-size:.8rem;font-weight:700;color:#fff;margin-bottom:5px;position:relative;z-index:1}
+.help-widget p{font-size:.72rem;color:rgba(255,255,255,.55);line-height:1.5;margin-bottom:10px;position:relative;z-index:1}
+.help-widget a{font-size:.75rem;font-weight:600;color:var(--g4);text-decoration:none;display:inline-flex;align-items:center;gap:5px;cursor:pointer;transition:color .15s;position:relative;z-index:1}
+.help-widget a:hover{color:#fff}
 
 /* ── TOAST ── */
 .toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:#fff;padding:12px 18px;border-radius:10px;font-size:.84rem;font-weight:500;box-shadow:0 8px 24px rgba(15,19,38,.2);z-index:400;transform:translateY(80px);opacity:0;transition:all .3s;max-width:300px}
@@ -367,18 +369,18 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
     </ul>
 
     <!-- Upgrade box (dinámico según plan) -->
+    <div id="sidebar-upgrade-box"></div>
     <div class="help-widget">
       <div class="help-widget-icon">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       </div>
       <h4>¿Necesitas ayuda?</h4>
-      <p>Revisa nuestra guía o contáctanos para mantener las cuentas de tu comunidad al día.</p>
+      <p>Escríbenos y te ayudamos a sacar el máximo provecho de QuotApp.</p>
       <a href="mailto:hola@quotapp.cl">
-        Abrir centro de ayuda
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        Contactar soporte
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
     </div>
-    <div id="sidebar-upgrade-box"></div>
   </aside>
 
   <!-- TOPBAR -->
