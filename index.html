@@ -256,7 +256,7 @@ img{display:block;max-width:100%}
 
 /* ── PRICING ── */
 .pricing{background:var(--bg)}
-.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:50px;max-width:960px;margin-left:auto;margin-right:auto}
+.pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:50px;max-width:1180px;margin-left:auto;margin-right:auto}
 .price-card{
   background:var(--white);border-radius:var(--r2);
   padding:32px;border:1px solid var(--bdr);
@@ -910,13 +910,15 @@ footer{
   </div>
 
   <div class="pricing-grid">
+
+    <!-- STARTER -->
     <div class="price-card">
-      <div class="price-plan">Gratuito</div>
+      <div class="price-plan">Starter</div>
       <div class="price-amount">$0<span class="period">/mes</span></div>
-      <p class="price-desc">Para que explores sin riesgo. Sin tarjeta, sin compromisos.</p>
+      <p class="price-desc">Para comenzar sin riesgo. Sin tarjeta, sin compromisos.</p>
       <div class="price-sep"></div>
       <div class="price-feat">
-        <div class="pf-item"><span class="pf-check">✓</span>Hasta 8 miembros de comunidad</div>
+        <div class="pf-item"><span class="pf-check">✓</span>Hasta 10 miembros</div>
         <div class="pf-item"><span class="pf-check">✓</span>Registro de pagos manual</div>
         <div class="pf-item"><span class="pf-check">✓</span>Reporte básico PDF</div>
         <div class="pf-item"><span class="pf-check">✓</span>Soporte por email</div>
@@ -927,41 +929,64 @@ footer{
       <a href="signup" class="btn btn-ghost" style="width:100%;justify-content:center">Empezar gratis</a>
     </div>
 
+    <!-- PRO -->
     <div class="price-card featured">
-      <div class="price-pop">⭐ El plan que usa la mayoría de las comunidades</div>
+      <div class="price-pop">⭐ El más elegido</div>
       <div class="price-plan">Pro</div>
-      <div class="price-amount" id="lnd-price-pro"><sup>$</sup>4.990<span class="period">/mes</span></div>
-      <p class="price-desc">Todo lo que tu comunidad necesita para cobrar sin perseguir a nadie. Pagos, recordatorios y reportes automáticos.</p>
+      <div class="price-amount" id="lnd-price-pro"><sup>$</sup>3.990<span class="period">/mes</span></div>
+      <p class="price-desc">Todo lo que tu comunidad necesita para cobrar sin perseguir a nadie.</p>
       <div class="price-sep"></div>
       <div class="price-feat">
-        <div class="pf-item"><span class="pf-check">✓</span>Hasta 50 miembros de comunidad</div>
-        <div class="pf-item"><span class="pf-check">✓</span><strong>Cobro online integrado (Flow / WebPay)</strong></div>
-        <div class="pf-item"><span class="pf-check">✓</span>Recordatorios automáticos (WhatsApp y email)</div>
+        <div class="pf-item"><span class="pf-check">✓</span><strong>Hasta 50 miembros</strong></div>
+        <div class="pf-item"><span class="pf-check">✓</span>Cobro online (Flow / WebPay)</div>
+        <div class="pf-item"><span class="pf-check">✓</span>Recordatorios automáticos (WhatsApp + email)</div>
         <div class="pf-item"><span class="pf-check">✓</span>Portal privado por apoderado</div>
-        <div class="pf-item"><span class="pf-check">✓</span>Reportes completos (PDF y Excel)</div>
+        <div class="pf-item"><span class="pf-check">✓</span>Reportes PDF y Excel</div>
         <div class="pf-item"><span class="pf-check">✓</span>Cambio de año en 1 clic</div>
         <div class="pf-item"><span class="pf-check">✓</span>Soporte prioritario</div>
       </div>
-      <a href="signup" class="btn btn-primary" style="width:100%;justify-content:center">Empieza gratis 30 días →</a>
-      <p class="price-note" id="lnd-price-note">Luego $4.990/mes. Cancela cuando quieras.</p>
+      <a href="signup" class="btn btn-primary" style="width:100%;justify-content:center">Empieza gratis 7 días →</a>
+      <p class="price-note" id="lnd-price-note">7 días gratis, luego $3.990/mes. Cancela cuando quieras.</p>
     </div>
 
-    <div class="price-card">
-      <div class="price-plan">Para organizaciones</div>
-      <div class="price-amount" style="font-size:1.6rem">A medida</div>
-      <p class="price-desc">Solución completa para múltiples cursos.</p>
+    <!-- PRO+ -->
+    <div class="price-card" style="border-color:#1A2040;border-width:1.5px;">
+      <div class="price-pop" style="background:#0F1326;">🚀 Máximo alcance</div>
+      <div class="price-plan" style="color:#0F1326;">Pro+</div>
+      <div class="price-amount" id="lnd-price-proplus"><sup>$</sup>6.990<span class="period">/mes</span></div>
+      <p class="price-desc">Para comunidades grandes que necesitan escalar sin límites.</p>
       <div class="price-sep"></div>
       <div class="price-feat">
-        <div class="pf-item"><span class="pf-check">✓</span>Cursos ilimitados</div>
+        <div class="pf-item"><span class="pf-check">✓</span><strong>Hasta 100 miembros</strong></div>
+        <div class="pf-item"><span class="pf-check">✓</span>Cobro online (Flow / WebPay)</div>
+        <div class="pf-item"><span class="pf-check">✓</span>Recordatorios automáticos (WhatsApp + email)</div>
+        <div class="pf-item"><span class="pf-check">✓</span>Portal privado por apoderado</div>
+        <div class="pf-item"><span class="pf-check">✓</span>Reportes PDF y Excel</div>
+        <div class="pf-item"><span class="pf-check">✓</span>Cambio de año en 1 clic</div>
+        <div class="pf-item"><span class="pf-check">✓</span>Soporte prioritario</div>
+      </div>
+      <a href="signup" class="btn btn-ghost" style="width:100%;justify-content:center;border-color:#0F1326;color:#0F1326;">Empieza gratis 7 días →</a>
+      <p class="price-note" id="lnd-price-proplus-note">7 días gratis, luego $6.990/mes. Cancela cuando quieras.</p>
+    </div>
+
+    <!-- PERSONALIZADO -->
+    <div class="price-card">
+      <div class="price-plan">Personalizado</div>
+      <div class="price-amount" style="font-size:1.6rem">A medida</div>
+      <p class="price-desc">Solución completa para colegios y organizaciones con múltiples comunidades.</p>
+      <div class="price-sep"></div>
+      <div class="price-feat">
+        <div class="pf-item"><span class="pf-check">✓</span>Comunidades ilimitadas</div>
         <div class="pf-item"><span class="pf-check">✓</span>Panel de administración central</div>
-        <div class="pf-item"><span class="pf-check">✓</span>Reportes por curso y globales</div>
+        <div class="pf-item"><span class="pf-check">✓</span>Reportes por comunidad y globales</div>
         <div class="pf-item"><span class="pf-check">✓</span>Integración con sistema escolar</div>
         <div class="pf-item"><span class="pf-check">✓</span>Capacitación incluida</div>
         <div class="pf-item"><span class="pf-check">✓</span>Account manager dedicado</div>
         <div class="pf-item"><span class="pf-check">✓</span>Factura empresa</div>
       </div>
-      <a href="#" class="btn btn-ghost" style="width:100%;justify-content:center">Hablar con ventas</a>
+      <a href="https://wa.me/56978739294?text=Hola%2C%20me%20interesa%20el%20plan%20Personalizado%20de%20QuotApp" target="_blank" class="btn btn-ghost" style="width:100%;justify-content:center">Hablar con ventas</a>
     </div>
+
   </div>
 </section>
 
@@ -1007,7 +1032,7 @@ footer{
 <section class="cta-final">
   <h2>Tu comunidad merece una tesorería que funciona sola</h2>
   <p>Empieza gratis hoy. Sin tarjeta, sin instalaciones, listo en 5 minutos.</p>
-  <a href="signup" class="btn btn-primary btn-xl">Empieza gratis hoy por 30 días →</a>
+  <a href="signup" class="btn btn-primary btn-xl">Empieza gratis 7 días →</a>
   <p style="font-size:.82rem;color:rgba(255,255,255,.7);margin-top:12px;">★ No necesitas instalar nada</p>
   <p class="cta-note" style="color:rgba(255,255,255,.5)"><span style="color:#6ee7c0;font-weight:600;">Configuración en menos de 5 minutos</span></p>
 </section>
@@ -1205,23 +1230,28 @@ document.querySelectorAll('.feat-card, .price-card, .testi-card, .step, .diff-it
 });
 
 // ── BILLING TOGGLE (landing pricing) ──
-function lndSetBilling(t) {
-  const bM = document.getElementById('lnd-bM');
-  const bA = document.getElementById('lnd-bA');
-  const price = document.getElementById('lnd-price-pro');
-  const note = document.getElementById('lnd-price-note');
+const CSS_ACTIVE = 'padding:5px 16px;border-radius:99px;border:none;font-size:.78rem;font-weight:600;font-family:Instrument Sans,sans-serif;cursor:pointer;background:#1D9E75;color:#fff;box-shadow:0 2px 8px rgba(29,158,117,.25);transition:all .2s;';
+const CSS_INACT  = 'padding:5px 16px;border-radius:99px;border:none;font-size:.78rem;font-weight:600;font-family:Instrument Sans,sans-serif;cursor:pointer;background:transparent;color:#8890AA;transition:all .2s;';
 
-  if (t === 'a') {
-    bM.style.cssText = 'padding:5px 16px;border-radius:99px;border:none;font-size:.78rem;font-weight:600;font-family:Instrument Sans,sans-serif;cursor:pointer;background:transparent;color:#8890AA;transition:all .2s;';
-    bA.style.cssText = 'padding:5px 16px;border-radius:99px;border:none;font-size:.78rem;font-weight:600;font-family:Instrument Sans,sans-serif;cursor:pointer;background:#1D9E75;color:#fff;box-shadow:0 2px 8px rgba(29,158,117,.25);transition:all .2s;';
-    price.innerHTML = '<sup>$</sup>4.166<span class="period">/mes</span>';
-    note.textContent = '$49.990/año — equivale a 2 meses gratis.';
-  } else {
-    bM.style.cssText = 'padding:5px 16px;border-radius:99px;border:none;font-size:.78rem;font-weight:600;font-family:Instrument Sans,sans-serif;cursor:pointer;background:#1D9E75;color:#fff;box-shadow:0 2px 8px rgba(29,158,117,.25);transition:all .2s;';
-    bA.style.cssText = 'padding:5px 16px;border-radius:99px;border:none;font-size:.78rem;font-weight:600;font-family:Instrument Sans,sans-serif;cursor:pointer;background:transparent;color:#8890AA;transition:all .2s;';
-    price.innerHTML = '<sup>$</sup>4.990<span class="period">/mes</span>';
-    note.textContent = 'Luego $4.990/mes. Cancela cuando quieras.';
-  }
+function lndSetBilling(t) {
+  document.getElementById('lnd-bM').style.cssText = t === 'm' ? CSS_ACTIVE : CSS_INACT;
+  document.getElementById('lnd-bA').style.cssText = t === 'a' ? CSS_ACTIVE : CSS_INACT;
+
+  // Pro
+  document.getElementById('lnd-price-pro').innerHTML = t === 'a'
+    ? '<sup>$</sup>3.325<span class="period">/mes</span>'
+    : '<sup>$</sup>3.990<span class="period">/mes</span>';
+  document.getElementById('lnd-price-note').textContent = t === 'a'
+    ? '$39.900/año — equivale a 2 meses gratis.'
+    : '7 días gratis, luego $3.990/mes. Cancela cuando quieras.';
+
+  // Pro+
+  document.getElementById('lnd-price-proplus').innerHTML = t === 'a'
+    ? '<sup>$</sup>5.825<span class="period">/mes</span>'
+    : '<sup>$</sup>6.990<span class="period">/mes</span>';
+  document.getElementById('lnd-price-proplus-note').textContent = t === 'a'
+    ? '$69.900/año — equivale a 2 meses gratis.'
+    : '7 días gratis, luego $6.990/mes. Cancela cuando quieras.';
 }
 </script>
 </body>
