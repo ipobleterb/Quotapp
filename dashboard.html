@@ -826,6 +826,19 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
       <label>Descripción</label>
       <input type="text" id="new-gasto-desc" placeholder="Ej: Materiales para evento">
     </div>
+    <div class="form-field">
+      <label>Categoría</label>
+      <select id="new-gasto-cat">
+        <option value="administracion">Administración y Operación</option>
+        <option value="eventos">Eventos y Actividades</option>
+        <option value="materiales">Materiales e Implementos</option>
+        <option value="personas">Personas y Honorarios</option>
+        <option value="mantencion">Mantención e Infraestructura</option>
+        <option value="marketing">Marketing y Comunicación</option>
+        <option value="ahorro">Ahorro y Reserva</option>
+        <option value="otros">Otros</option>
+      </select>
+    </div>
     <div class="form-row">
       <div class="form-field" style="margin-bottom:0">
         <label>Monto ($)</label>
@@ -842,19 +855,6 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
           <input type="hidden" id="new-gasto-fecha">
         </div>
       </div>
-    </div>
-    <div class="form-field" style="margin-top:4px">
-      <label>Categoría</label>
-      <select id="new-gasto-cat">
-        <option value="administracion">Administración y Operación</option>
-        <option value="eventos">Eventos y Actividades</option>
-        <option value="materiales">Materiales e Implementos</option>
-        <option value="personas">Personas y Honorarios</option>
-        <option value="mantencion">Mantención e Infraestructura</option>
-        <option value="marketing">Marketing y Comunicación</option>
-        <option value="ahorro">Ahorro y Reserva</option>
-        <option value="otros">Otros</option>
-      </select>
     </div>
     <div class="modal-footer">
       <button class="btn-secondary" onclick="closeModal('modalNewGasto')">Cancelar</button>
@@ -1011,6 +1011,19 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
       <label>Descripción</label>
       <input type="text" id="edit-gasto-desc" placeholder="Ej: Materiales para evento">
     </div>
+    <div class="form-field">
+      <label>Categoría</label>
+      <select id="edit-gasto-cat">
+        <option value="administracion">Administración y Operación</option>
+        <option value="eventos">Eventos y Actividades</option>
+        <option value="materiales">Materiales e Implementos</option>
+        <option value="personas">Personas y Honorarios</option>
+        <option value="mantencion">Mantención e Infraestructura</option>
+        <option value="marketing">Marketing y Comunicación</option>
+        <option value="ahorro">Ahorro y Reserva</option>
+        <option value="otros">Otros</option>
+      </select>
+    </div>
     <div class="form-row">
       <div class="form-field" style="margin-bottom:0">
         <label>Monto ($)</label>
@@ -1027,19 +1040,6 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
           <input type="hidden" id="edit-gasto-fecha">
         </div>
       </div>
-    </div>
-    <div class="form-field" style="margin-top:4px">
-      <label>Categoría</label>
-      <select id="edit-gasto-cat">
-        <option value="administracion">Administración y Operación</option>
-        <option value="eventos">Eventos y Actividades</option>
-        <option value="materiales">Materiales e Implementos</option>
-        <option value="personas">Personas y Honorarios</option>
-        <option value="mantencion">Mantención e Infraestructura</option>
-        <option value="marketing">Marketing y Comunicación</option>
-        <option value="ahorro">Ahorro y Reserva</option>
-        <option value="otros">Otros</option>
-      </select>
     </div>
     <input type="hidden" id="edit-gasto-idx">
     <div class="modal-footer">
@@ -1462,7 +1462,10 @@ async function loadIncomeFromAPI() {
       const _income = data.response?.income || data.income;
       state.ingresos = _income.map(i => ({
         id: i._id, desc: i.month||'Ingreso', monto: i.amount||0,
-        fecha: i.payment_date ? new Date(i.payment_date).toISOString().split('T')[0] : ''
+        fecha: (i.payment_date || i['Created Date'] || i.created_date)
+          ? new Date(i.payment_date || i['Created Date'] || i.created_date).toISOString().split('T')[0]
+          : new Date().toISOString().split('T')[0],
+        cat: i.category || 'cuotas'
       }));
     }
   } catch(e) { console.error('Error cargando ingresos:', e); }
@@ -1644,13 +1647,14 @@ async function addIngreso() {
   }
 
   try {
+    const fechaFinal = fecha || new Date().toISOString().split('T')[0];
     const data = await api('create_income', 'POST', {
       community_id: state.activeCommunityId, amount: parseFloat(monto), month: desc,
-      payment_date: fecha||new Date().toISOString().split('T')[0], status: 'pagado'
+      payment_date: fechaFinal, status: 'pagado', category: cat
     });
     if (data.response?.income_id || data.income_id) {
       const incomeId = data.response?.income_id || data.income_id;
-      state.ingresos.push({ id: incomeId, desc, monto: parseFloat(monto), fecha });
+      state.ingresos.push({ id: incomeId, desc, monto: parseFloat(monto), fecha: fechaFinal, cat });
       ['new-ingreso-desc','new-ingreso-monto'].forEach(id=>document.getElementById(id).value='');
       document.getElementById('new-ingreso-cat').value = 'cuotas';
       dpInit('ingreso');
