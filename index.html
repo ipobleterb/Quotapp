@@ -529,7 +529,7 @@ footer{
     <a href="signup" class="btn btn-primary btn-xl">Empieza gratis HOY →</a>
     <a href="#como-funciona" class="btn btn-ghost btn-lg">Ver cómo funciona</a>
   </div>
-  <p class="hero-note fade-up"><span>Sin tarjeta</span> · Listo en 5 minutos</p>
+  <p class="hero-note fade-up"><span>Configuración en menos de 5 minutos</span></p>
   <p class="hero-social-proof fade-up" style="margin-top:16px;font-size:.85rem;color:#4A5070;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;">
     <span style="color:#F59E0B;letter-spacing:1px;">⭐⭐⭐⭐⭐</span>
     <span><em>"En una semana dejé de perseguir pagos por WhatsApp."</em> — <strong>Andrea Guzmán</strong>, Tesorera Centro de Padres, Concepción.</span>
@@ -543,68 +543,107 @@ footer{
       <div class="mb-dot" style="background:#28C840"></div>
       <div class="mockup-url">app.quotapp.cl/dashboard</div>
     </div>
-    <div class="mockup-body">
-      <div class="mock-sidebar">
-        <div class="mock-nav-item active">
-          <div class="mock-nav-icon" style="background:var(--g3);color:var(--g)">▦</div> Dashboard
+    <!-- Dashboard real -->
+    <div style="display:grid;grid-template-columns:180px 1fr;min-height:360px;background:#F4F6FA;">
+
+      <!-- Sidebar real -->
+      <div style="background:#fff;border-right:1px solid #E4E7F0;padding:0;display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:center;gap:8px;padding:14px 12px;border-bottom:1px solid #E4E7F0;">
+          <div style="width:28px;height:28px;background:#1D9E75;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 22 22" fill="none"><rect x="3" y="5" width="13" height="2" rx="1" fill="white"/><rect x="3" y="9" width="10" height="2" rx="1" fill="rgba(255,255,255,.65)"/><rect x="3" y="13" width="7" height="2" rx="1" fill="rgba(255,255,255,.4)"/><circle cx="17" cy="15.5" r="4" fill="white"/><text x="17" y="18" text-anchor="middle" font-size="5.5" font-weight="700" fill="#1D9E75">$</text></svg>
+          </div>
+          <span style="font-family:'Instrument Sans',sans-serif;font-size:.88rem;font-weight:700;color:#0F1326;">Quot<span style="color:#1D9E75">App</span></span>
         </div>
-        <div class="mock-nav-item">
-          <div class="mock-nav-icon" style="background:#EEF2FF;color:#6366F1">👥</div> Alumnos
+        <div style="padding:8px;">
+          <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;background:#E1F5EE;margin-bottom:2px;">
+            <div style="width:14px;height:14px;background:#1D9E75;border-radius:4px;flex-shrink:0;"></div>
+            <span style="font-size:.78rem;font-weight:600;color:#1D9E75;">Dashboard</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;margin-bottom:2px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            <span style="font-size:.78rem;color:#4A5070;">Miembros</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;margin-bottom:2px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            <span style="font-size:.78rem;color:#4A5070;">Cobros</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;margin-bottom:2px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <span style="font-size:.78rem;color:#4A5070;">Gastos</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8890AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span style="font-size:.78rem;color:#4A5070;">Reportes</span>
+          </div>
         </div>
-        <div class="mock-nav-item">
-          <div class="mock-nav-icon" style="background:#FFF9E5;color:#B7800A">💰</div> Cobros
-        </div>
-        <div class="mock-nav-item">
-          <div class="mock-nav-icon" style="background:#FFF0F0;color:#E94F4F">📊</div> Gastos
-        </div>
-        <div class="mock-nav-item">
-          <div class="mock-nav-icon" style="background:var(--g3);color:var(--g)">📄</div> Reportes
+        <div style="margin:auto 10px 12px;background:linear-gradient(135deg,#1D9E75,#0F6E56);border-radius:10px;padding:10px;">
+          <div style="font-size:.7rem;font-weight:700;color:#fff;margin-bottom:2px;">Plan Starter</div>
+          <div style="font-size:.65rem;color:rgba(255,255,255,.8);line-height:1.4;">Actualiza a Pro para cobro online</div>
         </div>
       </div>
-      <div class="mock-main">
-        <div class="mock-stats">
-          <div class="mock-stat">
-            <div class="ms-label">Recaudado</div>
-            <div class="ms-value">$847.000</div>
-            <div class="ms-sub">↑ 12% vs mes anterior</div>
+
+      <!-- Main content real -->
+      <div style="padding:20px 22px;">
+        <!-- Topbar -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+          <div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:1rem;font-weight:700;color:#0F1326;">Panel de control</div>
+            <div style="font-size:.72rem;color:#8890AA;">Curso 4°B — Mayo 2025</div>
           </div>
-          <div class="mock-stat">
-            <div class="ms-label">Alumnos al día</div>
-            <div class="ms-value">28/35</div>
-            <div class="ms-sub">↑ 4 nuevos pagos hoy</div>
-          </div>
-          <div class="mock-stat">
-            <div class="ms-label">Por cobrar</div>
-            <div class="ms-value">$210.000</div>
-            <div class="ms-sub" style="color:#E94F4F">7 pendientes</div>
+          <div style="display:flex;gap:6px;">
+            <div style="padding:5px 10px;border:1.5px solid #E4E7F0;border-radius:7px;font-size:.72rem;font-weight:600;color:#4A5070;background:#fff;">+ Ingreso</div>
+            <div style="padding:5px 10px;background:#1D9E75;border-radius:7px;font-size:.72rem;font-weight:600;color:#fff;">+ Gasto</div>
           </div>
         </div>
-        <div class="mock-table-header">
-          <div>Alumno</div><div>Cuota</div><div>Monto</div><div>Estado</div>
+
+        <!-- Stats cards -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+          <div style="background:#fff;border:1px solid #E4E7F0;border-radius:10px;padding:12px 14px;">
+            <div style="font-size:.68rem;color:#8890AA;font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Recaudado</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.2rem;font-weight:800;color:#0F1326;">$847.000</div>
+            <div style="font-size:.68rem;color:#1D9E75;margin-top:2px;">↑ 12% vs mes anterior</div>
+          </div>
+          <div style="background:#fff;border:1px solid #E4E7F0;border-radius:10px;padding:12px 14px;">
+            <div style="font-size:.68rem;color:#8890AA;font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Miembros al día</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.2rem;font-weight:800;color:#0F1326;">28/35</div>
+            <div style="font-size:.68rem;color:#1D9E75;margin-top:2px;">↑ 4 nuevos pagos hoy</div>
+          </div>
+          <div style="background:#fff;border:1px solid #E4E7F0;border-radius:10px;padding:12px 14px;">
+            <div style="font-size:.68rem;color:#8890AA;font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Por cobrar</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.2rem;font-weight:800;color:#0F1326;">$210.000</div>
+            <div style="font-size:.68rem;color:#E94F4F;margin-top:2px;">7 pendientes</div>
+          </div>
         </div>
-        <div class="mock-row">
-          <div class="mock-name">Sofía Martínez</div>
-          <div class="mock-val">Mayo</div>
-          <div class="mock-val">$30.000</div>
-          <div><span class="mock-badge badge-paid">Al día</span></div>
-        </div>
-        <div class="mock-row">
-          <div class="mock-name">Diego Rojas</div>
-          <div class="mock-val">Mayo</div>
-          <div class="mock-val">$30.000</div>
-          <div><span class="mock-badge badge-pending">Pendiente</span></div>
-        </div>
-        <div class="mock-row">
-          <div class="mock-name">Valentina Cruz</div>
-          <div class="mock-val">Abril</div>
-          <div class="mock-val">$30.000</div>
-          <div><span class="mock-badge badge-late">Atrasada</span></div>
-        </div>
-        <div class="mock-row">
-          <div class="mock-name">Matías González</div>
-          <div class="mock-val">Mayo</div>
-          <div class="mock-val">$30.000</div>
-          <div><span class="mock-badge badge-paid">Al día</span></div>
+
+        <!-- Table -->
+        <div style="background:#fff;border:1px solid #E4E7F0;border-radius:10px;overflow:hidden;">
+          <div style="display:grid;grid-template-columns:1fr 60px 80px 80px;gap:8px;padding:8px 14px;border-bottom:1px solid #E4E7F0;font-size:.65rem;font-weight:700;color:#8890AA;text-transform:uppercase;letter-spacing:.05em;">
+            <div>Miembro</div><div>Cuota</div><div>Monto</div><div>Estado</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 60px 80px 80px;gap:8px;padding:9px 14px;border-bottom:1px solid #F4F6FA;align-items:center;">
+            <div style="font-size:.8rem;font-weight:500;color:#0F1326;">Sofía Martínez</div>
+            <div style="font-size:.78rem;color:#4A5070;">Mayo</div>
+            <div style="font-size:.78rem;color:#4A5070;">$30.000</div>
+            <div><span style="background:#E1F5EE;color:#0F6E56;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:99px;">Al día</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 60px 80px 80px;gap:8px;padding:9px 14px;border-bottom:1px solid #F4F6FA;align-items:center;">
+            <div style="font-size:.8rem;font-weight:500;color:#0F1326;">Diego Rojas</div>
+            <div style="font-size:.78rem;color:#4A5070;">Mayo</div>
+            <div style="font-size:.78rem;color:#4A5070;">$30.000</div>
+            <div><span style="background:#FFF9E5;color:#B7800A;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:99px;">Pendiente</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 60px 80px 80px;gap:8px;padding:9px 14px;border-bottom:1px solid #F4F6FA;align-items:center;">
+            <div style="font-size:.8rem;font-weight:500;color:#0F1326;">Valentina Cruz</div>
+            <div style="font-size:.78rem;color:#4A5070;">Abril</div>
+            <div style="font-size:.78rem;color:#4A5070;">$30.000</div>
+            <div><span style="background:#FFF0F0;color:#E94F4F;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:99px;">Atrasada</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 60px 80px 80px;gap:8px;padding:9px 14px;align-items:center;">
+            <div style="font-size:.8rem;font-weight:500;color:#0F1326;">Matías González</div>
+            <div style="font-size:.78rem;color:#4A5070;">Mayo</div>
+            <div style="font-size:.78rem;color:#4A5070;">$30.000</div>
+            <div><span style="background:#E1F5EE;color:#0F6E56;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:99px;">Al día</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -950,9 +989,9 @@ footer{
     </div>
 
     <!-- PRO+ -->
-    <div class="price-card" style="border-color:#1A2040;border-width:1.5px;">
-      <div class="price-pop" style="background:#0F1326;">🚀 Máximo alcance</div>
-      <div class="price-plan" style="color:#0F1326;">Pro+</div>
+    <div class="price-card" style="border-color:#7C3AED;border-width:1.5px;background:linear-gradient(150deg,#FAFAFF 0%,#fff 100%);">
+      <div class="price-pop" style="background:linear-gradient(135deg,#7C3AED,#A855F7);">🚀 Máximo alcance</div>
+      <div class="price-plan" style="color:#7C3AED;">Pro+</div>
       <div class="price-amount" id="lnd-price-proplus"><sup>$</sup>6.990<span class="period">/mes</span></div>
       <p class="price-desc">Para comunidades grandes que necesitan escalar sin límites.</p>
       <div class="price-sep"></div>
@@ -965,7 +1004,7 @@ footer{
         <div class="pf-item"><span class="pf-check">✓</span>Cambio de año en 1 clic</div>
         <div class="pf-item"><span class="pf-check">✓</span>Soporte prioritario</div>
       </div>
-      <a href="signup" class="btn btn-ghost" style="width:100%;justify-content:center;border-color:#0F1326;color:#0F1326;">Empieza gratis 7 días →</a>
+      <a href="signup" class="btn btn-ghost" style="width:100%;justify-content:center;border-color:#7C3AED;color:#7C3AED;">Empieza gratis 7 días →</a>
       <p class="price-note" id="lnd-price-proplus-note">7 días gratis, luego $6.990/mes. Cancela cuando quieras.</p>
     </div>
 
