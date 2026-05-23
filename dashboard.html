@@ -138,6 +138,12 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
 .btn-sm-ghost:hover{border-color:var(--g);color:var(--g)}
 .btn-sm-danger{background:#FEE2E2;color:#DC2626}
 .btn-sm-danger:hover{background:#FCA5A5}
+.btn-icon{width:30px;height:30px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;border:none;font-family:inherit;transition:all .2s;flex-shrink:0}
+.btn-icon-edit{background:var(--bg);color:var(--txt2);border:1px solid var(--bdr)}
+.btn-icon-edit:hover{background:var(--g3);color:var(--g);border-color:var(--g)}
+.btn-icon-delete{background:#FEE2E2;color:#DC2626;border:1px solid #FECACA}
+.btn-icon-delete:hover{background:#FCA5A5}
+.btn-actions{display:flex;gap:5px;justify-content:flex-end}
 
 /* ── FORM ── */
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
@@ -827,9 +833,13 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
     <div class="form-field" style="margin-top:4px">
       <label>Categoría</label>
       <select id="new-gasto-cat">
-        <option value="materiales">Materiales</option>
-        <option value="actividades">Actividades</option>
-        <option value="administrativo">Administrativo</option>
+        <option value="administracion">Administración y Operación</option>
+        <option value="eventos">Eventos y Actividades</option>
+        <option value="materiales">Materiales e Implementos</option>
+        <option value="personas">Personas y Honorarios</option>
+        <option value="mantencion">Mantención e Infraestructura</option>
+        <option value="marketing">Marketing y Comunicación</option>
+        <option value="ahorro">Ahorro y Reserva</option>
         <option value="otros">Otros</option>
       </select>
     </div>
@@ -924,6 +934,91 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
     <div class="modal-footer">
       <button class="btn-secondary" onclick="closeModal('modalChangePassword')">Cancelar</button>
       <button class="btn-primary" onclick="changePassword()">Cambiar contraseña</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Editar ingreso -->
+<div class="modal-overlay" id="modalEditIngreso">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Editar ingreso</div>
+      <button class="modal-close" onclick="closeModal('modalEditIngreso')">✕</button>
+    </div>
+    <div class="form-field">
+      <label>Descripción</label>
+      <input type="text" id="edit-ingreso-desc" placeholder="Ej: Cuota Enero">
+    </div>
+    <div class="form-row">
+      <div class="form-field" style="margin-bottom:0">
+        <label>Monto ($)</label>
+        <input type="number" id="edit-ingreso-monto" placeholder="8000" min="0">
+      </div>
+      <div class="form-field" style="margin-bottom:0">
+        <label>Fecha</label>
+        <div class="dp-wrap" id="dp-wrap-edit-ingreso">
+          <button type="button" class="dp-input" id="dp-btn-edit-ingreso" onclick="dpToggle('edit-ingreso')">
+            <span class="dp-input-text" id="dp-text-edit-ingreso">Seleccionar fecha</span>
+            <svg class="dp-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </button>
+          <div class="dp-cal" id="dp-cal-edit-ingreso"></div>
+          <input type="hidden" id="edit-ingreso-fecha">
+        </div>
+      </div>
+    </div>
+    <input type="hidden" id="edit-ingreso-idx">
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modalEditIngreso')">Cancelar</button>
+      <button class="btn-primary" onclick="saveEditIngreso()">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Editar gasto -->
+<div class="modal-overlay" id="modalEditGasto">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Editar gasto</div>
+      <button class="modal-close" onclick="closeModal('modalEditGasto')">✕</button>
+    </div>
+    <div class="form-field">
+      <label>Descripción</label>
+      <input type="text" id="edit-gasto-desc" placeholder="Ej: Materiales para evento">
+    </div>
+    <div class="form-row">
+      <div class="form-field" style="margin-bottom:0">
+        <label>Monto ($)</label>
+        <input type="number" id="edit-gasto-monto" placeholder="5000" min="0">
+      </div>
+      <div class="form-field" style="margin-bottom:0">
+        <label>Fecha</label>
+        <div class="dp-wrap" id="dp-wrap-edit-gasto">
+          <button type="button" class="dp-input" id="dp-btn-edit-gasto" onclick="dpToggle('edit-gasto')">
+            <span class="dp-input-text" id="dp-text-edit-gasto">Seleccionar fecha</span>
+            <svg class="dp-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </button>
+          <div class="dp-cal" id="dp-cal-edit-gasto"></div>
+          <input type="hidden" id="edit-gasto-fecha">
+        </div>
+      </div>
+    </div>
+    <div class="form-field" style="margin-top:4px">
+      <label>Categoría</label>
+      <select id="edit-gasto-cat">
+        <option value="administracion">Administración y Operación</option>
+        <option value="eventos">Eventos y Actividades</option>
+        <option value="materiales">Materiales e Implementos</option>
+        <option value="personas">Personas y Honorarios</option>
+        <option value="mantencion">Mantención e Infraestructura</option>
+        <option value="marketing">Marketing y Comunicación</option>
+        <option value="ahorro">Ahorro y Reserva</option>
+        <option value="otros">Otros</option>
+      </select>
+    </div>
+    <input type="hidden" id="edit-gasto-idx">
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modalEditGasto')">Cancelar</button>
+      <button class="btn-primary" onclick="saveEditGasto()">Guardar cambios</button>
     </div>
   </div>
 </div>
@@ -1200,7 +1295,7 @@ function renderIngresosList() {
     el.innerHTML = '<div class="card-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Sin ingresos registrados.<br>Agrega el primero arriba.</div>';
     return;
   }
-  el.innerHTML = `<table class="table"><thead><tr><th>Descripción</th><th>Fecha</th><th>Monto</th><th></th></tr></thead><tbody>${state.ingresos.slice().reverse().map((i,idx)=>`<tr><td>${i.desc}</td><td>${fmtDate(i.fecha)}</td><td style="color:var(--g);font-weight:600">${fmtMoney(i.monto)}</td><td><button class="btn-sm btn-sm-danger" onclick="removeIngreso(${state.ingresos.length-1-idx})">Eliminar</button></td></tr>`).join('')}</tbody></table>`;
+  el.innerHTML = `<table class="table"><thead><tr><th>Descripción</th><th>Fecha</th><th>Monto</th><th></th></tr></thead><tbody>${state.ingresos.slice().reverse().map((i,idx)=>`<tr><td>${i.desc}</td><td>${fmtDate(i.fecha)}</td><td style="color:var(--g);font-weight:600">${fmtMoney(i.monto)}</td><td><div class="btn-actions"><button class="btn-icon btn-icon-edit" title="Editar" onclick="openEditIngreso(${state.ingresos.length-1-idx})">${'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>'}</button><button class="btn-icon btn-icon-delete" title="Eliminar" onclick="removeIngreso(${state.ingresos.length-1-idx})">${'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>'}</button></div></td></tr>`).join('')}</tbody></table>`;
 }
 
 function renderGastosList() {
@@ -1209,7 +1304,7 @@ function renderGastosList() {
     el.innerHTML = '<div class="card-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Sin gastos registrados.<br>Agrega el primero arriba.</div>';
     return;
   }
-  el.innerHTML = `<table class="table"><thead><tr><th>Descripción</th><th>Categoría</th><th>Fecha</th><th>Monto</th><th></th></tr></thead><tbody>${state.gastos.slice().reverse().map((g,idx)=>`<tr><td>${g.desc}</td><td><span class="badge badge-yellow">${g.cat}</span></td><td>${fmtDate(g.fecha)}</td><td style="color:#DC2626;font-weight:600">${fmtMoney(g.monto)}</td><td><button class="btn-sm btn-sm-danger" onclick="removeGasto(${state.gastos.length-1-idx})">Eliminar</button></td></tr>`).join('')}</tbody></table>`;
+  el.innerHTML = `<table class="table"><thead><tr><th>Descripción</th><th>Categoría</th><th>Fecha</th><th>Monto</th><th></th></tr></thead><tbody>${state.gastos.slice().reverse().map((g,idx)=>`<tr><td>${g.desc}</td><td><span class="badge badge-yellow">${catLabel(g.cat)}</span></td><td>${fmtDate(g.fecha)}</td><td style="color:#DC2626;font-weight:600">${fmtMoney(g.monto)}</td><td><div class="btn-actions"><button class="btn-icon btn-icon-edit" title="Editar" onclick="openEditGasto(${state.gastos.length-1-idx})">${'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>'}</button><button class="btn-icon btn-icon-delete" title="Eliminar" onclick="removeGasto(${state.gastos.length-1-idx})">${'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>'}</button></div></td></tr>`).join('')}</tbody></table>`;
 }
 
 function renderAll() {
@@ -1679,8 +1774,10 @@ const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto'
 const DIAS_CORTO = ['Lu','Ma','Mi','Ju','Vi','Sá','Do'];
 
 const dpState = {
-  ingreso: { year: null, month: null, selected: null },
-  gasto:   { year: null, month: null, selected: null }
+  ingreso:       { year: null, month: null, selected: null },
+  gasto:         { year: null, month: null, selected: null },
+  'edit-ingreso': { year: null, month: null, selected: null },
+  'edit-gasto':   { year: null, month: null, selected: null }
 };
 
 function dpInit(key) {
@@ -1811,9 +1908,88 @@ function tryAddMember() {
   openModal('modalNewMember');
 }
 
+// ── CATEGORIA LABEL ──
+const CAT_LABELS = {
+  administracion: 'Administración y Operación',
+  eventos: 'Eventos y Actividades',
+  materiales: 'Materiales e Implementos',
+  personas: 'Personas y Honorarios',
+  mantencion: 'Mantención e Infraestructura',
+  marketing: 'Marketing y Comunicación',
+  ahorro: 'Ahorro y Reserva',
+  otros: 'Otros'
+};
+function catLabel(val) { return CAT_LABELS[val] || val || 'Otros'; }
+
+// ── EDITAR INGRESO ──
+function openEditIngreso(i) {
+  const ing = state.ingresos[i];
+  if (!ing) return;
+  document.getElementById('edit-ingreso-idx').value = i;
+  document.getElementById('edit-ingreso-desc').value = ing.desc || '';
+  document.getElementById('edit-ingreso-monto').value = ing.monto || '';
+  if (ing.fecha) {
+    const d = new Date(ing.fecha + 'T12:00:00');
+    dpState['edit-ingreso'] = dpState['edit-ingreso'] || { year: null, month: null, selected: null };
+    dpState['edit-ingreso'].year = d.getFullYear();
+    dpState['edit-ingreso'].month = d.getMonth();
+    dpSetValue('edit-ingreso', d);
+  } else {
+    dpInit('edit-ingreso');
+  }
+  openModal('modalEditIngreso');
+}
+
+async function saveEditIngreso() {
+  const i = parseInt(document.getElementById('edit-ingreso-idx').value);
+  const desc = document.getElementById('edit-ingreso-desc').value.trim();
+  const monto = document.getElementById('edit-ingreso-monto').value;
+  const fecha = document.getElementById('edit-ingreso-fecha').value;
+  if (!desc || !monto) { showToast('Descripción y monto son requeridos', 'error'); return; }
+  state.ingresos[i] = { ...state.ingresos[i], desc, monto: parseFloat(monto), fecha };
+  closeModal('modalEditIngreso');
+  renderAll();
+  showToast('Ingreso actualizado');
+}
+
+// ── EDITAR GASTO ──
+function openEditGasto(i) {
+  const g = state.gastos[i];
+  if (!g) return;
+  document.getElementById('edit-gasto-idx').value = i;
+  document.getElementById('edit-gasto-desc').value = g.desc || '';
+  document.getElementById('edit-gasto-monto').value = g.monto || '';
+  document.getElementById('edit-gasto-cat').value = g.cat || 'otros';
+  if (g.fecha) {
+    const d = new Date(g.fecha + 'T12:00:00');
+    dpState['edit-gasto'] = dpState['edit-gasto'] || { year: null, month: null, selected: null };
+    dpState['edit-gasto'].year = d.getFullYear();
+    dpState['edit-gasto'].month = d.getMonth();
+    dpSetValue('edit-gasto', d);
+  } else {
+    dpInit('edit-gasto');
+  }
+  openModal('modalEditGasto');
+}
+
+async function saveEditGasto() {
+  const i = parseInt(document.getElementById('edit-gasto-idx').value);
+  const desc = document.getElementById('edit-gasto-desc').value.trim();
+  const monto = document.getElementById('edit-gasto-monto').value;
+  const fecha = document.getElementById('edit-gasto-fecha').value;
+  const cat = document.getElementById('edit-gasto-cat').value;
+  if (!desc || !monto) { showToast('Descripción y monto son requeridos', 'error'); return; }
+  state.gastos[i] = { ...state.gastos[i], desc, monto: parseFloat(monto), fecha, cat };
+  closeModal('modalEditGasto');
+  renderAll();
+  showToast('Gasto actualizado');
+}
+
 // ── INIT ──
 dpInit('ingreso');
 dpInit('gasto');
+dpInit('edit-ingreso');
+dpInit('edit-gasto');
 updateSidebarForPlan();
 // loadCommunityFromAPI() se llama desde el guard una vez validado el usuario
 </script>
