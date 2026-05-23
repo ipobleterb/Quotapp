@@ -1117,8 +1117,9 @@ function fmtDate(d) {
 }
 function initials(nombre) {
   const parts = (nombre||'').trim().split(' ').filter(Boolean);
-  if (parts.length >= 2) return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
-  return (nombre||'?')[0].toUpperCase();
+  if (parts.length >= 4) return (parts[0][0] + parts[2][0]).toUpperCase(); // 4+ palabras → 1ra y 3ra
+  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase(); // 2-3 palabras → 1ra y 2da
+  return (nombre||'?')[0].toUpperCase(); // solo una palabra
 }
 
 // ── STATS ──
@@ -1634,12 +1635,8 @@ document.addEventListener('click', function(e) {
 });
 
 function updateUserAvatar(name, email) {
-  // Iniciales
-  const parts = (name || '').trim().split(' ');
-  const initials = parts.length >= 2
-    ? (parts[0][0] + parts[parts.length-1][0]).toUpperCase()
-    : (name || 'U').substring(0, 2).toUpperCase();
-  document.getElementById('userAvatar').textContent = initials;
+  // Iniciales — misma lógica que función initials()
+  document.getElementById('userAvatar').textContent = initials(name || 'U');
   document.getElementById('userDropdownName').textContent = name || 'Usuario';
   document.getElementById('userDropdownEmail').textContent = email || '';
 }
