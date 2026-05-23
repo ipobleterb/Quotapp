@@ -1477,17 +1477,23 @@ async function addMember() {
   try {
     const data = await api('add_member', 'POST', {
       community_id: state.activeCommunityId,
-      name: nombre + (apellido ? ' '+apellido : ''), email
+      name: nombre, email
     });
     if (data.response?.member_id || data.member_id) {
       const memberId = data.response?.member_id || data.member_id;
-      state.members.push({ id: memberId, nombre, apellido, email, telefono });
+      state.members.push({ id: memberId, nombre, apellido: '', email, telefono });
       ['new-member-nombre','new-member-email','new-member-telefono'].forEach(id=>document.getElementById(id).value='');
       closeModal('modalNewMember');
       renderAll();
       showToast('Miembro agregado exitosamente');
+    } else {
+      console.error('add_member response:', JSON.stringify(data));
+      showToast('Error al agregar miembro', 'error');
     }
-  } catch(e) { showToast('Error al agregar miembro', 'error'); }
+  } catch(e) {
+    console.error('add_member error:', e);
+    showToast('Error al agregar miembro', 'error');
+  }
 }
 
 async function removeMember(i) {
