@@ -1327,7 +1327,7 @@ function renderDashboardMiembros() {
     el.innerHTML = '<div class="card-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Aún no hay miembros.<br><a onclick="showPage(\'miembros\')" style="color:var(--g);font-weight:600;cursor:pointer">Agregar miembros →</a></div>';
     return;
   }
-  el.innerHTML = `<table class="table"><thead><tr><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Rol</th></tr></thead><tbody>${state.members.slice(0,5).map(m=>`<tr><td>${m.nombre} ${m.apellido}</td><td>${m.email||'—'}</td><td>${m.telefono||'—'}</td><td><span style=\"font-size:.7rem;font-weight:600;padding:2px 8px;border-radius:20px;background:${m.role==='tesorero'?'#d1fae5':'#e0f2fe'};color:${m.role==='tesorero'?'#065f46':'#0369a1'}\">${(m.role||'miembro').charAt(0).toUpperCase()+(m.role||'miembro').slice(1)}</span></td></tr>`).join('')}</tbody></table>`;
+  el.innerHTML = `<table class="table"><thead><tr><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Rol</th></tr></thead><tbody>${state.members.slice(0,5).map(m=>`<tr><td>${m.nombre}</td><td>${m.email||'—'}</td><td>${m.telefono||'—'}</td><td><span style=\"font-size:.7rem;font-weight:600;padding:2px 8px;border-radius:20px;background:${m.role==='tesorero'?'#d1fae5':'#e0f2fe'};color:${m.role==='tesorero'?'#065f46':'#0369a1'}\">${(m.role||'miembro').charAt(0).toUpperCase()+(m.role||'miembro').slice(1)}</span></td></tr>`).join('')}</tbody></table>`;
 }
 
 function renderMembersList() {
@@ -1347,8 +1347,8 @@ function renderMembersList() {
         <div class="member-email">${m.email}${m.telefono ? ' · ' + m.telefono : ''}</div>
       </div>
       <div class="member-actions">
-        <button class="btn-icon btn-icon-edit" title="Editar" onclick="openEditMember(${i})">${EDIT_ICON}</button>
-        <button class="btn-icon btn-icon-delete" title="Eliminar" onclick="removeMember(${i})">${TRASH_ICON}</button>
+        <button class="btn-icon btn-icon-edit" title="Editar" onclick="openEditMember(${i})"><svg width=\"13\" height=\"13\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7\"/><path d=\"M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z\"/></svg></button>
+        <button class="btn-icon btn-icon-delete" title="Eliminar" onclick="removeMember(${i})"><svg width=\"13\" height=\"13\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"3 6 5 6 21 6\"/><path d=\"M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6\"/><path d=\"M10 11v6\"/><path d=\"M14 11v6\"/><path d=\"M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2\"/></svg></button>
       </div>
     </div>`).join('');
 }
