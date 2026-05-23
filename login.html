@@ -2,7 +2,6 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%231D9E75'/%3E%3Crect x='6' y='11' width='18' height='3' rx='1.5' fill='white'/%3E%3Crect x='6' y='17' width='14' height='3' rx='1.5' fill='rgba(255,255,255,.65)'/%3E%3Crect x='6' y='23' width='10' height='3' rx='1.5' fill='rgba(255,255,255,.4)'/%3E%3Ccircle cx='30' cy='28' r='7' fill='white'/%3E%3Ctext x='30' y='31.5' text-anchor='middle' font-size='9' font-weight='700' fill='%231D9E75' font-family='Arial'%3E%24%3C/text%3E%3C/svg%3E">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Iniciar sesión — QuotApp</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -325,7 +324,7 @@ a{color:inherit;text-decoration:none}
 
 <script>
 const BUBBLE_LOGIN_URL = 'https://app.quotapp.cl/version-test/api/1.1/wf/login';
-const APP_URL = 'https://app.quotapp.cl';
+const DASHBOARD_URL = 'https://www.quotapp.cl/dashboard';
 
 // Mensaje de error genérico
 let errorMsg = document.getElementById('loginError');
@@ -382,8 +381,16 @@ async function handleLogin() {
     const data = await res.json();
 
     if (res.ok && data.status === 'success') {
-      // Login exitoso → redirigir a la app
-      window.location.href = APP_URL;
+      // Extraer user_id de la respuesta de Bubble
+      const userId = data.response?.user_id || data.user_id || '';
+      const communityId = data.response?.community_id || '';
+      const plan = data.response?.plan || 'free';
+
+      let url = DASHBOARD_URL + '?user_id=' + userId;
+      if (communityId) url += '&community=' + communityId;
+      url += '&plan=' + plan;
+
+      window.location.href = url;
     } else {
       btn.classList.remove('loading');
       btn.innerHTML = 'Iniciar sesión';
