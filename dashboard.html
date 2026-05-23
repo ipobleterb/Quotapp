@@ -225,6 +225,31 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
 .toggle.on{background:var(--g)}
 .toggle::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
 .toggle.on::after{left:21px}
+
+/* ── CUSTOM DATEPICKER ── */
+.dp-wrap{position:relative}
+.dp-input{padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-size:.88rem;font-family:inherit;color:var(--navy);background:var(--white);outline:none;transition:border-color .2s;cursor:pointer;width:100%;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:8px;user-select:none}
+.dp-input:focus,.dp-input.open{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.1)}
+.dp-input-text{flex:1}
+.dp-icon{color:var(--txt3);flex-shrink:0}
+.dp-cal{position:absolute;top:calc(100% + 6px);left:0;z-index:999;background:var(--white);border:1.5px solid var(--bdr);border-radius:12px;box-shadow:0 8px 32px rgba(15,19,38,.12);padding:14px;width:268px;display:none}
+.dp-cal.open{display:block}
+.dp-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.dp-nav-btn{background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;color:var(--txt2);font-size:1rem;line-height:1;transition:background .15s}
+.dp-nav-btn:hover{background:var(--bg)}
+.dp-month-label{font-size:.88rem;font-weight:700;color:var(--navy);cursor:pointer}
+.dp-month-label:hover{color:var(--g)}
+.dp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.dp-day-header{font-size:.65rem;font-weight:700;text-transform:uppercase;color:var(--txt3);text-align:center;padding:4px 0 6px}
+.dp-day{font-size:.78rem;text-align:center;padding:5px 2px;border-radius:6px;cursor:pointer;color:var(--txt2);transition:all .15s;line-height:1}
+.dp-day:hover:not(.dp-day-empty):not(.dp-day-today):not(.dp-day-selected){background:var(--g3);color:var(--g2)}
+.dp-day-empty{cursor:default}
+.dp-day-today{color:var(--g);font-weight:700}
+.dp-day-selected{background:var(--g)!important;color:#fff!important;font-weight:700}
+.dp-footer{display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--bdr)}
+.dp-foot-btn{background:none;border:none;cursor:pointer;font-size:.78rem;font-weight:600;color:var(--txt3);padding:4px 8px;border-radius:6px;font-family:inherit;transition:all .15s}
+.dp-foot-btn:hover{background:var(--bg);color:var(--g)}
+.dp-foot-btn.dp-today-btn{color:var(--g)}
 </style>
 <!-- ── AUTH GUARD ── -->
 <script>
@@ -411,7 +436,7 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
           <h1>Miembros</h1>
           <p id="members-subtitle">Administra los miembros de tu comunidad.</p>
         </div>
-        <button class="btn-primary" id="btn-add-member" onclick="openModal('modalNewMember')">
+        <button class="btn-primary" id="btn-add-member" onclick="tryAddMember()">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Agregar miembro
         </button>
@@ -723,7 +748,14 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
       </div>
       <div class="form-field" style="margin-bottom:0">
         <label>Fecha</label>
-        <input type="date" id="new-ingreso-fecha">
+        <div class="dp-wrap" id="dp-wrap-ingreso">
+          <button type="button" class="dp-input" id="dp-btn-ingreso" onclick="dpToggle('ingreso')">
+            <span class="dp-input-text" id="dp-text-ingreso">Seleccionar fecha</span>
+            <svg class="dp-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </button>
+          <div class="dp-cal" id="dp-cal-ingreso"></div>
+          <input type="hidden" id="new-ingreso-fecha">
+        </div>
       </div>
     </div>
     <div class="modal-footer">
@@ -751,7 +783,14 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
       </div>
       <div class="form-field" style="margin-bottom:0">
         <label>Fecha</label>
-        <input type="date" id="new-gasto-fecha">
+        <div class="dp-wrap" id="dp-wrap-gasto">
+          <button type="button" class="dp-input" id="dp-btn-gasto" onclick="dpToggle('gasto')">
+            <span class="dp-input-text" id="dp-text-gasto">Seleccionar fecha</span>
+            <svg class="dp-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </button>
+          <div class="dp-cal" id="dp-cal-gasto"></div>
+          <input type="hidden" id="new-gasto-fecha">
+        </div>
       </div>
     </div>
     <div class="form-field" style="margin-top:4px">
@@ -767,6 +806,25 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
       <button class="btn-secondary" onclick="closeModal('modalNewGasto')">Cancelar</button>
       <button class="btn-primary" onclick="addGasto()">Guardar gasto</button>
     </div>
+  </div>
+</div>
+
+<!-- Modal: Límite de miembros — Activa Pro -->
+<div class="modal-overlay" id="modalMemberLimit">
+  <div class="modal upgrade-modal" style="position:relative">
+    <button class="modal-close" onclick="closeModal('modalMemberLimit')" style="position:absolute;top:20px;right:20px">✕</button>
+    <div class="upgrade-icon">👥</div>
+    <h2>Límite de 10 miembros alcanzado</h2>
+    <p>Tu comunidad está en el plan gratuito, que permite hasta <strong>10 miembros</strong>. Activa el plan Pro para agregar hasta <strong>50 miembros</strong> y desbloquear más funcionalidades.</p>
+    <ul class="upgrade-features">
+      <li>Hasta 50 miembros por comunidad</li>
+      <li>Cobro online con Flow / WebPay</li>
+      <li>Recordatorios por WhatsApp y email</li>
+      <li>Portal privado para cada miembro</li>
+      <li>Reportes completos en PDF y Excel</li>
+    </ul>
+    <button class="btn-upgrade" onclick="closeModal('modalMemberLimit'); goToPlanes()">Activar plan Pro →</button>
+    <p style="font-size:.74rem;color:var(--txt3);margin-top:12px">Sin compromisos. Cancela cuando quieras.</p>
   </div>
 </div>
 
@@ -920,15 +978,19 @@ async function switchCommunity() {
   const sel = document.getElementById('communitySelect');
   const idx = parseInt(sel.value);
   if (isNaN(idx)) return;
+
   state.activeCommunity = idx;
   state.activeCommunityId = state.communities[idx]?.id || null;
+  // Limpiar datos de la comunidad anterior
   state.members = [];
   state.ingresos = [];
   state.gastos = [];
   updateSidebarForPlan();
-  renderAll();
-  // Cargar datos de la nueva comunidad
-  if (state.activeCommunityId) {
+  renderAll(); // Render inmediato con datos limpios (loading)
+
+  // Cargar datos de la nueva comunidad desde API
+  if (state.activeCommunityId && !state.activeCommunityId.startsWith('demo')) {
+    showToast('Cargando comunidad...');
     await Promise.all([loadMembersFromAPI(), loadIncomeFromAPI(), loadExpensesFromAPI()]);
     renderAll();
   }
@@ -1230,23 +1292,44 @@ async function createCommunity() {
       user_id: userId, name: nombre, monthly_fee: parseFloat(fee)||0,
       year: new Date().getFullYear().toString(), plan
     });
-    if (data.community_id) {
-      const idx = state.communities.length;
-      state.communities.push({ id: data.community_id, nombre, tipo, monthly_fee: parseFloat(fee)||0, plan });
+
+    // Bubble puede retornar el ID dentro de data.response o directo en data
+    const communityId = (data.response && data.response.community_id) || data.community_id;
+
+    if (communityId) {
+      const newCommunity = { id: communityId, nombre, tipo, monthly_fee: parseFloat(fee)||0, plan };
+      state.communities.push(newCommunity);
+      const idx = state.communities.length - 1;
+
+      // Actualizar dropdown agregando la nueva option sin re-renderizar todo
       const sel = document.getElementById('communitySelect');
-      sel.innerHTML = state.communities.map((c,i)=>`<option value="${i}">${c.nombre} ${c.plan==='pro'?'⭐':''}</option>`).join('');
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.text = nombre + (plan === 'pro' ? ' ⭐' : '');
+      sel.appendChild(opt);
       sel.value = idx;
+
+      // Activar la nueva comunidad
       state.activeCommunity = idx;
-      state.activeCommunityId = data.community_id;
+      state.activeCommunityId = communityId;
       state.members = []; state.ingresos = []; state.gastos = [];
+
+      // Limpiar y cerrar modal
       closeModal('modalNewCommunity');
       document.getElementById('new-community-name').value = '';
+      document.getElementById('new-community-fee').value = '';
       selectPlan('free');
       updateSidebarForPlan();
       renderAll();
       showToast('Comunidad creada exitosamente');
+    } else {
+      console.error('Bubble response:', JSON.stringify(data));
+      showToast('Error: no se pudo obtener el ID de la comunidad', 'error');
     }
-  } catch(e) { showToast('Error al crear comunidad', 'error'); }
+  } catch(e) {
+    console.error('createCommunity error:', e);
+    showToast('Error al crear comunidad', 'error');
+  }
 }
 
 function editCommunity() {
@@ -1319,7 +1402,7 @@ async function addIngreso() {
   if (!state.activeCommunityId || state.activeCommunityId.startsWith('demo')) {
     state.ingresos.push({ id: 'i'+Date.now(), desc, monto: parseFloat(monto), fecha });
     ['new-ingreso-desc','new-ingreso-monto'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('new-ingreso-fecha').valueAsDate = new Date();
+    dpInit('ingreso');
     closeModal('modalNewIngreso'); renderAll(); showToast('Ingreso registrado'); return;
   }
 
@@ -1332,7 +1415,7 @@ async function addIngreso() {
       const incomeId = data.response?.income_id || data.income_id;
       state.ingresos.push({ id: incomeId, desc, monto: parseFloat(monto), fecha });
       ['new-ingreso-desc','new-ingreso-monto'].forEach(id=>document.getElementById(id).value='');
-      document.getElementById('new-ingreso-fecha').valueAsDate = new Date();
+      dpInit('ingreso');
       closeModal('modalNewIngreso'); renderAll(); showToast('Ingreso registrado');
     }
   } catch(e) { showToast('Error al registrar ingreso', 'error'); }
@@ -1359,7 +1442,7 @@ async function addGasto() {
   if (!state.activeCommunityId || state.activeCommunityId.startsWith('demo')) {
     state.gastos.push({ id: 'g'+Date.now(), desc, monto: parseFloat(monto), fecha, cat });
     ['new-gasto-desc','new-gasto-monto'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('new-gasto-fecha').valueAsDate = new Date();
+    dpInit('gasto');
     closeModal('modalNewGasto'); renderAll(); showToast('Gasto registrado'); return;
   }
 
@@ -1372,7 +1455,7 @@ async function addGasto() {
       const expenseId = data.response?.expense_id || data.expense_id;
       state.gastos.push({ id: expenseId, desc, monto: parseFloat(monto), fecha, cat });
       ['new-gasto-desc','new-gasto-monto'].forEach(id=>document.getElementById(id).value='');
-      document.getElementById('new-gasto-fecha').valueAsDate = new Date();
+      dpInit('gasto');
       closeModal('modalNewGasto'); renderAll(); showToast('Gasto registrado');
     }
   } catch(e) { showToast('Error al registrar gasto', 'error'); }
@@ -1431,9 +1514,146 @@ Generado por QuotApp — www.quotapp.cl`;
   showToast('Reporte descargado');
 }
 
+// ── CUSTOM DATEPICKER ──
+const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const DIAS_CORTO = ['Lu','Ma','Mi','Ju','Vi','Sá','Do'];
+
+const dpState = {
+  ingreso: { year: null, month: null, selected: null },
+  gasto:   { year: null, month: null, selected: null }
+};
+
+function dpInit(key) {
+  const now = new Date();
+  dpState[key].year  = now.getFullYear();
+  dpState[key].month = now.getMonth();
+  dpSetValue(key, now); // default = hoy
+}
+
+function dpSetValue(key, date) {
+  dpState[key].selected = date;
+  const iso = date.toISOString().split('T')[0];
+  document.getElementById(`new-${key==='ingreso'?'ingreso':'gasto'}-fecha`).value = iso;
+  const d = date.getDate().toString().padStart(2,'0');
+  const m = MESES[date.getMonth()];
+  const y = date.getFullYear();
+  document.getElementById(`dp-text-${key}`).textContent = `${d} de ${m} de ${y}`;
+}
+
+function dpToggle(key) {
+  const cal = document.getElementById(`dp-cal-${key}`);
+  const btn = document.getElementById(`dp-btn-${key}`);
+  const isOpen = cal.classList.contains('open');
+  // Cerrar todos primero
+  document.querySelectorAll('.dp-cal').forEach(c => c.classList.remove('open'));
+  document.querySelectorAll('.dp-input').forEach(b => b.classList.remove('open'));
+  if (!isOpen) {
+    dpRender(key);
+    cal.classList.add('open');
+    btn.classList.add('open');
+  }
+}
+
+function dpRender(key) {
+  const { year, month, selected } = dpState[key];
+  const cal = document.getElementById(`dp-cal-${key}`);
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  const firstDay = new Date(year, month, 1).getDay(); // 0=Dom
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  // Convertir domingo=0 a lunes=0
+  const startOffset = (firstDay + 6) % 7;
+
+  let html = `
+    <div class="dp-nav">
+      <button class="dp-nav-btn" onclick="dpPrev('${key}')">‹</button>
+      <span class="dp-month-label">${MESES[month]} ${year}</span>
+      <button class="dp-nav-btn" onclick="dpNext('${key}')">›</button>
+    </div>
+    <div class="dp-grid">
+      ${DIAS_CORTO.map(d=>`<div class="dp-day-header">${d}</div>`).join('')}
+  `;
+
+  // Celdas vacías al inicio
+  for (let i = 0; i < startOffset; i++) html += `<div class="dp-day dp-day-empty"></div>`;
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(year, month, d);
+    date.setHours(0,0,0,0);
+    let cls = 'dp-day';
+    if (date.getTime() === today.getTime()) cls += ' dp-day-today';
+    if (selected) {
+      const sel = new Date(selected); sel.setHours(0,0,0,0);
+      if (date.getTime() === sel.getTime()) cls += ' dp-day-selected';
+    }
+    html += `<div class="${cls}" onclick="dpSelect('${key}',${year},${month},${d})">${d}</div>`;
+  }
+
+  html += `</div>
+    <div class="dp-footer">
+      <button class="dp-foot-btn" onclick="dpClear('${key}')">Limpiar</button>
+      <button class="dp-foot-btn dp-today-btn" onclick="dpSelectToday('${key}')">Hoy</button>
+    </div>`;
+
+  cal.innerHTML = html;
+}
+
+function dpPrev(key) {
+  dpState[key].month--;
+  if (dpState[key].month < 0) { dpState[key].month = 11; dpState[key].year--; }
+  dpRender(key);
+}
+function dpNext(key) {
+  dpState[key].month++;
+  if (dpState[key].month > 11) { dpState[key].month = 0; dpState[key].year++; }
+  dpRender(key);
+}
+function dpSelect(key, y, m, d) {
+  dpState[key].year = y; dpState[key].month = m;
+  dpSetValue(key, new Date(y, m, d));
+  document.getElementById(`dp-cal-${key}`).classList.remove('open');
+  document.getElementById(`dp-btn-${key}`).classList.remove('open');
+}
+function dpSelectToday(key) {
+  const now = new Date();
+  dpState[key].year = now.getFullYear(); dpState[key].month = now.getMonth();
+  dpSetValue(key, now);
+  document.getElementById(`dp-cal-${key}`).classList.remove('open');
+  document.getElementById(`dp-btn-${key}`).classList.remove('open');
+}
+function dpClear(key) {
+  dpState[key].selected = null;
+  document.getElementById(`new-${key==='ingreso'?'ingreso':'gasto'}-fecha`).value = '';
+  document.getElementById(`dp-text-${key}`).textContent = 'Seleccionar fecha';
+  document.getElementById(`dp-cal-${key}`).classList.remove('open');
+  document.getElementById(`dp-btn-${key}`).classList.remove('open');
+}
+
+// Cerrar datepicker al hacer click fuera
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.dp-wrap')) {
+    document.querySelectorAll('.dp-cal').forEach(c => c.classList.remove('open'));
+    document.querySelectorAll('.dp-input').forEach(b => b.classList.remove('open'));
+  }
+});
+
+// Resetear datepickers al cerrar modales
+function dpReset(key) {
+  dpInit(key);
+}
+
+// ── LIMIT CHECK — AGREGAR MIEMBRO ──
+function tryAddMember() {
+  if (state.activePlan !== 'pro' && state.members.length >= 10) {
+    openModal('modalMemberLimit');
+    return;
+  }
+  openModal('modalNewMember');
+}
+
 // ── INIT ──
-document.getElementById('new-ingreso-fecha').valueAsDate = new Date();
-document.getElementById('new-gasto-fecha').valueAsDate = new Date();
+dpInit('ingreso');
+dpInit('gasto');
 updateSidebarForPlan();
 // loadCommunityFromAPI() se llama desde el guard una vez validado el usuario
 </script>
