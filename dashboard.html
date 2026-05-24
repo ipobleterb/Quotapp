@@ -586,28 +586,49 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
           <h1>Resumen de tesorería</h1>
           <p id="dashboard-subtitle">Vista clara de todo lo que pasa en tu comunidad.</p>
         </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <div class="dp-wrap" id="dp-wrap-dash-ini">
+            <button type="button" class="dp-input" id="dp-btn-dash-ini" onclick="dpToggle('dash-ini')" style="font-size:.8rem;padding:6px 10px;min-width:115px">
+              <span class="dp-input-text" id="dp-text-dash-ini">Inicio</span>
+              <svg class="dp-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </button>
+            <div class="dp-cal" id="dp-cal-dash-ini"></div>
+            <input type="hidden" id="new-dash-ini">
+          </div>
+          <span style="color:var(--txt3);font-size:.8rem">→</span>
+          <div class="dp-wrap" id="dp-wrap-dash-fin">
+            <button type="button" class="dp-input" id="dp-btn-dash-fin" onclick="dpToggle('dash-fin')" style="font-size:.8rem;padding:6px 10px;min-width:115px">
+              <span class="dp-input-text" id="dp-text-dash-fin">Fin</span>
+              <svg class="dp-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </button>
+            <div class="dp-cal" id="dp-cal-dash-fin"></div>
+            <input type="hidden" id="new-dash-fin">
+          </div>
+          <button onclick="updateStats()" style="padding:6px 14px;background:var(--g);color:#fff;border:none;border-radius:8px;font-size:.8rem;font-weight:600;font-family:inherit;cursor:pointer">Aplicar</button>
+          <button onclick="clearDashFechas()" style="font-size:.75rem;color:var(--txt3);background:none;border:none;cursor:pointer;padding:0;text-decoration:underline">Limpiar</button>
+        </div>
       </div>
 
       <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">Total recaudado</div>
-          <div class="stat-value" id="stat-recaudado">$0</div>
-          <div class="stat-note">En la comunidad activa</div>
+        <div class="stat-card" style="background:linear-gradient(135deg,#0F1326 0%,#1a2340 100%)">
+          <div class="stat-label" style="color:rgba(255,255,255,.6)">Total recaudado</div>
+          <div class="stat-value" id="stat-recaudado" style="color:#34D399">$0</div>
+          <div class="stat-note" id="stat-recaudado-note" style="color:rgba(255,255,255,.45)">En la comunidad activa</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Total gastos</div>
-          <div class="stat-value" id="stat-gastos">$0</div>
-          <div class="stat-note">Este período</div>
+        <div class="stat-card" style="background:linear-gradient(135deg,#7f1d1d 0%,#991b1b 100%)">
+          <div class="stat-label" style="color:rgba(255,255,255,.6)">Total gastos</div>
+          <div class="stat-value" id="stat-gastos" style="color:#FCA5A5">$0</div>
+          <div class="stat-note" id="stat-gastos-note" style="color:rgba(255,255,255,.45)">Este período</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Saldo actual</div>
-          <div class="stat-value" id="stat-saldo">$0</div>
-          <div class="stat-note">Recaudado menos gastos</div>
+        <div class="stat-card" style="background:linear-gradient(135deg,#1D9E75 0%,#0F6E56 100%)">
+          <div class="stat-label" style="color:rgba(255,255,255,.7)">Saldo actual</div>
+          <div class="stat-value" id="stat-saldo" style="color:#fff">$0</div>
+          <div class="stat-note" style="color:rgba(255,255,255,.5)">Recaudado menos gastos</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Miembros</div>
-          <div class="stat-value" id="stat-miembros">0</div>
-          <div class="stat-note" id="stat-miembros-note">De 10 máximo (plan gratis)</div>
+        <div class="stat-card" style="background:#fff;border:1.5px solid var(--bdr)">
+          <div class="stat-label" style="color:var(--txt3)">Miembros</div>
+          <div class="stat-value" id="stat-miembros" style="color:var(--navy)">0</div>
+          <div class="stat-note" id="stat-miembros-note" style="color:var(--txt3)">De 10 máximo (plan gratis)</div>
         </div>
       </div>
 
@@ -1651,6 +1672,7 @@ async function switchCommunity() {
   state.ingresos = [];
   state.gastos = [];
   state.pages = { members: 1, ingresos: 1, gastos: 1 };
+  clearDashFechas();
   clearIngresoFechas();
   clearGastoFechas();
   updateSidebarForPlan();
@@ -1723,25 +1745,44 @@ function fmtDate(d) {
 
 // ── STATS ──
 function updateStats() {
-  const totalIngresos = state.ingresos.reduce((s,i) => s + Number(i.monto), 0);
-  const totalGastos = state.gastos.reduce((s,g) => s + Number(g.monto), 0);
+  const iniVal = document.getElementById('new-dash-ini')?.value || '';
+  const finVal = document.getElementById('new-dash-fin')?.value || '';
+  const fechaIni = iniVal ? new Date(iniVal + 'T00:00:00') : null;
+  const fechaFin = finVal ? new Date(finVal + 'T23:59:59') : null;
+
+  const filterFn = items => items.filter(item => {
+    if (!item.fecha) return true;
+    const d = new Date(item.fecha + 'T00:00:00');
+    if (fechaIni && d < fechaIni) return false;
+    if (fechaFin && d > fechaFin) return false;
+    return true;
+  });
+
+  const ingresos = filterFn(state.ingresos);
+  const gastos   = filterFn(state.gastos);
+  const totalIngresos = ingresos.reduce((s,i) => s + Number(i.monto), 0);
+  const totalGastos   = gastos.reduce((s,g) => s + Number(g.monto), 0);
+
+  const rangoNote = fechaIni || fechaFin
+    ? `${fechaIni ? fechaIni.toLocaleDateString('es-CL') : '—'} → ${fechaFin ? fechaFin.toLocaleDateString('es-CL') : 'hoy'}`
+    : 'En la comunidad activa';
+
   document.getElementById('stat-recaudado').textContent = fmtMoney(totalIngresos);
   document.getElementById('stat-gastos').textContent = fmtMoney(totalGastos);
   document.getElementById('stat-saldo').textContent = fmtMoney(totalIngresos - totalGastos);
   document.getElementById('stat-miembros').textContent = state.members.length;
+  const recNote = document.getElementById('stat-recaudado-note');
+  if (recNote) recNote.textContent = rangoNote;
+  const gasNote = document.getElementById('stat-gastos-note');
+  if (gasNote) gasNote.textContent = rangoNote;
   document.getElementById('members-count').textContent = state.members.length;
 
   const limit = state.memberLimit;
   const btn = document.getElementById('btn-add-member');
-  if (state.members.length >= limit) {
+  if (btn) {
     btn.disabled = false;
-    btn.style.opacity = '.6';
-    btn.style.cursor = 'pointer';
-    btn.title = `Límite de ${limit} miembros alcanzado — actualiza tu plan`;
-  } else {
-    btn.disabled = false;
-    btn.style.opacity = '1';
-    btn.title = '';
+    btn.style.opacity = state.members.length >= limit ? '.6' : '1';
+    btn.title = state.members.length >= limit ? `Límite de ${limit} miembros alcanzado — actualiza tu plan` : '';
   }
 }
 
@@ -2455,6 +2496,19 @@ function toggleSortIngresos(col) {
   renderIngresosList();
 }
 
+function clearDashFechas() {
+  ['dash-ini','dash-fin'].forEach(k => {
+    dpState[k].selected = null;
+    const hidden = document.getElementById(`new-${k}`);
+    const text   = document.getElementById(`dp-text-${k}`);
+    const btn    = document.getElementById(`dp-btn-${k}`);
+    if (hidden) hidden.value = '';
+    if (text)   text.textContent = k === 'dash-ini' ? 'Inicio' : 'Fin';
+    if (btn)    btn.classList.remove('has-value');
+  });
+  updateStats();
+}
+
 function clearIngresoFechas() {
   ['ingreso-ini','ingreso-fin'].forEach(k => {
     dpState[k].selected = null;
@@ -2647,7 +2701,9 @@ const dpState = {
   'gasto-ini':       { year: null, month: null, selected: null },
   'gasto-fin':       { year: null, month: null, selected: null },
   'ingreso-ini':     { year: null, month: null, selected: null },
-  'ingreso-fin':     { year: null, month: null, selected: null }
+  'ingreso-fin':     { year: null, month: null, selected: null },
+  'dash-ini':        { year: null, month: null, selected: null },
+  'dash-fin':        { year: null, month: null, selected: null }
 };
 
 function dpInit(key) {
@@ -2655,7 +2711,7 @@ function dpInit(key) {
   dpState[key].year  = now.getFullYear();
   dpState[key].month = now.getMonth();
   // Keys de filtro de rango: no pre-seleccionar fecha, mostrar placeholder
-  const rangeKeys = ['gasto-ini', 'gasto-fin', 'ingreso-ini', 'ingreso-fin', 'reporte-inicio', 'reporte-fin'];
+  const rangeKeys = ['gasto-ini', 'gasto-fin', 'ingreso-ini', 'ingreso-fin', 'dash-ini', 'dash-fin', 'reporte-inicio', 'reporte-fin'];
   if (rangeKeys.includes(key)) {
     dpState[key].selected = null;
     const textEl = document.getElementById(`dp-text-${key}`);
@@ -2680,6 +2736,8 @@ function dpSetValue(key, date) {
     'gasto-fin':       'new-gasto-fin',
     'ingreso-ini':     'new-ingreso-ini',
     'ingreso-fin':     'new-ingreso-fin',
+    'dash-ini':        'new-dash-ini',
+    'dash-fin':        'new-dash-fin',
   };
   const hiddenId = hiddenMap[key] || `new-${key}-fecha`;
   const hiddenEl = document.getElementById(hiddenId);
@@ -2932,6 +2990,8 @@ dpInit('gasto-ini');
 dpInit('gasto-fin');
 dpInit('ingreso-ini');
 dpInit('ingreso-fin');
+dpInit('dash-ini');
+dpInit('dash-fin');
 updateSidebarForPlan();
 // loadCommunityFromAPI() se llama desde el guard una vez validado el usuario
 </script>
