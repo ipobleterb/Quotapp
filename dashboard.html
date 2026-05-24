@@ -2559,7 +2559,15 @@ function dpInit(key) {
   const now = new Date();
   dpState[key].year  = now.getFullYear();
   dpState[key].month = now.getMonth();
-  dpSetValue(key, now); // default = hoy
+  // Keys de filtro de rango: no pre-seleccionar fecha, mostrar placeholder
+  const rangeKeys = ['gasto-ini', 'gasto-fin', 'reporte-inicio', 'reporte-fin'];
+  if (rangeKeys.includes(key)) {
+    dpState[key].selected = null;
+    const textEl = document.getElementById(`dp-text-${key}`);
+    if (textEl) textEl.textContent = key.endsWith('-ini') || key.endsWith('-inicio') ? 'Inicio' : 'Fin';
+  } else {
+    dpSetValue(key, now);
+  }
 }
 
 function dpSetValue(key, date) {
@@ -2603,7 +2611,7 @@ function dpRender(key) {
   const { year, month, selected } = dpState[key];
   const cal = document.getElementById(`dp-cal-${key}`);
   const today = new Date(); today.setHours(0,0,0,0);
-  const allowFuture = key === 'reporte-inicio' || key === 'reporte-fin' || key === 'gasto-ini' || key === 'gasto-fin';
+  const allowFuture = key === 'reporte-inicio' || key === 'reporte-fin';
   const isCurrentMonth = !allowFuture && year === today.getFullYear() && month === today.getMonth();
   const isFutureMonth  = !allowFuture && new Date(year, month, 1) > new Date(today.getFullYear(), today.getMonth(), 1);
 
@@ -2660,7 +2668,6 @@ function dpSelect(key, y, m, d) {
   dpSetValue(key, new Date(y, m, d));
   document.getElementById(`dp-cal-${key}`).classList.remove('open');
   document.getElementById(`dp-btn-${key}`).classList.remove('open');
-  if (key === 'gasto-ini' || key === 'gasto-fin') renderGastosList();
 }
 function dpSelectToday(key) {
   const now = new Date();
@@ -2668,7 +2675,6 @@ function dpSelectToday(key) {
   dpSetValue(key, now);
   document.getElementById(`dp-cal-${key}`).classList.remove('open');
   document.getElementById(`dp-btn-${key}`).classList.remove('open');
-  if (key === 'gasto-ini' || key === 'gasto-fin') renderGastosList();
 }
 function dpClear(key) {
   dpState[key].selected = null;
