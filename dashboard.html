@@ -371,32 +371,35 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
 #community-loader {
   position: fixed;
   inset: 0;
-  background: rgba(255,255,255,.82);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
+  background: #fff;
   z-index: 8000;
   display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 28px;
+  transition: opacity .6s ease;
 }
 #community-loader.show { display: flex; }
+#community-loader.hide { opacity: 0; pointer-events: none; }
+.community-loader-logo { display: flex; align-items: center; gap: 12px; }
 .community-loader-icon {
-  width: 48px; height: 48px;
+  width: 52px; height: 52px;
   background: #1D9E75;
-  border-radius: 13px;
+  border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 8px 24px rgba(29,158,117,.25);
-  animation: loader-pulse .9s ease-in-out infinite alternate;
+  flex-shrink: 0;
 }
-@keyframes loader-pulse {
-  from { transform: scale(.95); box-shadow: 0 4px 12px rgba(29,158,117,.2); }
-  to   { transform: scale(1.05); box-shadow: 0 12px 28px rgba(29,158,117,.35); }
+.community-loader-brand {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 1.9rem; font-weight: 700;
+  color: #0F1326; letter-spacing: -0.01em;
 }
-.community-loader-dots { display: flex; gap: 7px; }
+.community-loader-brand span { color: #1D9E75; }
+.community-loader-dots { display: flex; gap: 8px; }
 .community-loader-dots span {
-  width: 7px; height: 7px;
+  width: 8px; height: 8px;
   background: #1D9E75; border-radius: 50%;
   animation: dot-bounce .9s ease-in-out infinite; opacity: .3;
 }
@@ -427,14 +430,17 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
 
 <!-- ── COMMUNITY SWITCH LOADER ── -->
 <div id="community-loader">
-  <div class="community-loader-icon">
-    <svg width="26" height="26" viewBox="0 0 22 22" fill="none">
-      <rect x="3" y="5" width="13" height="2" rx="1" fill="white"/>
-      <rect x="3" y="9" width="10" height="2" rx="1" fill="rgba(255,255,255,.65)"/>
-      <rect x="3" y="13" width="7" height="2" rx="1" fill="rgba(255,255,255,.4)"/>
-      <circle cx="17" cy="15.5" r="4" fill="white"/>
-      <text x="17" y="18" text-anchor="middle" font-size="5.5" font-weight="700" fill="#1D9E75">$</text>
-    </svg>
+  <div class="community-loader-logo">
+    <div class="community-loader-icon">
+      <svg width="30" height="30" viewBox="0 0 22 22" fill="none">
+        <rect x="3" y="5" width="13" height="2" rx="1" fill="white"/>
+        <rect x="3" y="9" width="10" height="2" rx="1" fill="rgba(255,255,255,.65)"/>
+        <rect x="3" y="13" width="7" height="2" rx="1" fill="rgba(255,255,255,.4)"/>
+        <circle cx="17" cy="15.5" r="4" fill="white"/>
+        <text x="17" y="18" text-anchor="middle" font-size="5.5" font-weight="700" fill="#1D9E75">$</text>
+      </svg>
+    </div>
+    <span class="community-loader-brand">Quot<span>App</span></span>
   </div>
   <div class="community-loader-dots">
     <span></span><span></span><span></span>
@@ -1446,7 +1452,10 @@ async function switchCommunity() {
     const loader = document.getElementById('community-loader');
     if (loader) loader.classList.add('show');
     await Promise.all([loadMembersFromAPI(), loadIncomeFromAPI(), loadExpensesFromAPI()]);
-    if (loader) loader.classList.remove('show');
+    if (loader) {
+      loader.classList.add('hide');
+      setTimeout(() => { loader.classList.remove('show'); loader.classList.remove('hide'); }, 650);
+    }
     renderAll();
   }
 }
