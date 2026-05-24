@@ -1663,6 +1663,7 @@ async function switchCommunity() {
   clearIngresoFechas();
   clearGastoFechas();
   updateSidebarForPlan();
+  showPage('dashboard'); // Siempre ir al panel de control al cambiar comunidad
   renderAll();
 
   if (state.activeCommunityId && !state.activeCommunityId.startsWith('demo')) {
