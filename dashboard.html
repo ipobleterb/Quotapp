@@ -1733,8 +1733,8 @@ function openModal(id) {
     // Reset a resumen si plan gratis
     if (!isPro) setReporteContenido('resumen');
   }
+  if (id === 'modalNewMember') {
     const isPro = state.activePlan === 'pro' || state.activePlan === 'pro+';
-    const badge = document.getElementById('new-member-email-badge');
     const hint  = document.getElementById('new-member-email-hint');
     if (isPro) {
       badge.textContent = '(requerido)';
