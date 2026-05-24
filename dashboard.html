@@ -786,38 +786,6 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
         </div>
       </div>
 
-      <!-- Selector de rango de fechas -->
-      <div class="card" style="margin-bottom:16px">
-        <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">
-          <div>
-            <div style="font-size:.78rem;font-weight:600;color:var(--txt2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Fecha inicio</div>
-            <div class="dp-wrap" id="dp-wrap-reporte-inicio">
-              <button type="button" class="dp-input" id="dp-btn-reporte-inicio" onclick="dpToggle('reporte-inicio')">
-                <span class="dp-input-text" id="dp-text-reporte-inicio">Seleccionar</span>
-                <svg class="dp-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              </button>
-              <div class="dp-cal" id="dp-cal-reporte-inicio"></div>
-              <input type="hidden" id="new-reporte-inicio">
-            </div>
-          </div>
-          <div style="color:var(--txt3);font-size:1.2rem;margin-top:18px">→</div>
-          <div>
-            <div style="font-size:.78rem;font-weight:600;color:var(--txt2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Fecha fin</div>
-            <div class="dp-wrap" id="dp-wrap-reporte-fin">
-              <button type="button" class="dp-input" id="dp-btn-reporte-fin" onclick="dpToggle('reporte-fin')">
-                <span class="dp-input-text" id="dp-text-reporte-fin">Seleccionar</span>
-                <svg class="dp-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              </button>
-              <div class="dp-cal" id="dp-cal-reporte-fin"></div>
-              <input type="hidden" id="new-reporte-fin">
-            </div>
-          </div>
-          <div style="margin-top:18px">
-            <button class="btn-secondary" onclick="clearReporteDates()" style="font-size:.82rem;padding:8px 14px">Limpiar fechas</button>
-          </div>
-          <div id="reporte-rango-label" style="margin-top:18px;font-size:.82rem;color:var(--txt3)"></div>
-        </div>
-      </div>
 
       <div class="report-card">
         <div class="report-icon">
@@ -827,7 +795,7 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
           <h4>Resumen básico TXT</h4>
           <p>Ingresos, gastos y saldo del período actual.</p>
         </div>
-        <button class="report-action" onclick="downloadReport()">Descargar</button>
+        <button class="report-action" onclick="openModal('modalDescargarReporte')">Descargar</button>
       </div>
 
       <!-- Pro: reportes bloqueados -->
@@ -1076,6 +1044,75 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
     <div class="modal-footer">
       <button class="btn-secondary" onclick="closeModal('modalEditCommunity')">Cancelar</button>
       <button class="btn-primary" onclick="editCommunity()">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Descargar Reporte -->
+<div class="modal-overlay" id="modalDescargarReporte">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <div class="modal-title">Descargar reporte</div>
+      <button class="modal-close" onclick="closeModal('modalDescargarReporte')">✕</button>
+    </div>
+
+    <div class="form-field">
+      <label style="font-size:.82rem;font-weight:600;color:var(--txt2);margin-bottom:10px;display:block">Período del reporte</label>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:.72rem;color:var(--txt3);margin-bottom:4px">Desde</div>
+          <div class="dp-wrap" id="dp-wrap-reporte-inicio">
+            <button type="button" class="dp-input" id="dp-btn-reporte-inicio" onclick="dpToggle('reporte-inicio')">
+              <span class="dp-input-text" id="dp-text-reporte-inicio">Seleccionar</span>
+              <svg class="dp-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </button>
+            <div class="dp-cal" id="dp-cal-reporte-inicio"></div>
+            <input type="hidden" id="new-reporte-inicio">
+          </div>
+        </div>
+        <span style="color:var(--txt3);margin-top:16px">→</span>
+        <div>
+          <div style="font-size:.72rem;color:var(--txt3);margin-bottom:4px">Hasta</div>
+          <div class="dp-wrap" id="dp-wrap-reporte-fin">
+            <button type="button" class="dp-input" id="dp-btn-reporte-fin" onclick="dpToggle('reporte-fin')">
+              <span class="dp-input-text" id="dp-text-reporte-fin">Seleccionar</span>
+              <svg class="dp-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </button>
+            <div class="dp-cal" id="dp-cal-reporte-fin"></div>
+            <input type="hidden" id="new-reporte-fin">
+          </div>
+        </div>
+        <button onclick="clearReporteDates()" style="font-size:.75rem;color:var(--txt3);background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;margin-top:16px">Limpiar</button>
+      </div>
+      <div style="font-size:.75rem;color:var(--txt3);margin-top:8px">Sin fechas seleccionadas se descarga el período completo.</div>
+    </div>
+
+    <div class="form-field" style="margin-bottom:0">
+      <label style="font-size:.82rem;font-weight:600;color:var(--txt2);margin-bottom:10px;display:block">Contenido</label>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:8px;cursor:pointer;font-size:.84rem;color:var(--navy)" onclick="setReporteContenido('resumen')">
+          <input type="radio" name="reporte-contenido" value="resumen" checked style="accent-color:var(--g)">
+          <div>
+            <div style="font-weight:600">Resumen general</div>
+            <div style="font-size:.75rem;color:var(--txt3)">Totales de ingresos, gastos, saldo y miembros</div>
+          </div>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:8px;cursor:pointer;font-size:.84rem;color:var(--navy)" onclick="setReporteContenido('detalle')">
+          <input type="radio" name="reporte-contenido" value="detalle" style="accent-color:var(--g)">
+          <div>
+            <div style="font-weight:600">Detalle completo</div>
+            <div style="font-size:.75rem;color:var(--txt3)">Incluye cada ingreso, gasto y miembro línea por línea</div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modalDescargarReporte')">Cancelar</button>
+      <button class="btn-primary" onclick="downloadReporteDesdeModal()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Descargar TXT
+      </button>
     </div>
   </div>
 </div>
@@ -2293,6 +2330,16 @@ function clearGastoFechas() {
   renderGastosList();
 }
 
+function setReporteContenido(val) {
+  document.querySelectorAll('input[name="reporte-contenido"]').forEach(r => r.checked = r.value === val);
+}
+
+function downloadReporteDesdeModal() {
+  const contenido = document.querySelector('input[name="reporte-contenido"]:checked')?.value || 'resumen';
+  closeModal('modalDescargarReporte');
+  downloadReport(contenido);
+}
+
 function clearReporteDates() {
   dpState['reporte-inicio'].selected = null;
   dpState['reporte-fin'].selected = null;
@@ -2323,7 +2370,7 @@ function filterByDateRange(items, fechaIni, fechaFin) {
   });
 }
 
-function downloadReport() {
+function downloadReport(contenido = 'resumen') {
   const { fechaIni, fechaFin } = getReporteDateRange();
   const ingresos = filterByDateRange(state.ingresos, fechaIni, fechaFin);
   const gastos   = filterByDateRange(state.gastos,   fechaIni, fechaFin);
@@ -2337,7 +2384,8 @@ function downloadReport() {
     : 'Todo el período';
 
   const sep = '─'.repeat(50);
-  const lines = [
+
+  const linesResumen = [
     `RESUMEN DE TESORERÍA — ${comunidad.toUpperCase()}`,
     `Generado: ${fecha} | ${plan}`,
     `Período:  ${rangoLabel}`,
@@ -2348,27 +2396,41 @@ function downloadReport() {
     `Saldo actual:     ${fmtMoney(totalIngresos - totalGastos)}`,
     `Total miembros:   ${state.members.length} / ${state.memberLimit}`,
     '', sep,
+    'Generado por QuotApp — www.quotapp.cl'
+  ];
+
+  const linesDetalle = [
+    `DETALLE COMPLETO — ${comunidad.toUpperCase()}`,
+    `Generado: ${fecha} | ${plan}`,
+    `Período:  ${rangoLabel}`,
+    sep, '',
+    'RESUMEN GENERAL',
+    `Total recaudado:  ${fmtMoney(totalIngresos)}`,
+    `Total gastos:     ${fmtMoney(totalGastos)}`,
+    `Saldo actual:     ${fmtMoney(totalIngresos - totalGastos)}`,
+    `Total miembros:   ${state.members.length} / ${state.memberLimit}`,
+    '', sep,
     `INGRESOS (${ingresos.length})`,
-    ...ingresos.map(i => `  ${fmtDate(i.fecha)||'Sin fecha'}  ${i.desc.padEnd(30)}  ${fmtMoney(i.monto)}`),
+    ...ingresos.sort((a,b)=>new Date(b.fecha)-new Date(a.fecha)).map(i => `  ${fmtDate(i.fecha)||'Sin fecha'}  ${(i.desc||'').padEnd(30)}  ${fmtMoney(i.monto)}  [${catLabel(i.cat,'ingreso')}]`),
     ingresos.length ? '' : '  Sin ingresos en el período',
     '', sep,
     `GASTOS (${gastos.length})`,
-    ...gastos.map(g => `  ${fmtDate(g.fecha)||'Sin fecha'}  ${g.desc.padEnd(30)}  ${fmtMoney(g.monto)}`),
+    ...gastos.sort((a,b)=>new Date(b.fecha)-new Date(a.fecha)).map(g => `  ${fmtDate(g.fecha)||'Sin fecha'}  ${(g.desc||'').padEnd(30)}  ${fmtMoney(g.monto)}  [${catLabel(g.cat)}]`),
     gastos.length ? '' : '  Sin gastos en el período',
     '', sep,
     `MIEMBROS (${state.members.length})`,
-    ...state.members.map(m => `  ${m.nombre.padEnd(25)}  ${m.email}`),
+    ...state.members.slice().sort((a,b)=>(a.nombre||'').localeCompare(b.nombre||'')).map(m => `  ${(m.nombre||'').padEnd(25)}  ${m.email||'—'}  ${m.telefono||'—'}`),
     state.members.length ? '' : '  Sin miembros',
     '', sep,
     'Generado por QuotApp — www.quotapp.cl'
   ];
-  // Build content using template literals inline to avoid Python escaping issues
 
+  const lines = contenido === 'detalle' ? linesDetalle : linesResumen;
   const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `reporte-${comunidad.toLowerCase().replace(/\s+/g,'-')}-${fecha.replace(/\//g,'-')}.txt`;
+  a.download = `reporte-${contenido}-${comunidad.toLowerCase().replace(/\s+/g,'-')}-${fecha.replace(/\//g,'-')}.txt`;
   a.click();
   URL.revokeObjectURL(url);
   showToast('Reporte descargado');
