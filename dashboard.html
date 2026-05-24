@@ -125,6 +125,14 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
 
 /* ── MEMBERS PAGE ── */
 .members-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+/* ── PAGINACIÓN ── */
+.pagination{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--bdr)}
+.pagination-info{font-size:.78rem;color:var(--txt3)}
+.pagination-btns{display:flex;align-items:center;gap:4px}
+.pg-btn{min-width:30px;height:30px;padding:0 8px;border:1.5px solid var(--bdr);border-radius:7px;background:#fff;color:var(--txt2);font-size:.82rem;font-family:inherit;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.pg-btn:hover:not(:disabled){border-color:var(--g);color:var(--g)}
+.pg-btn.active{background:var(--g);border-color:var(--g);color:#fff;font-weight:600}
+.pg-btn:disabled{opacity:.35;cursor:not-allowed}
 .members-count{font-size:.82rem;color:var(--txt3)}
 .members-count strong{color:var(--navy)}
 .member-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--bdr)}
@@ -266,6 +274,7 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
 .dp-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .dp-nav-btn{background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;color:var(--txt2);font-size:1rem;line-height:1;transition:background .15s}
 .dp-nav-btn:hover{background:var(--bg)}
+.dp-day-disabled{opacity:.3;cursor:not-allowed;pointer-events:none}
 .dp-month-label{font-size:.88rem;font-weight:700;color:var(--navy);cursor:pointer}
 .dp-month-label:hover{color:var(--g)}
 .dp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
@@ -1364,13 +1373,14 @@ if (urlNombre) {
 
 // ── STATE ──
 const state = {
-  communities: [],      // [{ id, nombre, tipo, monthly_fee, plan:'free'|'pro' }]
-  activeCommunity: null, // índice activo
+  communities: [],
+  activeCommunity: null,
   activeCommunityId: null,
   members: [],
   ingresos: [],
   gastos: [],
   treasurer: { name: '', email: '', phone: '' },
+  pages: { members: 1, ingresos: 1, gastos: 1 },
   get activePlan() {
     if (this.activeCommunity === null) return 'free';
     return this.communities[this.activeCommunity]?.plan || 'free';
@@ -1492,6 +1502,7 @@ async function switchCommunity() {
   state.members = [];
   state.ingresos = [];
   state.gastos = [];
+  state.pages = { members: 1, ingresos: 1, gastos: 1 };
   updateSidebarForPlan();
   renderAll();
 
@@ -1614,6 +1625,27 @@ function renderDashboardMiembros() {
   el.innerHTML = `<table class="table"><thead><tr><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Rol</th></tr></thead><tbody>${state.members.slice(0,5).map(m=>`<tr><td>${m.nombre}</td><td>${m.email||'—'}</td><td>${m.telefono||'—'}</td><td><span style=\"font-size:.7rem;font-weight:600;padding:2px 8px;border-radius:20px;background:${m.role==='tesorero'?'#d1fae5':'#e0f2fe'};color:${m.role==='tesorero'?'#065f46':'#0369a1'}\">${(m.role||'miembro').charAt(0).toUpperCase()+(m.role||'miembro').slice(1)}</span></td></tr>`).join('')}</tbody></table>`;
 }
 
+const PAGE_SIZE = 10;
+
+function renderPagination(containerId, currentPage, totalPages, onPageFn) {
+  if (totalPages <= 1) return '';
+  const prev = `<button class="pg-btn" onclick="${onPageFn}(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>‹</button>`;
+  const next = `<button class="pg-btn" onclick="${onPageFn}(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>›</button>`;
+  let nums = '';
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || Math.abs(i - currentPage) <= 1) {
+      nums += `<button class="pg-btn${i === currentPage ? ' active' : ''}" onclick="${onPageFn}(${i})">${i}</button>`;
+    } else if (Math.abs(i - currentPage) === 2) {
+      nums += `<span style="padding:0 2px;color:var(--txt3)">…</span>`;
+    }
+  }
+  return `<div class="pagination"><span class="pagination-info">Página ${currentPage} de ${totalPages}</span><div class="pagination-btns">${prev}${nums}${next}</div></div>`;
+}
+
+function setMembersPage(p) { state.pages.members = p; renderMembersList(); }
+function setIngresosPage(p) { state.pages.ingresos = p; renderIngresosList(); }
+function setGastosPage(p)   { state.pages.gastos = p;   renderGastosList(); }
+
 function renderMembersList() {
   const el = document.getElementById('members-list');
   if (!state.members.length) {
@@ -1624,25 +1656,26 @@ function renderMembersList() {
   const svgEdit = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
   const svgDel  = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>';
 
-  // Ordenar A→Z y filtrar por búsqueda
-  const sorted = state.members
-    .map((m, i) => ({ ...m, _origIdx: i }))
+  const sorted = state.members.map((m, i) => ({ ...m, _origIdx: i }))
     .sort((a, b) => (a.nombre || '').localeCompare(b.nombre || '', 'es'));
-  const filtered = query
-    ? sorted.filter(m =>
-        (m.nombre || '').toLowerCase().includes(query) ||
-        (m.email || '').toLowerCase().includes(query) ||
-        (m.telefono || '').toLowerCase().includes(query)
-      )
-    : sorted;
+  const filtered = query ? sorted.filter(m =>
+    (m.nombre || '').toLowerCase().includes(query) ||
+    (m.email || '').toLowerCase().includes(query) ||
+    (m.telefono || '').toLowerCase().includes(query)
+  ) : sorted;
 
   if (!filtered.length) {
     el.innerHTML = '<div class="card-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Sin resultados para "<strong>' + query + '</strong>".</div>';
     return;
   }
 
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  state.pages.members = Math.min(state.pages.members, totalPages);
+  const page = state.pages.members;
+  const slice = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
   el.innerHTML = `<table class="table"><thead><tr><th>Nombre</th><th>Correo</th><th>Teléfono</th><th>Rol</th><th></th></tr></thead><tbody>${
-    filtered.map((m) => {
+    slice.map((m) => {
       const rol = (m.role || m.rol || 'miembro').toLowerCase();
       const rolLabel = rol.charAt(0).toUpperCase() + rol.slice(1);
       const badgeBg = rol === 'tesorero' ? 'var(--g3)' : '#EFF6FF';
@@ -1655,7 +1688,7 @@ function renderMembersList() {
         <td><div class="btn-actions"><button class="btn-icon btn-icon-edit" title="Editar" onclick="openEditMember(${m._origIdx})">${svgEdit}</button><button class="btn-icon btn-icon-delete" title="Eliminar" onclick="removeMember(${m._origIdx})">${svgDel}</button></div></td>
       </tr>`;
     }).join('')
-  }</tbody></table>`;
+  }</tbody></table>${renderPagination('members-list', page, totalPages, 'setMembersPage')}`;
 }
 
 function renderIngresosList() {
@@ -1685,15 +1718,20 @@ function renderIngresosList() {
     el.innerHTML = '<div class="card-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Sin resultados para los filtros aplicados.</div>';
     return;
   }
+  const totalPagesI = Math.ceil(filtered.length / PAGE_SIZE);
+  state.pages.ingresos = Math.min(state.pages.ingresos, totalPagesI);
+  const pageI = state.pages.ingresos;
+  const sliceI = filtered.slice((pageI - 1) * PAGE_SIZE, pageI * PAGE_SIZE);
+
   el.innerHTML = `<table class="table"><thead><tr><th>Descripción</th><th>Categoría</th><th>Fecha</th><th>Monto</th><th></th></tr></thead><tbody>${
-    filtered.map(i => `<tr>
+    sliceI.map(i => `<tr>
       <td>${i.desc}</td>
       <td><span class="badge badge-green">${catLabel(i.cat,'ingreso')}</span></td>
       <td>${fmtDate(i.fecha)}</td>
       <td style="color:var(--g);font-weight:600">${fmtMoney(i.monto)}</td>
       <td><div class="btn-actions"><button class="btn-icon btn-icon-edit" title="Editar" onclick="openEditIngreso(${i._origIdx})">${svgEdit}</button><button class="btn-icon btn-icon-delete" title="Eliminar" onclick="removeIngreso(${i._origIdx})">${svgDel}</button></div></td>
     </tr>`).join('')
-  }</tbody></table>`;
+  }</tbody></table>${renderPagination('ingresos-list', pageI, totalPagesI, 'setIngresosPage')}`;
 }
 
 function renderGastosList() {
@@ -1723,15 +1761,19 @@ function renderGastosList() {
     el.innerHTML = '<div class="card-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Sin resultados para los filtros aplicados.</div>';
     return;
   }
+  const totalPagesG = Math.ceil(filtered.length / PAGE_SIZE);
+  state.pages.gastos = Math.min(state.pages.gastos, totalPagesG);
+  const pageG = state.pages.gastos;
+  const sliceG = filtered.slice((pageG - 1) * PAGE_SIZE, pageG * PAGE_SIZE);
   el.innerHTML = `<table class="table"><thead><tr><th>Descripción</th><th>Categoría</th><th>Fecha</th><th>Monto</th><th></th></tr></thead><tbody>${
-    filtered.map(g => `<tr>
+    sliceG.map(g => `<tr>
       <td>${g.desc}</td>
       <td><span class="badge badge-yellow">${catLabel(g.cat)}</span></td>
       <td>${fmtDate(g.fecha)}</td>
       <td style="color:#DC2626;font-weight:600">${fmtMoney(g.monto)}</td>
       <td><div class="btn-actions"><button class="btn-icon btn-icon-edit" title="Editar" onclick="openEditGasto(${g._origIdx})">${svgEdit}</button><button class="btn-icon btn-icon-delete" title="Eliminar" onclick="removeGasto(${g._origIdx})">${svgDel}</button></div></td>
     </tr>`).join('')
-  }</tbody></table>`;
+  }</tbody></table>${renderPagination('gastos-list', pageG, totalPagesG, 'setGastosPage')}`;
 }
 
 function hideLoader() {
@@ -2259,35 +2301,36 @@ function dpRender(key) {
   const { year, month, selected } = dpState[key];
   const cal = document.getElementById(`dp-cal-${key}`);
   const today = new Date(); today.setHours(0,0,0,0);
+  const isCurrentMonth = year === today.getFullYear() && month === today.getMonth();
+  const isFutureMonth  = new Date(year, month, 1) > new Date(today.getFullYear(), today.getMonth(), 1);
 
-  const firstDay = new Date(year, month, 1).getDay(); // 0=Dom
+  const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month+1, 0).getDate();
-  // Convertir domingo=0 a lunes=0
   const startOffset = (firstDay + 6) % 7;
 
   let html = `
     <div class="dp-nav">
-      <button class="dp-nav-btn" onclick="dpPrev('${key}')">‹</button>
+      <button class="dp-nav-btn" onclick="event.stopPropagation();dpPrev('${key}')">‹</button>
       <span class="dp-month-label">${MESES[month]} ${year}</span>
-      <button class="dp-nav-btn" onclick="dpNext('${key}')">›</button>
+      <button class="dp-nav-btn" onclick="event.stopPropagation();dpNext('${key}')" ${isCurrentMonth || isFutureMonth ? 'disabled style="opacity:.3;cursor:not-allowed"' : ''}>›</button>
     </div>
     <div class="dp-grid">
       ${DIAS_CORTO.map(d=>`<div class="dp-day-header">${d}</div>`).join('')}
   `;
 
-  // Celdas vacías al inicio
   for (let i = 0; i < startOffset; i++) html += `<div class="dp-day dp-day-empty"></div>`;
 
   for (let d = 1; d <= daysInMonth; d++) {
     const date = new Date(year, month, d);
     date.setHours(0,0,0,0);
-    let cls = 'dp-day';
+    const isFuture = date > today;
+    let cls = 'dp-day' + (isFuture ? ' dp-day-disabled' : '');
     if (date.getTime() === today.getTime()) cls += ' dp-day-today';
-    if (selected) {
+    if (selected && !isFuture) {
       const sel = new Date(selected); sel.setHours(0,0,0,0);
       if (date.getTime() === sel.getTime()) cls += ' dp-day-selected';
     }
-    html += `<div class="${cls}" onclick="dpSelect('${key}',${year},${month},${d})">${d}</div>`;
+    html += `<div class="${cls}" ${isFuture ? '' : `onclick="dpSelect('${key}',${year},${month},${d})"`}>${d}</div>`;
   }
 
   html += `</div>
