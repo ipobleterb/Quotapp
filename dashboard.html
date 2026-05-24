@@ -713,6 +713,44 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
           Registrar gasto
         </button>
       </div>
+
+      <!-- Stats + rango fechas gastos -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px">
+        <div class="card" style="padding:16px 20px">
+          <div style="font-size:.78rem;font-weight:600;color:var(--txt3);margin-bottom:6px">Total gastos</div>
+          <div id="gasto-stat-monto" style="font-size:1.6rem;font-weight:800;color:#DC2626;letter-spacing:-.02em">$0</div>
+          <div id="gasto-stat-rango" style="font-size:.75rem;color:var(--txt3);margin-top:4px">En todas las categorías</div>
+        </div>
+        <div class="card" style="padding:16px 20px;background:var(--g);border-color:var(--g)">
+          <div style="font-size:.78rem;font-weight:600;color:rgba(255,255,255,.75);margin-bottom:6px">Cantidad de gastos</div>
+          <div id="gasto-stat-count" style="font-size:1.6rem;font-weight:800;color:#fff;letter-spacing:-.02em">0 gastos</div>
+          <div id="gasto-stat-ultimo" style="font-size:.75rem;color:rgba(255,255,255,.7);margin-top:4px">Sin gastos registrados</div>
+        </div>
+        <div class="card" style="padding:16px 20px">
+          <div style="font-size:.78rem;font-weight:600;color:var(--txt3);margin-bottom:6px">Filtrar por período</div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px">
+            <div class="dp-wrap" id="dp-wrap-gasto-ini">
+              <button type="button" class="dp-input" id="dp-btn-gasto-ini" onclick="dpToggle('gasto-ini')" style="min-width:110px;font-size:.78rem;padding:6px 10px">
+                <span class="dp-input-text" id="dp-text-gasto-ini">Inicio</span>
+                <svg class="dp-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </button>
+              <div class="dp-cal" id="dp-cal-gasto-ini"></div>
+              <input type="hidden" id="new-gasto-ini">
+            </div>
+            <span style="color:var(--txt3);font-size:.8rem">→</span>
+            <div class="dp-wrap" id="dp-wrap-gasto-fin">
+              <button type="button" class="dp-input" id="dp-btn-gasto-fin" onclick="dpToggle('gasto-fin')" style="min-width:110px;font-size:.78rem;padding:6px 10px">
+                <span class="dp-input-text" id="dp-text-gasto-fin">Fin</span>
+                <svg class="dp-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </button>
+              <div class="dp-cal" id="dp-cal-gasto-fin"></div>
+              <input type="hidden" id="new-gasto-fin">
+            </div>
+            <button onclick="clearGastoFechas()" style="font-size:.75rem;color:var(--txt3);background:none;border:none;cursor:pointer;padding:0;text-decoration:underline">Limpiar</button>
+          </div>
+        </div>
+      </div>
+
       <div class="card">
         <div class="members-header" style="margin-bottom:12px">
           <span class="members-count">Total: <strong id="gastos-count">0</strong> gastos</span>
@@ -744,6 +782,39 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
         <div class="page-header-text">
           <h1>Reportes</h1>
           <p>Descarga reportes de tu comunidad.</p>
+        </div>
+      </div>
+
+      <!-- Selector de rango de fechas -->
+      <div class="card" style="margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+          <div>
+            <div style="font-size:.78rem;font-weight:600;color:var(--txt2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Fecha inicio</div>
+            <div class="dp-wrap" id="dp-wrap-reporte-inicio">
+              <button type="button" class="dp-input" id="dp-btn-reporte-inicio" onclick="dpToggle('reporte-inicio')">
+                <span class="dp-input-text" id="dp-text-reporte-inicio">Seleccionar</span>
+                <svg class="dp-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </button>
+              <div class="dp-cal" id="dp-cal-reporte-inicio"></div>
+              <input type="hidden" id="new-reporte-inicio">
+            </div>
+          </div>
+          <div style="color:var(--txt3);font-size:1.2rem;margin-top:18px">→</div>
+          <div>
+            <div style="font-size:.78rem;font-weight:600;color:var(--txt2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Fecha fin</div>
+            <div class="dp-wrap" id="dp-wrap-reporte-fin">
+              <button type="button" class="dp-input" id="dp-btn-reporte-fin" onclick="dpToggle('reporte-fin')">
+                <span class="dp-input-text" id="dp-text-reporte-fin">Seleccionar</span>
+                <svg class="dp-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </button>
+              <div class="dp-cal" id="dp-cal-reporte-fin"></div>
+              <input type="hidden" id="new-reporte-fin">
+            </div>
+          </div>
+          <div style="margin-top:18px">
+            <button class="btn-secondary" onclick="clearReporteDates()" style="font-size:.82rem;padding:8px 14px">Limpiar fechas</button>
+          </div>
+          <div id="reporte-rango-label" style="margin-top:18px;font-size:.82rem;color:var(--txt3)"></div>
         </div>
       </div>
 
@@ -1736,6 +1807,44 @@ function renderIngresosList() {
 
 function renderGastosList() {
   const el = document.getElementById('gastos-list');
+
+  // Leer filtro de fechas del rango
+  const iniVal = document.getElementById('new-gasto-ini')?.value || '';
+  const finVal = document.getElementById('new-gasto-fin')?.value || '';
+  const fechaIni = iniVal ? new Date(iniVal + 'T00:00:00') : null;
+  const fechaFin = finVal ? new Date(finVal + 'T23:59:59') : null;
+
+  // Gastos dentro del rango para los stats
+  const gastosEnRango = state.gastos.filter(g => {
+    if (!g.fecha) return true;
+    const d = new Date(g.fecha + 'T00:00:00');
+    if (fechaIni && d < fechaIni) return false;
+    if (fechaFin && d > fechaFin) return false;
+    return true;
+  });
+
+  // Actualizar stat cards
+  const totalMonto = gastosEnRango.reduce((s,g) => s + Number(g.monto), 0);
+  const statMonto  = document.getElementById('gasto-stat-monto');
+  const statCount  = document.getElementById('gasto-stat-count');
+  const statUltimo = document.getElementById('gasto-stat-ultimo');
+  const statRango  = document.getElementById('gasto-stat-rango');
+  if (statMonto) statMonto.textContent = fmtMoney(totalMonto);
+  if (statCount) statCount.textContent = `${gastosEnRango.length} gasto${gastosEnRango.length !== 1 ? 's' : ''}`;
+  if (statRango) statRango.textContent = fechaIni || fechaFin
+    ? `${fechaIni ? fechaIni.toLocaleDateString('es-CL') : '—'} → ${fechaFin ? fechaFin.toLocaleDateString('es-CL') : 'hoy'}`
+    : 'En todas las categorías';
+  if (statUltimo) {
+    const sorted_dates = gastosEnRango.filter(g=>g.fecha).sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
+    if (sorted_dates.length) {
+      const ultimo = sorted_dates[0];
+      const hoy = new Date().toISOString().slice(0,10);
+      statUltimo.textContent = ultimo.fecha === hoy ? 'Último gasto registrado hoy' : `Último: ${fmtDate(ultimo.fecha)}`;
+    } else {
+      statUltimo.textContent = 'Sin gastos en el período';
+    }
+  }
+
   if (!state.gastos.length) {
     el.innerHTML = '<div class="card-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Sin gastos registrados.<br>Agrega el primero arriba.</div>';
     const cnt = document.getElementById('gastos-count'); if (cnt) cnt.textContent = 0;
@@ -1752,7 +1861,10 @@ function renderGastosList() {
   const filtered = sorted.filter(g => {
     const matchQ   = !query   || (g.desc || '').toLowerCase().includes(query);
     const matchCat = !catFilt || g.cat === catFilt;
-    return matchQ && matchCat;
+    const d = g.fecha ? new Date(g.fecha + 'T00:00:00') : null;
+    const matchIni = !fechaIni || !d || d >= fechaIni;
+    const matchFin = !fechaFin || !d || d <= fechaFin;
+    return matchQ && matchCat && matchIni && matchFin;
   });
 
   const cnt = document.getElementById('gastos-count'); if (cnt) cnt.textContent = state.gastos.length;
@@ -2167,39 +2279,91 @@ async function removeGasto(i) {
   } catch(e) { showToast('Error al eliminar gasto', 'error'); }
 }
 
+function clearGastoFechas() {
+  ['gasto-ini','gasto-fin'].forEach(k => {
+    dpState[k].selected = null;
+    const hidden = document.getElementById(`new-${k}`);
+    const text   = document.getElementById(`dp-text-${k}`);
+    const btn    = document.getElementById(`dp-btn-${k}`);
+    if (hidden) hidden.value = '';
+    if (text)   text.textContent = k === 'gasto-ini' ? 'Inicio' : 'Fin';
+    if (btn)    btn.classList.remove('has-value');
+  });
+  renderGastosList();
+}
+
+function clearReporteDates() {
+  dpState['reporte-inicio'].selected = null;
+  dpState['reporte-fin'].selected = null;
+  document.getElementById('new-reporte-inicio').value = '';
+  document.getElementById('new-reporte-fin').value = '';
+  document.getElementById('dp-text-reporte-inicio').textContent = 'Seleccionar';
+  document.getElementById('dp-text-reporte-fin').textContent = 'Seleccionar';
+  document.getElementById('dp-btn-reporte-inicio').classList.remove('has-value');
+  document.getElementById('dp-btn-reporte-fin').classList.remove('has-value');
+  document.getElementById('reporte-rango-label').textContent = '';
+}
+
+function getReporteDateRange() {
+  const ini = document.getElementById('new-reporte-inicio').value;
+  const fin = document.getElementById('new-reporte-fin').value;
+  const fechaIni = ini ? new Date(ini + 'T00:00:00') : null;
+  const fechaFin = fin ? new Date(fin + 'T23:59:59') : null;
+  return { fechaIni, fechaFin };
+}
+
+function filterByDateRange(items, fechaIni, fechaFin) {
+  return items.filter(item => {
+    if (!item.fecha) return true;
+    const d = new Date(item.fecha + 'T00:00:00');
+    if (fechaIni && d < fechaIni) return false;
+    if (fechaFin && d > fechaFin) return false;
+    return true;
+  });
+}
+
 function downloadReport() {
-  const totalIngresos = state.ingresos.reduce((s,i)=>s+Number(i.monto),0);
-  const totalGastos = state.gastos.reduce((s,g)=>s+Number(g.monto),0);
+  const { fechaIni, fechaFin } = getReporteDateRange();
+  const ingresos = filterByDateRange(state.ingresos, fechaIni, fechaFin);
+  const gastos   = filterByDateRange(state.gastos,   fechaIni, fechaFin);
+  const totalIngresos = ingresos.reduce((s,i)=>s+Number(i.monto),0);
+  const totalGastos   = gastos.reduce((s,g)=>s+Number(g.monto),0);
   const comunidad = state.communities[state.activeCommunity]?.nombre || 'Mi comunidad';
   const plan = state.activePlan === 'pro' ? 'Plan Pro ⭐' : 'Plan Gratuito';
   const fecha = new Date().toLocaleDateString('es-CL');
+  const rangoLabel = fechaIni || fechaFin
+    ? `${fechaIni ? fechaIni.toLocaleDateString('es-CL') : 'inicio'} al ${fechaFin ? fechaFin.toLocaleDateString('es-CL') : 'hoy'}`
+    : 'Todo el período';
 
-  const content = `RESUMEN DE TESORERÍA — ${comunidad.toUpperCase()}
-Generado: ${fecha} | ${plan}
-${'─'.repeat(50)}
+  const sep = '─'.repeat(50);
+  const lines = [
+    `RESUMEN DE TESORERÍA — ${comunidad.toUpperCase()}`,
+    `Generado: ${fecha} | ${plan}`,
+    `Período:  ${rangoLabel}`,
+    sep, '',
+    'RESUMEN GENERAL',
+    `Total recaudado:  ${fmtMoney(totalIngresos)}`,
+    `Total gastos:     ${fmtMoney(totalGastos)}`,
+    `Saldo actual:     ${fmtMoney(totalIngresos - totalGastos)}`,
+    `Total miembros:   ${state.members.length} / ${state.memberLimit}`,
+    '', sep,
+    `INGRESOS (${ingresos.length})`,
+    ...ingresos.map(i => `  ${fmtDate(i.fecha)||'Sin fecha'}  ${i.desc.padEnd(30)}  ${fmtMoney(i.monto)}`),
+    ingresos.length ? '' : '  Sin ingresos en el período',
+    '', sep,
+    `GASTOS (${gastos.length})`,
+    ...gastos.map(g => `  ${fmtDate(g.fecha)||'Sin fecha'}  ${g.desc.padEnd(30)}  ${fmtMoney(g.monto)}`),
+    gastos.length ? '' : '  Sin gastos en el período',
+    '', sep,
+    `MIEMBROS (${state.members.length})`,
+    ...state.members.map(m => `  ${m.nombre.padEnd(25)}  ${m.email}`),
+    state.members.length ? '' : '  Sin miembros',
+    '', sep,
+    'Generado por QuotApp — www.quotapp.cl'
+  ];
+  // Build content using template literals inline to avoid Python escaping issues
 
-RESUMEN GENERAL
-Total recaudado:  ${fmtMoney(totalIngresos)}
-Total gastos:     ${fmtMoney(totalGastos)}
-Saldo actual:     ${fmtMoney(totalIngresos - totalGastos)}
-Total miembros:   ${state.members.length} / ${state.memberLimit}
-
-${'─'.repeat(50)}
-INGRESOS (${state.ingresos.length})
-${state.ingresos.map(i=>`  ${fmtDate(i.fecha)||'Sin fecha'}  ${i.desc.padEnd(30)}  ${fmtMoney(i.monto)}`).join('\n')||'  Sin ingresos registrados'}
-
-${'─'.repeat(50)}
-GASTOS (${state.gastos.length})
-${state.gastos.map(g=>`  ${fmtDate(g.fecha)||'Sin fecha'}  ${g.desc.padEnd(30)}  ${fmtMoney(g.monto)}`).join('\n')||'  Sin gastos registrados'}
-
-${'─'.repeat(50)}
-MIEMBROS (${state.members.length})
-${state.members.map(m=>`  ${(m.nombre).padEnd(25)}  ${m.email}`).join('\n')||'  Sin miembros'}
-
-${'─'.repeat(50)}
-Generado por QuotApp — www.quotapp.cl`;
-
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -2260,10 +2424,14 @@ const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto'
 const DIAS_CORTO = ['Lu','Ma','Mi','Ju','Vi','Sá','Do'];
 
 const dpState = {
-  ingreso:       { year: null, month: null, selected: null },
-  gasto:         { year: null, month: null, selected: null },
-  'edit-ingreso': { year: null, month: null, selected: null },
-  'edit-gasto':   { year: null, month: null, selected: null }
+  ingreso:           { year: null, month: null, selected: null },
+  gasto:             { year: null, month: null, selected: null },
+  'edit-ingreso':    { year: null, month: null, selected: null },
+  'edit-gasto':      { year: null, month: null, selected: null },
+  'reporte-inicio':  { year: null, month: null, selected: null },
+  'reporte-fin':     { year: null, month: null, selected: null },
+  'gasto-ini':       { year: null, month: null, selected: null },
+  'gasto-fin':       { year: null, month: null, selected: null }
 };
 
 function dpInit(key) {
@@ -2301,8 +2469,9 @@ function dpRender(key) {
   const { year, month, selected } = dpState[key];
   const cal = document.getElementById(`dp-cal-${key}`);
   const today = new Date(); today.setHours(0,0,0,0);
-  const isCurrentMonth = year === today.getFullYear() && month === today.getMonth();
-  const isFutureMonth  = new Date(year, month, 1) > new Date(today.getFullYear(), today.getMonth(), 1);
+  const allowFuture = key === 'reporte-inicio' || key === 'reporte-fin' || key === 'gasto-ini' || key === 'gasto-fin';
+  const isCurrentMonth = !allowFuture && year === today.getFullYear() && month === today.getMonth();
+  const isFutureMonth  = !allowFuture && new Date(year, month, 1) > new Date(today.getFullYear(), today.getMonth(), 1);
 
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month+1, 0).getDate();
@@ -2323,7 +2492,7 @@ function dpRender(key) {
   for (let d = 1; d <= daysInMonth; d++) {
     const date = new Date(year, month, d);
     date.setHours(0,0,0,0);
-    const isFuture = date > today;
+    const isFuture = !allowFuture && date > today;
     let cls = 'dp-day' + (isFuture ? ' dp-day-disabled' : '');
     if (date.getTime() === today.getTime()) cls += ' dp-day-today';
     if (selected && !isFuture) {
@@ -2357,6 +2526,7 @@ function dpSelect(key, y, m, d) {
   dpSetValue(key, new Date(y, m, d));
   document.getElementById(`dp-cal-${key}`).classList.remove('open');
   document.getElementById(`dp-btn-${key}`).classList.remove('open');
+  if (key === 'gasto-ini' || key === 'gasto-fin') renderGastosList();
 }
 function dpSelectToday(key) {
   const now = new Date();
@@ -2364,6 +2534,7 @@ function dpSelectToday(key) {
   dpSetValue(key, now);
   document.getElementById(`dp-cal-${key}`).classList.remove('open');
   document.getElementById(`dp-btn-${key}`).classList.remove('open');
+  if (key === 'gasto-ini' || key === 'gasto-fin') renderGastosList();
 }
 function dpClear(key) {
   dpState[key].selected = null;
@@ -2518,6 +2689,10 @@ dpInit('ingreso');
 dpInit('gasto');
 dpInit('edit-ingreso');
 dpInit('edit-gasto');
+dpInit('reporte-inicio');
+dpInit('reporte-fin');
+dpInit('gasto-ini');
+dpInit('gasto-fin');
 updateSidebarForPlan();
 // loadCommunityFromAPI() se llama desde el guard una vez validado el usuario
 </script>
