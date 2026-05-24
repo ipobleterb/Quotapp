@@ -651,13 +651,15 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
       </div>
       <div class="card">
         <div class="members-header">
-          <span class="members-count">Total: <strong id="members-count">0</strong> miembros</span>
           <div style="display:flex;align-items:center;gap:8px">
             <div style="position:relative">
               <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--txt3)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
               <input id="member-search" type="text" placeholder="Buscar miembro..." oninput="renderMembersList()" style="padding:7px 12px 7px 32px;border:1.5px solid var(--bdr);border-radius:8px;font-size:.84rem;font-family:inherit;color:var(--navy);outline:none;width:210px;transition:border-color .2s" onfocus="this.style.borderColor='var(--g)'" onblur="this.style.borderColor='var(--bdr)'">
             </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px">
             <span class="members-count" id="members-limit-note">Límite: 10 (plan gratis)</span>
+            <span class="members-count">Total: <strong id="members-count">0</strong> miembros</span>
           </div>
         </div>
         <div id="members-list"><div class="card-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Aún no hay miembros.<br>Agrega el primero para empezar.</div></div>
@@ -728,13 +730,11 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
 
       <div class="card">
         <div class="members-header" style="margin-bottom:12px">
-          <span class="members-count">Total: <strong id="ingresos-count">0</strong> ingresos</span>
-          <div style="display:flex;align-items:center;gap:8px">
-            <div style="position:relative">
-              <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--txt3)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input id="ingreso-search" type="text" placeholder="Buscar descripción..." oninput="renderIngresosList()" style="padding:7px 12px 7px 32px;border:1.5px solid var(--bdr);border-radius:8px;font-size:.84rem;font-family:inherit;color:var(--navy);outline:none;width:200px;transition:border-color .2s" onfocus="this.style.borderColor='var(--g)'" onblur="this.style.borderColor='var(--bdr)'">
-            </div>
+          <div style="position:relative">
+            <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--txt3)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input id="ingreso-search" type="text" placeholder="Buscar descripción..." oninput="renderIngresosList()" style="padding:7px 12px 7px 32px;border:1.5px solid var(--bdr);border-radius:8px;font-size:.84rem;font-family:inherit;color:var(--navy);outline:none;width:200px;transition:border-color .2s" onfocus="this.style.borderColor='var(--g)'" onblur="this.style.borderColor='var(--bdr)'">
           </div>
+          <span class="members-count">Total: <strong id="ingresos-count">0</strong> ingresos</span>
         </div>
         <div id="ingresos-list"><div class="card-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Sin ingresos registrados.<br>Agrega el primero arriba.</div></div>
       </div>
@@ -804,13 +804,11 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
 
       <div class="card">
         <div class="members-header" style="margin-bottom:12px">
-          <span class="members-count">Total: <strong id="gastos-count">0</strong> gastos</span>
-          <div style="display:flex;align-items:center;gap:8px">
-            <div style="position:relative">
-              <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--txt3)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input id="gasto-search" type="text" placeholder="Buscar descripción..." oninput="renderGastosList()" style="padding:7px 12px 7px 32px;border:1.5px solid var(--bdr);border-radius:8px;font-size:.84rem;font-family:inherit;color:var(--navy);outline:none;width:200px;transition:border-color .2s" onfocus="this.style.borderColor='var(--g)'" onblur="this.style.borderColor='var(--bdr)'">
-            </div>
+          <div style="position:relative">
+            <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--txt3)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input id="gasto-search" type="text" placeholder="Buscar descripción..." oninput="renderGastosList()" style="padding:7px 12px 7px 32px;border:1.5px solid var(--bdr);border-radius:8px;font-size:.84rem;font-family:inherit;color:var(--navy);outline:none;width:200px;transition:border-color .2s" onfocus="this.style.borderColor='var(--g)'" onblur="this.style.borderColor='var(--bdr)'">
           </div>
+          <span class="members-count">Total: <strong id="gastos-count">0</strong> gastos</span>
         </div>
         <div id="gastos-list"><div class="card-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Sin gastos registrados.<br>Agrega el primero arriba.</div></div>
       </div>
