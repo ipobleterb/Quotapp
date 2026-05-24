@@ -1114,9 +1114,13 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
       <button class="modal-close" onclick="closeModal('modalDescargarReporte')">✕</button>
     </div>
 
-    <div class="form-field">
-      <label style="font-size:.82rem;font-weight:600;color:var(--txt2);margin-bottom:10px;display:block">Período del reporte</label>
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <!-- Período — solo Pro -->
+    <div class="form-field" id="reporte-periodo-block">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <label style="font-size:.82rem;font-weight:600;color:var(--txt2)">Período del reporte</label>
+        <span id="reporte-periodo-pro-badge" style="display:none;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:20px;background:#F5F3FF;color:#6D28D9">Plan Pro</span>
+      </div>
+      <div id="reporte-periodo-content" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
         <div>
           <div style="font-size:.72rem;color:var(--txt3);margin-bottom:4px">Desde</div>
           <div class="dp-wrap" id="dp-wrap-reporte-inicio">
@@ -1142,9 +1146,14 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
         </div>
         <button onclick="clearReporteDates()" style="font-size:.75rem;color:var(--txt3);background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;margin-top:16px">Limpiar</button>
       </div>
-      <div style="font-size:.75rem;color:var(--txt3);margin-top:8px">Sin fechas seleccionadas se descarga el período completo.</div>
+      <!-- Overlay Pro para fechas -->
+      <div id="reporte-periodo-lock" style="display:none;margin-top:8px;padding:10px 14px;background:#F5F3FF;border:1.5px dashed #C4B5FD;border-radius:8px;font-size:.8rem;color:#6D28D9;cursor:pointer" onclick="goToPlanes()">
+        🔒 Filtrar por rango de fechas está disponible en el <strong>Plan Pro</strong>. <span style="text-decoration:underline">Actualizar →</span>
+      </div>
+      <div id="reporte-periodo-hint" style="font-size:.75rem;color:var(--txt3);margin-top:8px">Sin fechas seleccionadas se descarga el período completo.</div>
     </div>
 
+    <!-- Contenido -->
     <div class="form-field" style="margin-bottom:0">
       <label style="font-size:.82rem;font-weight:600;color:var(--txt2);margin-bottom:10px;display:block">Contenido</label>
       <div style="display:flex;flex-direction:column;gap:8px">
@@ -1155,10 +1164,10 @@ html,body{height:100%;font-family:'Instrument Sans',sans-serif;color:var(--txt);
             <div style="font-size:.75rem;color:var(--txt3)">Totales de ingresos, gastos, saldo y miembros</div>
           </div>
         </label>
-        <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:8px;cursor:pointer;font-size:.84rem;color:var(--navy)" onclick="setReporteContenido('detalle')">
-          <input type="radio" name="reporte-contenido" value="detalle" style="accent-color:var(--g)">
-          <div>
-            <div style="font-weight:600">Detalle completo</div>
+        <label id="reporte-detalle-option" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:8px;font-size:.84rem;color:var(--navy);position:relative">
+          <input type="radio" name="reporte-contenido" value="detalle" style="accent-color:var(--g)" id="reporte-detalle-radio">
+          <div style="flex:1">
+            <div style="font-weight:600;display:flex;align-items:center;gap:8px">Detalle completo <span id="reporte-detalle-badge" style="display:none;font-size:.68rem;font-weight:700;padding:1px 7px;border-radius:20px;background:#F5F3FF;color:#6D28D9">Pro</span></div>
             <div style="font-size:.75rem;color:var(--txt3)">Incluye cada ingreso, gasto y miembro línea por línea</div>
           </div>
         </label>
@@ -1698,7 +1707,32 @@ function openModal(id) {
     document.getElementById('new-community-treasurer-email').value = state.treasurer.email || '';
     document.getElementById('new-community-treasurer-phone').value = state.treasurer.phone || '';
   }
-  if (id === 'modalNewMember') {
+  if (id === 'modalDescargarReporte') {
+    const isPro = state.activePlan === 'pro' || state.activePlan === 'pro+';
+    // Período
+    const periodoContent = document.getElementById('reporte-periodo-content');
+    const periodoLock    = document.getElementById('reporte-periodo-lock');
+    const periodoHint    = document.getElementById('reporte-periodo-hint');
+    const periodoBadge   = document.getElementById('reporte-periodo-pro-badge');
+    if (periodoContent) periodoContent.style.opacity = isPro ? '1' : '.4';
+    if (periodoContent) periodoContent.style.pointerEvents = isPro ? '' : 'none';
+    if (periodoLock)    periodoLock.style.display    = isPro ? 'none' : 'block';
+    if (periodoHint)    periodoHint.style.display    = isPro ? 'block' : 'none';
+    if (periodoBadge)   periodoBadge.style.display   = isPro ? 'none' : 'inline-flex';
+    // Detalle completo
+    const detalleOption = document.getElementById('reporte-detalle-option');
+    const detalleRadio  = document.getElementById('reporte-detalle-radio');
+    const detalleBadge  = document.getElementById('reporte-detalle-badge');
+    if (detalleOption) {
+      detalleOption.style.opacity       = isPro ? '1' : '.45';
+      detalleOption.style.cursor        = isPro ? 'pointer' : 'not-allowed';
+      detalleOption.onclick             = isPro ? () => setReporteContenido('detalle') : () => goToPlanes();
+    }
+    if (detalleRadio)  detalleRadio.disabled  = !isPro;
+    if (detalleBadge)  detalleBadge.style.display = isPro ? 'none' : 'inline-flex';
+    // Reset a resumen si plan gratis
+    if (!isPro) setReporteContenido('resumen');
+  }
     const isPro = state.activePlan === 'pro' || state.activePlan === 'pro+';
     const badge = document.getElementById('new-member-email-badge');
     const hint  = document.getElementById('new-member-email-hint');
